@@ -1,0 +1,1729 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) slurm/latest
+
+The following have been reloaded with a version change:
+  1) scipy-bundle/2020.11-python-3.8.6 => scipy-bundle/2020.11
+
+Seeding with 304
+Seeding withSeeding with  304Seeding with304
+ 
+304
+=> creating output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484
+=> creating output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484
+=> creating output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484
+=> creating output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484
+=> creating log/cityscapes/seg_hrnet_ocr/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484_2023-03-29-19-09
+=> creating log/cityscapes/seg_hrnet_ocr/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484_2023-03-29-19-09=> creating log/cityscapes/seg_hrnet_ocr/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484_2023-03-29-19-09
+=> creating log/cityscapes/seg_hrnet_ocr/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484_2023-03-29-19-09
+
+Namespace(cfg='experiments/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484.yaml', local_rank=1, opts=[], seed=304)
+Namespace(cfg='experiments/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484.yaml', local_rank=2, opts=[], seed=304)
+Namespace(cfg='experiments/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484.yaml', local_rank=3, opts=[], seed=304)
+Namespace(cfg='experiments/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484.yaml', local_rank=0, opts=[], seed=304)
+AUTO_RESUME: False
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+DATASET:
+  DATASET: cityscapes
+  EXTRA_TRAIN_SET: 
+  NUM_CLASSES: 19
+  ROOT: data/
+  TEST_SET: list/cityscapes/val.lst
+  TRAIN_SET: list/cityscapes/train.lst
+DEBUG:
+  DEBUG: False
+  SAVE_BATCH_IMAGES_GT: False
+  SAVE_BATCH_IMAGES_PRED: False
+  SAVE_HEATMAPS_GT: False
+  SAVE_HEATMAPS_PRED: False
+GPUS: (0,)
+LOG_DIR: log
+LOSS:
+  BALANCE_WEIGHTS: [0.4, 1]
+  CLASS_BALANCE: False
+  OHEMKEEP: 131072
+  OHEMTHRES: 0.9
+  USE_OHEM: False
+MODEL:
+  ALIGN_CORNERS: True
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+    STAGE1:
+      BLOCK: BOTTLENECK
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4]
+      NUM_CHANNELS: [64]
+      NUM_MODULES: 1
+      NUM_RANCHES: 1
+    STAGE2:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4]
+      NUM_BRANCHES: 2
+      NUM_CHANNELS: [48, 96]
+      NUM_MODULES: 1
+    STAGE3:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4]
+      NUM_BRANCHES: 3
+      NUM_CHANNELS: [48, 96, 192]
+      NUM_MODULES: 4
+    STAGE4:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4, 4]
+      NUM_BRANCHES: 4
+      NUM_CHANNELS: [48, 96, 192, 384]
+      NUM_MODULES: 3
+  NAME: seg_hrnet_ocr
+  NUM_OUTPUTS: 2
+  OCR:
+    DROPOUT: 0.05
+    KEY_CHANNELS: 256
+    MID_CHANNELS: 512
+    SCALE: 1
+  PRETRAINED: pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+OUTPUT_DIR: output
+PIN_MEMORY: True
+PRINT_FREQ: 10
+RANK: 0
+TEST:
+  BASE_SIZE: 2048
+  BATCH_SIZE_PER_GPU: 4
+  FLIP_TEST: False
+  IMAGE_SIZE: [2048, 1024]
+  MODEL_FILE: 
+  MULTI_SCALE: False
+  NUM_SAMPLES: 0
+  OUTPUT_INDEX: -1
+  SCALE_LIST: [1]
+TRAIN:
+  BASE_SIZE: 2048
+  BATCH_SIZE_PER_GPU: 3
+  BEGIN_EPOCH: 0
+  DOWNSAMPLERATE: 1
+  END_EPOCH: 484
+  EXTRA_EPOCH: 0
+  EXTRA_LR: 0.001
+  FLIP: True
+  FREEZE_EPOCHS: -1
+  FREEZE_LAYERS: 
+  IGNORE_LABEL: 255
+  IMAGE_SIZE: [1024, 512]
+  LR: 0.01
+  LR_FACTOR: 0.1
+  LR_STEP: [90, 110]
+  MOMENTUM: 0.9
+  MULTI_SCALE: True
+  NESTEROV: False
+  NONBACKBONE_KEYWORDS: []
+  NONBACKBONE_MULT: 10
+  NUM_SAMPLES: 0
+  OPTIMIZER: sgd
+  RANDOM_BRIGHTNESS: False
+  RANDOM_BRIGHTNESS_SHIFT_VALUE: 10
+  RESUME: True
+  SCALE_FACTOR: 16
+  SHUFFLE: True
+  WD: 0.0005
+WORKERS: 1
+AUTO_RESUME: False
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+DATASET:
+  DATASET: cityscapes
+  EXTRA_TRAIN_SET: 
+  NUM_CLASSES: 19
+  ROOT: data/
+  TEST_SET: list/cityscapes/val.lst
+  TRAIN_SET: list/cityscapes/train.lst
+DEBUG:
+  DEBUG: False
+  SAVE_BATCH_IMAGES_GT: False
+  SAVE_BATCH_IMAGES_PRED: False
+  SAVE_HEATMAPS_GT: False
+  SAVE_HEATMAPS_PRED: False
+GPUS: (0,)
+LOG_DIR: log
+LOSS:
+  BALANCE_WEIGHTS: [0.4, 1]
+  CLASS_BALANCE: False
+  OHEMKEEP: 131072
+  OHEMTHRES: 0.9
+  USE_OHEM: False
+MODEL:
+  ALIGN_CORNERS: True
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+    STAGE1:
+      BLOCK: BOTTLENECK
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4]
+      NUM_CHANNELS: [64]
+      NUM_MODULES: 1
+      NUM_RANCHES: 1
+    STAGE2:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4]
+      NUM_BRANCHES: 2
+      NUM_CHANNELS: [48, 96]
+      NUM_MODULES: 1
+    STAGE3:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4]
+      NUM_BRANCHES: 3
+      NUM_CHANNELS: [48, 96, 192]
+      NUM_MODULES: 4
+    STAGE4:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4, 4]
+      NUM_BRANCHES: 4
+      NUM_CHANNELS: [48, 96, 192, 384]
+      NUM_MODULES: 3
+  NAME: seg_hrnet_ocr
+  NUM_OUTPUTS: 2
+  OCR:
+    DROPOUT: 0.05
+    KEY_CHANNELS: 256
+    MID_CHANNELS: 512
+    SCALE: 1
+  PRETRAINED: pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+OUTPUT_DIR: output
+PIN_MEMORY: True
+PRINT_FREQ: 10
+RANK: 0
+TEST:
+  BASE_SIZE: 2048
+  BATCH_SIZE_PER_GPU: 4
+  FLIP_TEST: False
+  IMAGE_SIZE: [2048, 1024]
+  MODEL_FILE: 
+  MULTI_SCALE: False
+  NUM_SAMPLES: 0
+  OUTPUT_INDEX: -1
+  SCALE_LIST: [1]
+TRAIN:
+  BASE_SIZE: 2048
+  BATCH_SIZE_PER_GPU: 3
+  BEGIN_EPOCH: 0
+  DOWNSAMPLERATE: 1
+  END_EPOCH: 484
+  EXTRA_EPOCH: 0
+  EXTRA_LR: 0.001
+  FLIP: True
+  FREEZE_EPOCHS: -1
+  FREEZE_LAYERS: 
+  IGNORE_LABEL: 255
+  IMAGE_SIZE: [1024, 512]
+  LR: 0.01
+  LR_FACTOR: 0.1
+  LR_STEP: [90, 110]
+  MOMENTUM: 0.9
+  MULTI_SCALE: True
+  NESTEROV: False
+  NONBACKBONE_KEYWORDS: []
+  NONBACKBONE_MULT: 10
+  NUM_SAMPLES: 0
+  OPTIMIZER: sgd
+  RANDOM_BRIGHTNESS: False
+  RANDOM_BRIGHTNESS_SHIFT_VALUE: 10
+  RESUME: True
+  SCALE_FACTOR: 16
+  SHUFFLE: True
+  WD: 0.0005
+WORKERS: 1
+AUTO_RESUME: False
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+DATASET:
+  DATASET: cityscapes
+  EXTRA_TRAIN_SET: 
+  NUM_CLASSES: 19
+  ROOT: data/
+  TEST_SET: list/cityscapes/val.lst
+  TRAIN_SET: list/cityscapes/train.lst
+DEBUG:
+  DEBUG: False
+  SAVE_BATCH_IMAGES_GT: False
+  SAVE_BATCH_IMAGES_PRED: False
+  SAVE_HEATMAPS_GT: False
+  SAVE_HEATMAPS_PRED: False
+GPUS: (0,)
+LOG_DIR: log
+LOSS:
+  BALANCE_WEIGHTS: [0.4, 1]
+  CLASS_BALANCE: False
+  OHEMKEEP: 131072
+  OHEMTHRES: 0.9
+  USE_OHEM: False
+MODEL:
+  ALIGN_CORNERS: True
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+    STAGE1:
+      BLOCK: BOTTLENECK
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4]
+      NUM_CHANNELS: [64]
+      NUM_MODULES: 1
+      NUM_RANCHES: 1
+    STAGE2:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4]
+      NUM_BRANCHES: 2
+      NUM_CHANNELS: [48, 96]
+      NUM_MODULES: 1
+    STAGE3:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4]
+      NUM_BRANCHES: 3
+      NUM_CHANNELS: [48, 96, 192]
+      NUM_MODULES: 4
+    STAGE4:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4, 4]
+      NUM_BRANCHES: 4
+      NUM_CHANNELS: [48, 96, 192, 384]
+      NUM_MODULES: 3
+  NAME: seg_hrnet_ocr
+  NUM_OUTPUTS: 2
+  OCR:
+    DROPOUT: 0.05
+    KEY_CHANNELS: 256
+    MID_CHANNELS: 512
+    SCALE: 1
+  PRETRAINED: pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+OUTPUT_DIR: output
+PIN_MEMORY: True
+PRINT_FREQ: 10
+RANK: 0
+TEST:
+  BASE_SIZE: 2048
+  BATCH_SIZE_PER_GPU: 4
+  FLIP_TEST: False
+  IMAGE_SIZE: [2048, 1024]
+  MODEL_FILE: 
+  MULTI_SCALE: False
+  NUM_SAMPLES: 0
+  OUTPUT_INDEX: -1
+  SCALE_LIST: [1]
+TRAIN:
+  BASE_SIZE: 2048
+  BATCH_SIZE_PER_GPU: 3
+  BEGIN_EPOCH: 0
+  DOWNSAMPLERATE: 1
+  END_EPOCH: 484
+  EXTRA_EPOCH: 0
+  EXTRA_LR: 0.001
+  FLIP: True
+  FREEZE_EPOCHS: -1
+  FREEZE_LAYERS: 
+  IGNORE_LABEL: 255
+  IMAGE_SIZE: [1024, 512]
+  LR: 0.01
+  LR_FACTOR: 0.1
+  LR_STEP: [90, 110]
+  MOMENTUM: 0.9
+  MULTI_SCALE: True
+  NESTEROV: False
+  NONBACKBONE_KEYWORDS: []
+  NONBACKBONE_MULT: 10
+  NUM_SAMPLES: 0
+  OPTIMIZER: sgd
+  RANDOM_BRIGHTNESS: False
+  RANDOM_BRIGHTNESS_SHIFT_VALUE: 10
+  RESUME: True
+  SCALE_FACTOR: 16
+  SHUFFLE: True
+  WD: 0.0005
+WORKERS: 1
+AUTO_RESUME: False
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+DATASET:
+  DATASET: cityscapes
+  EXTRA_TRAIN_SET: 
+  NUM_CLASSES: 19
+  ROOT: data/
+  TEST_SET: list/cityscapes/val.lst
+  TRAIN_SET: list/cityscapes/train.lst
+DEBUG:
+  DEBUG: False
+  SAVE_BATCH_IMAGES_GT: False
+  SAVE_BATCH_IMAGES_PRED: False
+  SAVE_HEATMAPS_GT: False
+  SAVE_HEATMAPS_PRED: False
+GPUS: (0,)
+LOG_DIR: log
+LOSS:
+  BALANCE_WEIGHTS: [0.4, 1]
+  CLASS_BALANCE: False
+  OHEMKEEP: 131072
+  OHEMTHRES: 0.9
+  USE_OHEM: False
+MODEL:
+  ALIGN_CORNERS: True
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+    STAGE1:
+      BLOCK: BOTTLENECK
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4]
+      NUM_CHANNELS: [64]
+      NUM_MODULES: 1
+      NUM_RANCHES: 1
+    STAGE2:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4]
+      NUM_BRANCHES: 2
+      NUM_CHANNELS: [48, 96]
+      NUM_MODULES: 1
+    STAGE3:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4]
+      NUM_BRANCHES: 3
+      NUM_CHANNELS: [48, 96, 192]
+      NUM_MODULES: 4
+    STAGE4:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4, 4]
+      NUM_BRANCHES: 4
+      NUM_CHANNELS: [48, 96, 192, 384]
+      NUM_MODULES: 3
+  NAME: seg_hrnet_ocr
+  NUM_OUTPUTS: 2
+  OCR:
+    DROPOUT: 0.05
+    KEY_CHANNELS: 256
+    MID_CHANNELS: 512
+    SCALE: 1
+  PRETRAINED: pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+OUTPUT_DIR: output
+PIN_MEMORY: True
+PRINT_FREQ: 10
+RANK: 0
+TEST:
+  BASE_SIZE: 2048
+  BATCH_SIZE_PER_GPU: 4
+  FLIP_TEST: False
+  IMAGE_SIZE: [2048, 1024]
+  MODEL_FILE: 
+  MULTI_SCALE: False
+  NUM_SAMPLES: 0
+  OUTPUT_INDEX: -1
+  SCALE_LIST: [1]
+TRAIN:
+  BASE_SIZE: 2048
+  BATCH_SIZE_PER_GPU: 3
+  BEGIN_EPOCH: 0
+  DOWNSAMPLERATE: 1
+  END_EPOCH: 484
+  EXTRA_EPOCH: 0
+  EXTRA_LR: 0.001
+  FLIP: True
+  FREEZE_EPOCHS: -1
+  FREEZE_LAYERS: 
+  IGNORE_LABEL: 255
+  IMAGE_SIZE: [1024, 512]
+  LR: 0.01
+  LR_FACTOR: 0.1
+  LR_STEP: [90, 110]
+  MOMENTUM: 0.9
+  MULTI_SCALE: True
+  NESTEROV: False
+  NONBACKBONE_KEYWORDS: []
+  NONBACKBONE_MULT: 10
+  NUM_SAMPLES: 0
+  OPTIMIZER: sgd
+  RANDOM_BRIGHTNESS: False
+  RANDOM_BRIGHTNESS_SHIFT_VALUE: 10
+  RESUME: True
+  SCALE_FACTOR: 16
+  SHUFFLE: True
+  WD: 0.0005
+WORKERS: 1
+=> init weights from normal distribution
+=> init weights from normal distribution
+=> init weights from normal distribution
+=> init weights from normal distribution
+=> loading pretrained model pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+=> loading pretrained model pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+{'aux_head.0.bias', 'ocr_distri_head.object_context_block.f_object.1.0.bias', 'aux_head.3.weight', 'ocr_distri_head.object_context_block.f_up.1.0.bias', 'ocr_distri_head.object_context_block.f_down.1.0.bias', 'aux_head.1.bias', 'ocr_distri_head.object_context_block.f_pixel.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.3.0.bias', 'ocr_distri_head.conv_bn_dropout.1.0.running_mean', 'ocr_distri_head.object_context_block.f_object.2.weight', 'ocr_distri_head.conv_bn_dropout.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_up.0.weight', 'conv3x3_ocr.1.bias', 'ocr_distri_head.conv_bn_dropout.1.0.weight', 'ocr_distri_head.object_context_block.f_object.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.3.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_up.1.0.running_mean', 'cls_head.weight', 'ocr_distri_head.object_context_block.f_up.1.0.num_batches_tracked', 'aux_head.3.bias', 'ocr_distri_head.object_context_block.f_down.1.0.running_mean', 'aux_head.1.running_mean', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_mean', 'ocr_distri_head.object_context_block.f_object.1.0.running_mean', 'cls_head.bias', 'ocr_distri_head.object_context_block.f_object.3.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'ocr_distri_head.object_context_block.f_pixel.0.weight', 'aux_head.1.running_var', 'aux_head.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'ocr_distri_head.object_context_block.f_pixel.3.0.weight', 'ocr_distri_head.object_context_block.f_up.1.0.running_var', 'conv3x3_ocr.1.running_var', 'ocr_distri_head.conv_bn_dropout.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.3.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.running_var', 'ocr_distri_head.object_context_block.f_up.1.0.weight', 'aux_head.1.weight', 'ocr_distri_head.object_context_block.f_object.0.weight', 'conv3x3_ocr.1.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_var', 'ocr_distri_head.conv_bn_dropout.1.0.running_var', 'conv3x3_ocr.1.num_batches_tracked', 'conv3x3_ocr.0.bias', 'ocr_distri_head.object_context_block.f_down.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.3.0.running_var', 'ocr_distri_head.conv_bn_dropout.1.0.bias', 'aux_head.0.weight', 'ocr_distri_head.object_context_block.f_pixel.2.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'ocr_distri_head.object_context_block.f_down.0.weight', 'conv3x3_ocr.1.running_mean', 'ocr_distri_head.object_context_block.f_object.1.0.running_var', 'conv3x3_ocr.0.weight', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_var', 'ocr_distri_head.object_context_block.f_object.1.0.weight'}
+{'incre_modules.0.0.bn1.running_mean', 'final_layer.1.weight', 'incre_modules.3.0.bn2.num_batches_tracked', 'downsamp_modules.1.1.weight', 'incre_modules.3.0.conv3.weight', 'incre_modules.1.0.bn2.weight', 'downsamp_modules.2.1.bias', 'incre_modules.0.0.bn2.bias', 'final_layer.1.running_mean', 'incre_modules.1.0.conv3.weight', 'incre_modules.3.0.bn2.running_var', 'incre_modules.1.0.bn3.weight', 'downsamp_modules.1.0.bias', 'incre_modules.0.0.bn2.running_var', 'incre_modules.0.0.conv2.weight', 'classifier.weight', 'incre_modules.1.0.bn3.running_var', 'incre_modules.2.0.bn1.num_batches_tracked', 'incre_modules.0.0.bn3.bias', 'incre_modules.3.0.downsample.1.bias', 'incre_modules.3.0.bn2.running_mean', 'downsamp_modules.0.0.bias', 'incre_modules.2.0.bn2.running_var', 'incre_modules.0.0.downsample.0.weight', 'incre_modules.2.0.bn3.running_var', 'incre_modules.2.0.bn1.weight', 'downsamp_modules.1.0.weight', 'downsamp_modules.2.0.bias', 'incre_modules.0.0.bn3.num_batches_tracked', 'incre_modules.1.0.bn2.running_var', 'incre_modules.0.0.bn3.running_var', 'downsamp_modules.0.1.running_mean', 'downsamp_modules.0.1.weight', 'incre_modules.3.0.bn3.running_var', 'downsamp_modules.0.0.weight', 'incre_modules.1.0.bn3.bias', 'incre_modules.0.0.bn1.weight', 'incre_modules.3.0.bn1.running_var', 'incre_modules.2.0.bn3.num_batches_tracked', 'downsamp_modules.0.1.num_batches_tracked', 'downsamp_modules.2.1.weight', 'incre_modules.1.0.bn1.weight', 'incre_modules.0.0.conv1.weight', 'incre_modules.2.0.bn2.running_mean', 'incre_modules.3.0.bn1.weight', 'incre_modules.2.0.conv3.weight', 'incre_modules.2.0.bn3.running_mean', 'incre_modules.1.0.bn3.num_batches_tracked', 'incre_modules.0.0.downsample.1.num_batches_tracked', 'incre_modules.2.0.bn2.weight', 'downsamp_modules.0.1.running_var', 'incre_modules.3.0.conv2.weight', 'incre_modules.2.0.bn2.num_batches_tracked', 'incre_modules.0.0.downsample.1.weight', 'incre_modules.0.0.bn1.num_batches_tracked', 'incre_modules.2.0.downsample.0.weight', 'incre_modules.3.0.downsample.1.weight', 'incre_modules.2.0.bn1.bias', 'downsamp_modules.1.1.num_batches_tracked', 'downsamp_modules.1.1.running_mean', 'downsamp_modules.0.1.bias', 'incre_modules.2.0.bn2.bias', 'final_layer.1.bias', 'incre_modules.0.0.bn2.weight', 'downsamp_modules.1.1.bias', 'incre_modules.1.0.downsample.1.running_var', 'downsamp_modules.2.1.num_batches_tracked', 'incre_modules.3.0.bn3.bias', 'incre_modules.2.0.downsample.1.num_batches_tracked', 'classifier.bias', 'incre_modules.0.0.downsample.1.running_var', 'final_layer.0.bias', 'incre_modules.0.0.bn3.running_mean', 'incre_modules.0.0.conv3.weight', 'incre_modules.3.0.downsample.1.num_batches_tracked', 'incre_modules.1.0.bn2.running_mean', 'incre_modules.3.0.downsample.1.running_mean', 'incre_modules.2.0.bn3.weight', 'incre_modules.1.0.downsample.1.running_mean', 'incre_modules.3.0.downsample.1.running_var', 'downsamp_modules.2.1.running_mean', 'incre_modules.1.0.downsample.1.bias', 'incre_modules.1.0.bn1.bias', 'incre_modules.0.0.downsample.1.running_mean', 'incre_modules.3.0.bn3.running_mean', 'incre_modules.2.0.downsample.1.weight', 'incre_modules.3.0.bn3.num_batches_tracked', 'final_layer.1.running_var', 'incre_modules.2.0.bn3.bias', 'incre_modules.3.0.conv1.weight', 'final_layer.0.weight', 'incre_modules.1.0.bn1.num_batches_tracked', 'incre_modules.2.0.bn1.running_mean', 'incre_modules.2.0.conv2.weight', 'incre_modules.2.0.downsample.1.bias', 'final_layer.1.num_batches_tracked', 'incre_modules.3.0.bn2.bias', 'incre_modules.0.0.bn3.weight', 'incre_modules.2.0.downsample.1.running_mean', 'incre_modules.2.0.bn1.running_var', 'incre_modules.0.0.bn2.num_batches_tracked', 'incre_modules.1.0.bn2.bias', 'incre_modules.0.0.bn2.running_mean', 'incre_modules.3.0.bn1.bias', 'incre_modules.3.0.downsample.0.weight', 'incre_modules.0.0.bn1.bias', 'incre_modules.1.0.conv2.weight', 'incre_modules.1.0.downsample.1.weight', 'downsamp_modules.2.1.running_var', 'incre_modules.3.0.bn3.weight', 'incre_modules.3.0.bn1.running_mean', 'incre_modules.2.0.downsample.1.running_var', 'downsamp_modules.1.1.running_var', 'incre_modules.0.0.downsample.1.bias', 'incre_modules.3.0.bn2.weight', 'incre_modules.1.0.bn3.running_mean', 'incre_modules.1.0.downsample.0.weight', 'downsamp_modules.2.0.weight', 'incre_modules.1.0.bn1.running_mean', 'incre_modules.1.0.bn1.running_var', 'incre_modules.1.0.conv1.weight', 'incre_modules.2.0.conv1.weight', 'incre_modules.3.0.bn1.num_batches_tracked', 'incre_modules.1.0.downsample.1.num_batches_tracked', 'incre_modules.0.0.bn1.running_var', 'incre_modules.1.0.bn2.num_batches_tracked'}
+{'ocr_distri_head.object_context_block.f_object.3.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.num_batches_tracked', 'conv3x3_ocr.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.1.0.weight', 'ocr_distri_head.object_context_block.f_object.1.0.running_mean', 'ocr_distri_head.object_context_block.f_up.1.0.running_mean', 'ocr_distri_head.object_context_block.f_object.3.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_mean', 'ocr_distri_head.object_context_block.f_object.1.0.num_batches_tracked', 'conv3x3_ocr.1.bias', 'ocr_distri_head.conv_bn_dropout.1.0.running_var', 'conv3x3_ocr.0.bias', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_mean', 'aux_head.1.bias', 'ocr_distri_head.object_context_block.f_pixel.2.weight', 'conv3x3_ocr.0.weight', 'conv3x3_ocr.1.running_mean', 'ocr_distri_head.object_context_block.f_down.0.weight', 'ocr_distri_head.object_context_block.f_up.0.weight', 'ocr_distri_head.object_context_block.f_up.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_var', 'cls_head.bias', 'ocr_distri_head.object_context_block.f_down.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.3.0.num_batches_tracked', 'ocr_distri_head.conv_bn_dropout.1.0.bias', 'ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'ocr_distri_head.object_context_block.f_up.1.0.bias', 'conv3x3_ocr.1.running_var', 'ocr_distri_head.object_context_block.f_pixel.0.weight', 'aux_head.3.bias', 'ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'conv3x3_ocr.1.weight', 'ocr_distri_head.object_context_block.f_up.1.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.running_mean', 'aux_head.0.bias', 'ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'ocr_distri_head.object_context_block.f_object.3.0.bias', 'ocr_distri_head.object_context_block.f_pixel.3.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.bias', 'cls_head.weight', 'ocr_distri_head.object_context_block.f_down.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_up.1.0.num_batches_tracked', 'aux_head.1.running_var', 'ocr_distri_head.conv_bn_dropout.1.0.weight', 'aux_head.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.weight', 'aux_head.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.1.0.running_var', 'ocr_distri_head.object_context_block.f_object.0.weight', 'ocr_distri_head.conv_bn_dropout.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_var', 'ocr_distri_head.object_context_block.f_object.1.0.bias', 'ocr_distri_head.conv_bn_dropout.0.weight', 'aux_head.1.weight', 'ocr_distri_head.object_context_block.f_down.1.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.1.0.num_batches_tracked', 'aux_head.1.running_mean', 'aux_head.3.weight', 'ocr_distri_head.conv_bn_dropout.1.0.running_mean', 'ocr_distri_head.object_context_block.f_object.2.weight'}
+{'incre_modules.1.0.bn1.weight', 'incre_modules.0.0.downsample.1.bias', 'incre_modules.0.0.bn1.num_batches_tracked', 'incre_modules.0.0.bn3.num_batches_tracked', 'incre_modules.2.0.downsample.1.running_mean', 'incre_modules.3.0.bn2.weight', 'incre_modules.0.0.conv3.weight', 'incre_modules.3.0.downsample.1.weight', 'incre_modules.2.0.downsample.1.num_batches_tracked', 'incre_modules.3.0.conv3.weight', 'incre_modules.1.0.bn2.num_batches_tracked', 'incre_modules.3.0.bn1.running_mean', 'downsamp_modules.1.1.bias', 'incre_modules.0.0.bn3.running_var', 'incre_modules.3.0.bn1.running_var', 'incre_modules.0.0.bn2.running_mean', 'incre_modules.2.0.bn2.running_mean', 'incre_modules.0.0.bn3.running_mean', 'incre_modules.2.0.bn1.running_var', 'downsamp_modules.1.1.num_batches_tracked', 'incre_modules.0.0.bn3.weight', 'incre_modules.0.0.bn2.running_var', 'incre_modules.3.0.conv1.weight', 'incre_modules.0.0.downsample.0.weight', 'downsamp_modules.1.1.running_var', 'incre_modules.1.0.downsample.1.bias', 'incre_modules.2.0.downsample.1.bias', 'incre_modules.2.0.conv3.weight', 'incre_modules.1.0.bn1.running_mean', 'incre_modules.2.0.bn3.running_mean', 'incre_modules.1.0.bn1.num_batches_tracked', 'final_layer.1.bias', 'downsamp_modules.2.1.num_batches_tracked', 'incre_modules.1.0.conv2.weight', 'incre_modules.1.0.bn3.running_var', 'downsamp_modules.0.1.running_mean', 'incre_modules.1.0.conv3.weight', 'classifier.weight', 'incre_modules.0.0.conv1.weight', 'downsamp_modules.0.1.running_var', 'incre_modules.0.0.bn1.running_var', 'incre_modules.2.0.bn1.bias', 'downsamp_modules.2.0.weight', 'incre_modules.2.0.bn2.bias', 'incre_modules.2.0.bn3.num_batches_tracked', 'incre_modules.2.0.downsample.1.weight', 'downsamp_modules.0.1.num_batches_tracked', 'incre_modules.2.0.bn3.bias', 'incre_modules.1.0.conv1.weight', 'incre_modules.3.0.bn2.running_var', 'incre_modules.3.0.bn3.num_batches_tracked', 'incre_modules.3.0.bn3.bias', 'incre_modules.1.0.bn3.weight', 'incre_modules.1.0.bn1.running_var', 'downsamp_modules.2.1.running_mean', 'incre_modules.3.0.conv2.weight', 'downsamp_modules.0.0.bias', 'incre_modules.1.0.bn3.num_batches_tracked', 'final_layer.1.weight', 'incre_modules.2.0.bn1.weight', 'incre_modules.3.0.bn2.running_mean', 'downsamp_modules.1.1.weight', 'classifier.bias', 'downsamp_modules.2.1.bias', 'downsamp_modules.1.0.bias', 'incre_modules.1.0.bn1.bias', 'downsamp_modules.0.1.weight', 'incre_modules.2.0.conv2.weight', 'incre_modules.0.0.bn1.bias', 'incre_modules.3.0.bn3.weight', 'incre_modules.3.0.bn1.weight', 'incre_modules.1.0.downsample.1.running_var', 'incre_modules.3.0.downsample.1.running_mean', 'downsamp_modules.2.1.running_var', 'incre_modules.1.0.downsample.1.num_batches_tracked', 'incre_modules.1.0.bn2.bias', 'downsamp_modules.1.1.running_mean', 'incre_modules.1.0.downsample.1.running_mean', 'incre_modules.2.0.bn2.running_var', 'incre_modules.2.0.bn2.weight', 'final_layer.1.num_batches_tracked', 'incre_modules.0.0.bn2.bias', 'incre_modules.0.0.downsample.1.num_batches_tracked', 'incre_modules.0.0.bn2.weight', 'incre_modules.1.0.bn3.bias', 'incre_modules.1.0.bn2.running_var', 'incre_modules.1.0.bn2.running_mean', 'incre_modules.0.0.bn1.weight', 'incre_modules.2.0.conv1.weight', 'incre_modules.2.0.downsample.1.running_var', 'incre_modules.3.0.downsample.0.weight', 'incre_modules.3.0.bn2.bias', 'incre_modules.0.0.bn1.running_mean', 'incre_modules.0.0.bn3.bias', 'incre_modules.3.0.downsample.1.running_var', 'incre_modules.3.0.downsample.1.bias', 'incre_modules.2.0.bn1.num_batches_tracked', 'incre_modules.3.0.bn1.bias', 'incre_modules.2.0.downsample.0.weight', 'incre_modules.3.0.bn1.num_batches_tracked', 'final_layer.1.running_mean', 'incre_modules.3.0.bn2.num_batches_tracked', 'downsamp_modules.1.0.weight', 'incre_modules.2.0.bn1.running_mean', 'incre_modules.0.0.downsample.1.running_var', 'final_layer.0.weight', 'incre_modules.3.0.bn3.running_var', 'incre_modules.2.0.bn3.weight', 'final_layer.1.running_var', 'final_layer.0.bias', 'incre_modules.3.0.downsample.1.num_batches_tracked', 'incre_modules.1.0.bn2.weight', 'downsamp_modules.2.0.bias', 'incre_modules.0.0.downsample.1.running_mean', 'incre_modules.0.0.bn2.num_batches_tracked', 'downsamp_modules.2.1.weight', 'incre_modules.1.0.downsample.1.weight', 'incre_modules.0.0.conv2.weight', 'incre_modules.1.0.downsample.0.weight', 'incre_modules.2.0.bn2.num_batches_tracked', 'downsamp_modules.0.0.weight', 'downsamp_modules.0.1.bias', 'incre_modules.2.0.bn3.running_var', 'incre_modules.1.0.bn3.running_mean', 'incre_modules.0.0.downsample.1.weight', 'incre_modules.3.0.bn3.running_mean'}
+=> loading pretrained model pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+{'aux_head.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.0.weight', 'conv3x3_ocr.1.num_batches_tracked', 'conv3x3_ocr.1.bias', 'conv3x3_ocr.0.bias', 'ocr_distri_head.object_context_block.f_down.1.0.bias', 'ocr_distri_head.conv_bn_dropout.1.0.num_batches_tracked', 'aux_head.1.weight', 'ocr_distri_head.object_context_block.f_object.1.0.weight', 'ocr_distri_head.object_context_block.f_pixel.3.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_up.0.weight', 'ocr_distri_head.object_context_block.f_up.1.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.3.0.weight', 'aux_head.1.running_var', 'ocr_distri_head.object_context_block.f_up.1.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.running_mean', 'ocr_distri_head.object_context_block.f_object.1.0.running_mean', 'ocr_distri_head.object_context_block.f_down.1.0.running_mean', 'ocr_distri_head.object_context_block.f_up.1.0.running_var', 'ocr_distri_head.object_context_block.f_object.3.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'ocr_distri_head.conv_bn_dropout.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'ocr_distri_head.object_context_block.f_object.3.0.num_batches_tracked', 'cls_head.bias', 'ocr_distri_head.conv_bn_dropout.0.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'aux_head.0.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.num_batches_tracked', 'ocr_distri_head.conv_bn_dropout.1.0.bias', 'aux_head.0.bias', 'aux_head.3.bias', 'ocr_distri_head.object_context_block.f_up.1.0.bias', 'conv3x3_ocr.1.running_mean', 'ocr_distri_head.object_context_block.f_down.1.0.running_var', 'ocr_distri_head.conv_bn_dropout.1.0.running_mean', 'aux_head.3.weight', 'ocr_distri_head.object_context_block.f_down.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_down.0.weight', 'ocr_distri_head.conv_bn_dropout.1.0.weight', 'conv3x3_ocr.1.running_var', 'ocr_distri_head.object_context_block.f_object.3.0.bias', 'ocr_distri_head.object_context_block.f_object.1.0.bias', 'ocr_distri_head.object_context_block.f_object.3.0.weight', 'ocr_distri_head.object_context_block.f_object.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_var', 'ocr_distri_head.object_context_block.f_down.1.0.weight', 'ocr_distri_head.object_context_block.f_object.2.weight', 'aux_head.1.running_mean', 'ocr_distri_head.object_context_block.f_object.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_up.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_var', 'cls_head.weight', 'aux_head.1.bias', 'conv3x3_ocr.0.weight', 'conv3x3_ocr.1.weight', 'ocr_distri_head.object_context_block.f_pixel.0.weight', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.2.weight'}
+=> loading pretrained model pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+{'incre_modules.3.0.downsample.1.running_mean', 'downsamp_modules.0.1.weight', 'downsamp_modules.0.0.weight', 'downsamp_modules.0.1.running_var', 'incre_modules.1.0.bn1.num_batches_tracked', 'incre_modules.2.0.bn1.weight', 'incre_modules.3.0.bn1.running_var', 'incre_modules.3.0.downsample.1.num_batches_tracked', 'incre_modules.1.0.bn2.bias', 'downsamp_modules.2.1.bias', 'incre_modules.0.0.bn2.weight', 'incre_modules.3.0.bn2.running_mean', 'incre_modules.3.0.bn3.bias', 'incre_modules.3.0.bn3.weight', 'incre_modules.1.0.conv3.weight', 'downsamp_modules.2.0.weight', 'incre_modules.2.0.downsample.1.bias', 'classifier.weight', 'final_layer.0.bias', 'incre_modules.1.0.downsample.1.bias', 'incre_modules.1.0.bn1.running_var', 'downsamp_modules.1.1.running_mean', 'incre_modules.1.0.bn3.num_batches_tracked', 'incre_modules.0.0.bn1.bias', 'incre_modules.0.0.bn1.running_mean', 'incre_modules.2.0.bn2.weight', 'incre_modules.2.0.bn2.bias', 'final_layer.1.running_mean', 'incre_modules.3.0.bn1.running_mean', 'final_layer.0.weight', 'incre_modules.1.0.downsample.1.num_batches_tracked', 'incre_modules.2.0.downsample.0.weight', 'incre_modules.0.0.bn3.running_var', 'incre_modules.2.0.bn2.running_mean', 'incre_modules.0.0.conv2.weight', 'incre_modules.3.0.bn3.running_mean', 'incre_modules.3.0.bn1.num_batches_tracked', 'incre_modules.0.0.bn3.running_mean', 'incre_modules.1.0.downsample.1.running_mean', 'downsamp_modules.2.1.running_var', 'incre_modules.1.0.bn1.bias', 'incre_modules.3.0.downsample.1.bias', 'incre_modules.2.0.bn3.weight', 'incre_modules.0.0.downsample.1.weight', 'incre_modules.3.0.bn1.bias', 'incre_modules.0.0.bn3.bias', 'incre_modules.0.0.bn2.num_batches_tracked', 'incre_modules.1.0.bn2.running_var', 'downsamp_modules.1.1.num_batches_tracked', 'incre_modules.3.0.bn3.running_var', 'classifier.bias', 'incre_modules.0.0.bn3.weight', 'downsamp_modules.0.1.bias', 'incre_modules.1.0.bn3.bias', 'downsamp_modules.1.0.bias', 'incre_modules.2.0.bn2.num_batches_tracked', 'incre_modules.2.0.bn3.running_mean', 'incre_modules.1.0.downsample.1.weight', 'incre_modules.0.0.bn1.running_var', 'downsamp_modules.2.1.num_batches_tracked', 'downsamp_modules.0.0.bias', 'incre_modules.3.0.bn3.num_batches_tracked', 'downsamp_modules.0.1.running_mean', 'incre_modules.1.0.bn3.running_var', 'incre_modules.3.0.downsample.0.weight', 'incre_modules.3.0.bn2.weight', 'incre_modules.1.0.bn2.num_batches_tracked', 'incre_modules.0.0.bn2.running_var', 'incre_modules.2.0.downsample.1.running_mean', 'incre_modules.0.0.bn1.num_batches_tracked', 'incre_modules.3.0.downsample.1.weight', 'downsamp_modules.1.1.weight', 'incre_modules.1.0.conv1.weight', 'downsamp_modules.2.0.bias', 'incre_modules.1.0.conv2.weight', 'incre_modules.2.0.bn3.bias', 'incre_modules.0.0.downsample.1.num_batches_tracked', 'incre_modules.0.0.downsample.1.running_mean', 'incre_modules.0.0.bn3.num_batches_tracked', 'incre_modules.1.0.bn1.running_mean', 'incre_modules.0.0.bn2.bias', 'incre_modules.0.0.downsample.0.weight', 'incre_modules.2.0.conv3.weight', 'incre_modules.2.0.conv2.weight', 'incre_modules.1.0.bn2.weight', 'incre_modules.1.0.bn1.weight', 'incre_modules.1.0.bn2.running_mean', 'incre_modules.3.0.conv1.weight', 'incre_modules.2.0.downsample.1.num_batches_tracked', 'final_layer.1.running_var', 'downsamp_modules.1.1.bias', 'downsamp_modules.1.0.weight', 'downsamp_modules.2.1.weight', 'incre_modules.0.0.bn1.weight', 'incre_modules.1.0.downsample.0.weight', 'incre_modules.2.0.bn1.bias', 'downsamp_modules.2.1.running_mean', 'incre_modules.3.0.downsample.1.running_var', 'incre_modules.2.0.bn1.running_mean', 'incre_modules.0.0.conv1.weight', 'incre_modules.3.0.bn2.running_var', 'incre_modules.2.0.bn1.num_batches_tracked', 'incre_modules.2.0.conv1.weight', 'incre_modules.3.0.conv2.weight', 'incre_modules.1.0.bn3.weight', 'incre_modules.3.0.bn2.bias', 'incre_modules.2.0.bn1.running_var', 'final_layer.1.num_batches_tracked', 'incre_modules.0.0.conv3.weight', 'downsamp_modules.0.1.num_batches_tracked', 'incre_modules.1.0.downsample.1.running_var', 'incre_modules.1.0.bn3.running_mean', 'incre_modules.2.0.bn3.num_batches_tracked', 'incre_modules.0.0.bn2.running_mean', 'incre_modules.3.0.bn2.num_batches_tracked', 'incre_modules.2.0.downsample.1.weight', 'final_layer.1.weight', 'incre_modules.0.0.downsample.1.running_var', 'incre_modules.2.0.bn2.running_var', 'final_layer.1.bias', 'incre_modules.2.0.downsample.1.running_var', 'incre_modules.3.0.bn1.weight', 'incre_modules.3.0.conv3.weight', 'incre_modules.0.0.downsample.1.bias', 'downsamp_modules.1.1.running_var', 'incre_modules.2.0.bn3.running_var'}
+{'ocr_distri_head.conv_bn_dropout.1.0.num_batches_tracked', 'ocr_distri_head.conv_bn_dropout.1.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'ocr_distri_head.object_context_block.f_pixel.3.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.num_batches_tracked', 'aux_head.1.weight', 'ocr_distri_head.object_context_block.f_object.3.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'conv3x3_ocr.1.running_mean', 'cls_head.weight', 'ocr_distri_head.object_context_block.f_down.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'ocr_distri_head.object_context_block.f_object.1.0.running_var', 'aux_head.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_down.1.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.3.0.num_batches_tracked', 'cls_head.bias', 'ocr_distri_head.conv_bn_dropout.1.0.running_var', 'ocr_distri_head.object_context_block.f_up.1.0.weight', 'aux_head.1.bias', 'ocr_distri_head.object_context_block.f_up.1.0.bias', 'ocr_distri_head.object_context_block.f_up.1.0.running_mean', 'ocr_distri_head.object_context_block.f_object.1.0.running_mean', 'ocr_distri_head.object_context_block.f_down.0.weight', 'conv3x3_ocr.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.2.weight', 'ocr_distri_head.object_context_block.f_up.0.weight', 'ocr_distri_head.object_context_block.f_object.0.weight', 'conv3x3_ocr.0.bias', 'aux_head.1.running_var', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_var', 'aux_head.0.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_var', 'ocr_distri_head.object_context_block.f_object.1.0.weight', 'ocr_distri_head.conv_bn_dropout.1.0.bias', 'ocr_distri_head.object_context_block.f_object.3.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.bias', 'ocr_distri_head.object_context_block.f_pixel.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.3.0.bias', 'ocr_distri_head.object_context_block.f_object.1.0.bias', 'ocr_distri_head.conv_bn_dropout.1.0.running_mean', 'aux_head.1.running_mean', 'ocr_distri_head.object_context_block.f_object.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_up.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.0.weight', 'ocr_distri_head.object_context_block.f_pixel.2.weight', 'conv3x3_ocr.1.running_var', 'conv3x3_ocr.1.bias', 'ocr_distri_head.object_context_block.f_down.1.0.weight', 'aux_head.3.weight', 'ocr_distri_head.object_context_block.f_up.1.0.num_batches_tracked', 'aux_head.3.bias', 'conv3x3_ocr.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.running_var', 'aux_head.0.bias', 'conv3x3_ocr.1.weight', 'ocr_distri_head.conv_bn_dropout.0.weight'}
+{'incre_modules.3.0.bn1.num_batches_tracked', 'incre_modules.1.0.downsample.0.weight', 'incre_modules.1.0.bn2.weight', 'incre_modules.3.0.bn2.running_mean', 'incre_modules.1.0.bn3.num_batches_tracked', 'downsamp_modules.1.1.running_var', 'incre_modules.0.0.bn1.num_batches_tracked', 'incre_modules.1.0.downsample.1.num_batches_tracked', 'incre_modules.2.0.bn3.bias', 'incre_modules.1.0.bn3.weight', 'downsamp_modules.2.1.weight', 'incre_modules.1.0.conv3.weight', 'downsamp_modules.1.1.bias', 'incre_modules.0.0.bn3.running_var', 'incre_modules.0.0.downsample.1.running_mean', 'incre_modules.1.0.bn3.running_mean', 'incre_modules.3.0.conv1.weight', 'incre_modules.1.0.bn1.bias', 'incre_modules.3.0.downsample.1.num_batches_tracked', 'incre_modules.0.0.bn1.weight', 'incre_modules.1.0.downsample.1.weight', 'incre_modules.3.0.conv2.weight', 'incre_modules.2.0.bn1.running_var', 'incre_modules.3.0.bn1.running_var', 'incre_modules.1.0.bn1.running_mean', 'final_layer.1.num_batches_tracked', 'incre_modules.3.0.downsample.1.weight', 'downsamp_modules.1.1.running_mean', 'incre_modules.2.0.bn2.running_mean', 'classifier.weight', 'incre_modules.3.0.bn3.running_mean', 'final_layer.1.weight', 'downsamp_modules.0.1.num_batches_tracked', 'incre_modules.3.0.downsample.1.running_var', 'incre_modules.3.0.bn2.weight', 'incre_modules.1.0.bn1.running_var', 'downsamp_modules.2.1.running_mean', 'incre_modules.2.0.bn2.weight', 'incre_modules.3.0.downsample.1.bias', 'incre_modules.0.0.conv1.weight', 'downsamp_modules.0.1.bias', 'incre_modules.1.0.bn2.bias', 'incre_modules.0.0.conv2.weight', 'incre_modules.2.0.downsample.1.running_mean', 'incre_modules.0.0.bn3.bias', 'incre_modules.2.0.bn2.running_var', 'downsamp_modules.2.1.num_batches_tracked', 'incre_modules.2.0.bn1.bias', 'final_layer.0.bias', 'final_layer.0.weight', 'incre_modules.0.0.downsample.1.running_var', 'incre_modules.2.0.bn1.num_batches_tracked', 'incre_modules.2.0.bn3.num_batches_tracked', 'incre_modules.2.0.bn2.num_batches_tracked', 'incre_modules.0.0.downsample.1.bias', 'incre_modules.2.0.bn3.weight', 'incre_modules.0.0.bn1.bias', 'incre_modules.0.0.bn1.running_mean', 'incre_modules.0.0.bn3.num_batches_tracked', 'incre_modules.2.0.downsample.1.running_var', 'incre_modules.1.0.bn1.weight', 'downsamp_modules.1.1.num_batches_tracked', 'downsamp_modules.0.1.weight', 'incre_modules.0.0.bn2.running_var', 'incre_modules.0.0.downsample.0.weight', 'incre_modules.0.0.bn3.running_mean', 'incre_modules.2.0.downsample.0.weight', 'incre_modules.0.0.bn2.num_batches_tracked', 'classifier.bias', 'downsamp_modules.1.0.weight', 'incre_modules.1.0.conv2.weight', 'incre_modules.0.0.bn2.bias', 'downsamp_modules.2.0.weight', 'incre_modules.1.0.downsample.1.bias', 'incre_modules.1.0.conv1.weight', 'incre_modules.2.0.conv2.weight', 'downsamp_modules.0.0.weight', 'downsamp_modules.0.1.running_mean', 'incre_modules.1.0.bn3.bias', 'downsamp_modules.1.0.bias', 'incre_modules.2.0.bn1.weight', 'incre_modules.2.0.bn3.running_mean', 'incre_modules.2.0.conv1.weight', 'incre_modules.3.0.bn3.bias', 'incre_modules.1.0.bn2.running_mean', 'incre_modules.0.0.downsample.1.num_batches_tracked', 'incre_modules.1.0.bn1.num_batches_tracked', 'downsamp_modules.2.1.bias', 'incre_modules.0.0.downsample.1.weight', 'incre_modules.3.0.conv3.weight', 'final_layer.1.bias', 'incre_modules.3.0.downsample.0.weight', 'incre_modules.2.0.conv3.weight', 'downsamp_modules.2.0.bias', 'incre_modules.1.0.bn2.running_var', 'downsamp_modules.0.1.running_var', 'incre_modules.3.0.bn2.bias', 'incre_modules.3.0.bn3.running_var', 'downsamp_modules.2.1.running_var', 'incre_modules.1.0.bn2.num_batches_tracked', 'incre_modules.3.0.downsample.1.running_mean', 'incre_modules.2.0.downsample.1.weight', 'incre_modules.0.0.bn3.weight', 'incre_modules.3.0.bn1.running_mean', 'incre_modules.0.0.conv3.weight', 'incre_modules.0.0.bn1.running_var', 'final_layer.1.running_mean', 'incre_modules.3.0.bn1.bias', 'incre_modules.1.0.downsample.1.running_var', 'incre_modules.3.0.bn1.weight', 'incre_modules.3.0.bn2.num_batches_tracked', 'incre_modules.0.0.bn2.running_mean', 'incre_modules.2.0.bn1.running_mean', 'incre_modules.3.0.bn3.num_batches_tracked', 'incre_modules.2.0.downsample.1.num_batches_tracked', 'incre_modules.2.0.bn3.running_var', 'incre_modules.3.0.bn2.running_var', 'incre_modules.2.0.bn2.bias', 'incre_modules.1.0.bn3.running_var', 'incre_modules.3.0.bn3.weight', 'downsamp_modules.0.0.bias', 'incre_modules.1.0.downsample.1.running_mean', 'downsamp_modules.1.1.weight', 'incre_modules.0.0.bn2.weight', 'final_layer.1.running_var', 'incre_modules.2.0.downsample.1.bias'}
+Epoch: [0/484] Iter:[0/991], Time: 8.50, lr: [0.01], Loss: 4.202812
+Epoch: [0/484] Iter:[10/991], Time: 1.21, lr: [0.00999981236063868], Loss: 2.850755
+Epoch: [0/484] Iter:[20/991], Time: 0.86, lr: [0.00999962472088615], Loss: 2.369290
+Epoch: [0/484] Iter:[30/991], Time: 0.74, lr: [0.009999437080742394], Loss: 2.167976
+Epoch: [0/484] Iter:[40/991], Time: 0.67, lr: [0.009999249440207405], Loss: 1.958378
+Epoch: [0/484] Iter:[50/991], Time: 0.63, lr: [0.009999061799281178], Loss: 1.794436
+Epoch: [0/484] Iter:[60/991], Time: 0.61, lr: [0.009998874157963699], Loss: 1.702311
+Epoch: [0/484] Iter:[70/991], Time: 0.59, lr: [0.00999868651625496], Loss: 1.591547
+Epoch: [0/484] Iter:[80/991], Time: 0.57, lr: [0.009998498874154955], Loss: 1.530814
+Epoch: [0/484] Iter:[90/991], Time: 0.56, lr: [0.009998311231663672], Loss: 1.513157
+Epoch: [0/484] Iter:[100/991], Time: 0.55, lr: [0.009998123588781105], Loss: 1.456073
+Epoch: [0/484] Iter:[110/991], Time: 0.54, lr: [0.009997935945507243], Loss: 1.407876
+Epoch: [0/484] Iter:[120/991], Time: 0.54, lr: [0.009997748301842076], Loss: 1.384650
+Epoch: [0/484] Iter:[130/991], Time: 0.53, lr: [0.009997560657785598], Loss: 1.339155
+Epoch: [0/484] Iter:[140/991], Time: 0.53, lr: [0.009997373013337797], Loss: 1.303529
+Epoch: [0/484] Iter:[150/991], Time: 0.53, lr: [0.009997185368498664], Loss: 1.263285
+Epoch: [0/484] Iter:[160/991], Time: 0.52, lr: [0.009996997723268192], Loss: 1.227071
+Epoch: [0/484] Iter:[170/991], Time: 0.52, lr: [0.00999681007764637], Loss: 1.197592
+Epoch: [0/484] Iter:[180/991], Time: 0.52, lr: [0.009996622431633195], Loss: 1.171856
+Epoch: [0/484] Iter:[190/991], Time: 0.51, lr: [0.00999643478522865], Loss: 1.148004
+Epoch: [0/484] Iter:[200/991], Time: 0.51, lr: [0.009996247138432729], Loss: 1.120036
+Epoch: [0/484] Iter:[210/991], Time: 0.51, lr: [0.009996059491245424], Loss: 1.099188
+Epoch: [0/484] Iter:[220/991], Time: 0.51, lr: [0.009995871843666727], Loss: 1.087311
+Epoch: [0/484] Iter:[230/991], Time: 0.51, lr: [0.009995684195696627], Loss: 1.066523
+Epoch: [0/484] Iter:[240/991], Time: 0.51, lr: [0.009995496547335113], Loss: 1.052923
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [9.21135568e-01 5.18626755e-01 8.36265457e-01 1.74120481e-01
+ 2.28613210e-01 3.81369922e-01 1.62694751e-01 5.27248385e-01
+ 8.73614737e-01 4.49033619e-01 8.39436286e-01 6.24335017e-01
+ 6.07290523e-06 8.29192148e-01 3.45173590e-03 1.93358460e-04
+ 1.63253420e-01 0.00000000e+00 5.31465602e-01] 0.42442402768735954
+1 [8.88758455e-01 2.70433516e-01 8.31291479e-01 1.02753454e-01
+ 1.42968716e-01 3.75517725e-01 2.76662410e-01 5.20676117e-01
+ 8.69450233e-01 4.25760057e-01 8.44856704e-01 6.30966106e-01
+ 3.22557653e-03 8.26749079e-01 7.85122595e-03 3.36783493e-06
+ 1.67672087e-01 3.56450032e-05 4.95491967e-01] 0.40426968002372643
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.525, MeanIU:  0.4043, Best_mIoU:  0.4043
+[8.88758455e-01 2.70433516e-01 8.31291479e-01 1.02753454e-01
+ 1.42968716e-01 3.75517725e-01 2.76662410e-01 5.20676117e-01
+ 8.69450233e-01 4.25760057e-01 8.44856704e-01 6.30966106e-01
+ 3.22557653e-03 8.26749079e-01 7.85122595e-03 3.36783493e-06
+ 1.67672087e-01 3.56450032e-05 4.95491967e-01]
+Epoch: [1/484] Iter:[0/991], Time: 0.84, lr: [0.009981403036245477], Loss: 0.415396
+Epoch: [1/484] Iter:[10/991], Time: 0.51, lr: [0.009981215358071173], Loss: 0.658968
+Epoch: [1/484] Iter:[20/991], Time: 0.49, lr: [0.009981027679504761], Loss: 0.648108
+Epoch: [1/484] Iter:[30/991], Time: 0.49, lr: [0.009980840000546236], Loss: 0.621410
+Epoch: [1/484] Iter:[40/991], Time: 0.48, lr: [0.009980652321195589], Loss: 0.591937
+Epoch: [1/484] Iter:[50/991], Time: 0.48, lr: [0.009980464641452807], Loss: 0.580045
+Epoch: [1/484] Iter:[60/991], Time: 0.48, lr: [0.009980276961317886], Loss: 0.566712
+Epoch: [1/484] Iter:[70/991], Time: 0.48, lr: [0.009980089280790817], Loss: 0.563625
+Epoch: [1/484] Iter:[80/991], Time: 0.48, lr: [0.009979901599871584], Loss: 0.557614
+Epoch: [1/484] Iter:[90/991], Time: 0.48, lr: [0.009979713918560186], Loss: 0.567322
+Epoch: [1/484] Iter:[100/991], Time: 0.48, lr: [0.00997952623685661], Loss: 0.563002
+Epoch: [1/484] Iter:[110/991], Time: 0.48, lr: [0.009979338554760847], Loss: 0.565007
+Epoch: [1/484] Iter:[120/991], Time: 0.48, lr: [0.00997915087227289], Loss: 0.568658
+Epoch: [1/484] Iter:[130/991], Time: 0.48, lr: [0.009978963189392728], Loss: 0.562333
+Epoch: [1/484] Iter:[140/991], Time: 0.48, lr: [0.009978775506120353], Loss: 0.562901
+Epoch: [1/484] Iter:[150/991], Time: 0.48, lr: [0.009978587822455755], Loss: 0.563546
+Epoch: [1/484] Iter:[160/991], Time: 0.48, lr: [0.009978400138398926], Loss: 0.557774
+Epoch: [1/484] Iter:[170/991], Time: 0.48, lr: [0.009978212453949857], Loss: 0.560045
+Epoch: [1/484] Iter:[180/991], Time: 0.48, lr: [0.009978024769108538], Loss: 0.551964
+Epoch: [1/484] Iter:[190/991], Time: 0.48, lr: [0.009977837083874962], Loss: 0.551699
+Epoch: [1/484] Iter:[200/991], Time: 0.47, lr: [0.009977649398249118], Loss: 0.549030
+Epoch: [1/484] Iter:[210/991], Time: 0.47, lr: [0.009977461712230996], Loss: 0.552189
+Epoch: [1/484] Iter:[220/991], Time: 0.47, lr: [0.00997727402582059], Loss: 0.552065
+Epoch: [1/484] Iter:[230/991], Time: 0.47, lr: [0.00997708633901789], Loss: 0.547351
+Epoch: [1/484] Iter:[240/991], Time: 0.47, lr: [0.009976898651822887], Loss: 0.547219
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.94988423 0.71378689 0.85014588 0.16853222 0.32396689 0.43991285
+ 0.43329517 0.59947593 0.87364097 0.39078465 0.87727185 0.69411216
+ 0.27546302 0.8932804  0.05973189 0.29692951 0.23098603 0.15356276
+ 0.64352473] 0.5193835805415505
+1 [0.94610738 0.71557329 0.84416906 0.13838605 0.32019684 0.44260998
+ 0.45618342 0.61218212 0.86725376 0.36147068 0.87566737 0.70091496
+ 0.30868898 0.89448805 0.08247012 0.04912495 0.1494953  0.24751622
+ 0.64654602] 0.5083707660327397
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.405, MeanIU:  0.5084, Best_mIoU:  0.5084
+[0.94610738 0.71557329 0.84416906 0.13838605 0.32019684 0.44260998
+ 0.45618342 0.61218212 0.86725376 0.36147068 0.87566737 0.70091496
+ 0.30868898 0.89448805 0.08247012 0.04912495 0.1494953  0.24751622
+ 0.64654602]
+Epoch: [2/484] Iter:[0/991], Time: 0.84, lr: [0.009962802221786402], Loss: 0.542664
+Epoch: [2/484] Iter:[10/991], Time: 0.50, lr: [0.009962614504710613], Loss: 0.435450
+Epoch: [2/484] Iter:[20/991], Time: 0.49, lr: [0.009962426787241825], Loss: 0.469918
+Epoch: [2/484] Iter:[30/991], Time: 0.48, lr: [0.009962239069380027], Loss: 0.458948
+Epoch: [2/484] Iter:[40/991], Time: 0.48, lr: [0.009962051351125212], Loss: 0.462074
+Epoch: [2/484] Iter:[50/991], Time: 0.48, lr: [0.009961863632477369], Loss: 0.477138
+Epoch: [2/484] Iter:[60/991], Time: 0.48, lr: [0.009961675913436491], Loss: 0.501467
+Epoch: [2/484] Iter:[70/991], Time: 0.48, lr: [0.009961488194002565], Loss: 0.527567
+Epoch: [2/484] Iter:[80/991], Time: 0.48, lr: [0.009961300474175587], Loss: 0.523391
+Epoch: [2/484] Iter:[90/991], Time: 0.48, lr: [0.009961112753955543], Loss: 0.528782
+Epoch: [2/484] Iter:[100/991], Time: 0.48, lr: [0.00996092503334243], Loss: 0.533402
+Epoch: [2/484] Iter:[110/991], Time: 0.48, lr: [0.009960737312336234], Loss: 0.530484
+Epoch: [2/484] Iter:[120/991], Time: 0.48, lr: [0.009960549590936944], Loss: 0.524016
+Epoch: [2/484] Iter:[130/991], Time: 0.48, lr: [0.00996036186914456], Loss: 0.529339
+Epoch: [2/484] Iter:[140/991], Time: 0.48, lr: [0.009960174146959062], Loss: 0.526450
+Epoch: [2/484] Iter:[150/991], Time: 0.48, lr: [0.00995998642438045], Loss: 0.530111
+Epoch: [2/484] Iter:[160/991], Time: 0.48, lr: [0.00995979870140871], Loss: 0.528934
+Epoch: [2/484] Iter:[170/991], Time: 0.48, lr: [0.009959610978043834], Loss: 0.523578
+Epoch: [2/484] Iter:[180/991], Time: 0.47, lr: [0.009959423254285813], Loss: 0.519370
+Epoch: [2/484] Iter:[190/991], Time: 0.47, lr: [0.009959235530134638], Loss: 0.515855
+Epoch: [2/484] Iter:[200/991], Time: 0.47, lr: [0.0099590478055903], Loss: 0.509446
+Epoch: [2/484] Iter:[210/991], Time: 0.47, lr: [0.00995886008065279], Loss: 0.506523
+Epoch: [2/484] Iter:[220/991], Time: 0.47, lr: [0.0099586723553221], Loss: 0.503247
+Epoch: [2/484] Iter:[230/991], Time: 0.47, lr: [0.009958484629598217], Loss: 0.500797
+Epoch: [2/484] Iter:[240/991], Time: 0.47, lr: [0.009958296903481137], Loss: 0.499549
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.95215302 0.69334369 0.87706404 0.32373176 0.42128292 0.45303514
+ 0.40332223 0.62690654 0.88255266 0.49496661 0.90184438 0.70379631
+ 0.29189031 0.87039665 0.26937379 0.17346658 0.25091398 0.28820414
+ 0.67104404] 0.5552257268076888
+1 [0.94900678 0.6899263  0.87344513 0.34259216 0.41331186 0.44815891
+ 0.41957185 0.62780138 0.86885058 0.46930034 0.90840922 0.71462511
+ 0.4038391  0.87758763 0.26656577 0.03601549 0.1055536  0.34161435
+ 0.67962414] 0.5492526153231363
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.372, MeanIU:  0.5493, Best_mIoU:  0.5493
+[0.94900678 0.6899263  0.87344513 0.34259216 0.41331186 0.44815891
+ 0.41957185 0.62780138 0.86885058 0.46930034 0.90840922 0.71462511
+ 0.4038391  0.87758763 0.26656577 0.03601549 0.1055536  0.34161435
+ 0.67962414]
+Epoch: [3/484] Iter:[0/991], Time: 0.82, lr: [0.009944197547833935], Loss: 0.652486
+Epoch: [3/484] Iter:[10/991], Time: 0.50, lr: [0.009944009791767782], Loss: 0.663013
+Epoch: [3/484] Iter:[20/991], Time: 0.49, lr: [0.00994382203530773], Loss: 0.590528
+Epoch: [3/484] Iter:[30/991], Time: 0.48, lr: [0.00994363427845377], Loss: 0.541454
+Epoch: [3/484] Iter:[40/991], Time: 0.48, lr: [0.009943446521205893], Loss: 0.549823
+Epoch: [3/484] Iter:[50/991], Time: 0.48, lr: [0.009943258763564089], Loss: 0.533126
+Epoch: [3/484] Iter:[60/991], Time: 0.48, lr: [0.009943071005528352], Loss: 0.515030
+Epoch: [3/484] Iter:[70/991], Time: 0.48, lr: [0.00994288324709867], Loss: 0.502882
+Epoch: [3/484] Iter:[80/991], Time: 0.48, lr: [0.009942695488275031], Loss: 0.493142
+Epoch: [3/484] Iter:[90/991], Time: 0.48, lr: [0.009942507729057432], Loss: 0.511848
+Epoch: [3/484] Iter:[100/991], Time: 0.48, lr: [0.009942319969445862], Loss: 0.502024
+Epoch: [3/484] Iter:[110/991], Time: 0.48, lr: [0.009942132209440312], Loss: 0.501847
+Epoch: [3/484] Iter:[120/991], Time: 0.48, lr: [0.009941944449040771], Loss: 0.498953
+Epoch: [3/484] Iter:[130/991], Time: 0.48, lr: [0.00994175668824723], Loss: 0.494428
+Epoch: [3/484] Iter:[140/991], Time: 0.48, lr: [0.00994156892705968], Loss: 0.497413
+Epoch: [3/484] Iter:[150/991], Time: 0.48, lr: [0.009941381165478115], Loss: 0.497002
+Epoch: [3/484] Iter:[160/991], Time: 0.48, lr: [0.009941193403502524], Loss: 0.495012
+Epoch: [3/484] Iter:[170/991], Time: 0.48, lr: [0.009941005641132898], Loss: 0.489709
+Epoch: [3/484] Iter:[180/991], Time: 0.48, lr: [0.009940817878369226], Loss: 0.486254
+Epoch: [3/484] Iter:[190/991], Time: 0.48, lr: [0.0099406301152115], Loss: 0.483374
+Epoch: [3/484] Iter:[200/991], Time: 0.48, lr: [0.009940442351659714], Loss: 0.483618
+Epoch: [3/484] Iter:[210/991], Time: 0.48, lr: [0.009940254587713854], Loss: 0.482797
+Epoch: [3/484] Iter:[220/991], Time: 0.48, lr: [0.009940066823373915], Loss: 0.486978
+Epoch: [3/484] Iter:[230/991], Time: 0.48, lr: [0.009939879058639883], Loss: 0.482531
+Epoch: [3/484] Iter:[240/991], Time: 0.48, lr: [0.009939691293511755], Loss: 0.479242
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.95751802 0.70791443 0.8824484  0.20369833 0.42993838 0.47977531
+ 0.50674864 0.63015741 0.8937335  0.49147718 0.9096541  0.71115257
+ 0.31695179 0.88806167 0.24115947 0.51005854 0.1391411  0.28374579
+ 0.66543814] 0.5709880410966641
+1 [0.95420339 0.6892936  0.88283373 0.16023087 0.42769071 0.49118124
+ 0.52231344 0.63711221 0.89234742 0.47852618 0.89720537 0.70917036
+ 0.24421256 0.89536849 0.23632968 0.50906558 0.04253239 0.34483237
+ 0.65753556] 0.5616834295083525
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.341, MeanIU:  0.5617, Best_mIoU:  0.5617
+[0.95420339 0.6892936  0.88283373 0.16023087 0.42769071 0.49118124
+ 0.52231344 0.63711221 0.89234742 0.47852618 0.89720537 0.70917036
+ 0.24421256 0.89536849 0.23632968 0.50906558 0.04253239 0.34483237
+ 0.65753556]
+Epoch: [4/484] Iter:[0/991], Time: 0.84, lr: [0.00992558900556086], Loss: 0.277282
+Epoch: [4/484] Iter:[10/991], Time: 0.51, lr: [0.009925401210415071], Loss: 0.392018
+Epoch: [4/484] Iter:[20/991], Time: 0.49, lr: [0.009925213414874482], Loss: 0.394972
+Epoch: [4/484] Iter:[30/991], Time: 0.48, lr: [0.009925025618939083], Loss: 0.387958
+Epoch: [4/484] Iter:[40/991], Time: 0.48, lr: [0.009924837822608862], Loss: 0.396670
+Epoch: [4/484] Iter:[50/991], Time: 0.48, lr: [0.009924650025883814], Loss: 0.394719
+Epoch: [4/484] Iter:[60/991], Time: 0.48, lr: [0.009924462228763925], Loss: 0.395007
+Epoch: [4/484] Iter:[70/991], Time: 0.48, lr: [0.009924274431249191], Loss: 0.393368
+Epoch: [4/484] Iter:[80/991], Time: 0.48, lr: [0.0099240866333396], Loss: 0.391547
+Epoch: [4/484] Iter:[90/991], Time: 0.48, lr: [0.00992389883503514], Loss: 0.384305
+Epoch: [4/484] Iter:[100/991], Time: 0.48, lr: [0.00992371103633581], Loss: 0.384151
+Epoch: [4/484] Iter:[110/991], Time: 0.48, lr: [0.009923523237241593], Loss: 0.393256
+Epoch: [4/484] Iter:[120/991], Time: 0.48, lr: [0.009923335437752484], Loss: 0.402425
+Epoch: [4/484] Iter:[130/991], Time: 0.47, lr: [0.009923147637868474], Loss: 0.404415
+Epoch: [4/484] Iter:[140/991], Time: 0.47, lr: [0.009922959837589552], Loss: 0.410584
+Epoch: [4/484] Iter:[150/991], Time: 0.48, lr: [0.009922772036915708], Loss: 0.410534
+Epoch: [4/484] Iter:[160/991], Time: 0.48, lr: [0.009922584235846936], Loss: 0.416585
+Epoch: [4/484] Iter:[170/991], Time: 0.47, lr: [0.009922396434383224], Loss: 0.412219
+Epoch: [4/484] Iter:[180/991], Time: 0.47, lr: [0.009922208632524566], Loss: 0.413541
+Epoch: [4/484] Iter:[190/991], Time: 0.47, lr: [0.00992202083027095], Loss: 0.420657
+Epoch: [4/484] Iter:[200/991], Time: 0.47, lr: [0.009921833027622366], Loss: 0.421557
+Epoch: [4/484] Iter:[210/991], Time: 0.47, lr: [0.00992164522457881], Loss: 0.420499
+Epoch: [4/484] Iter:[220/991], Time: 0.47, lr: [0.009921457421140268], Loss: 0.420374
+Epoch: [4/484] Iter:[230/991], Time: 0.47, lr: [0.009921269617306732], Loss: 0.418971
+Epoch: [4/484] Iter:[240/991], Time: 0.47, lr: [0.009921081813078193], Loss: 0.418609
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.95166801 0.69159116 0.86103966 0.26279578 0.38497669 0.46925873
+ 0.44721616 0.63046896 0.88016428 0.49329451 0.90034443 0.71437657
+ 0.41295529 0.88362113 0.20121082 0.34544755 0.22380747 0.34666277
+ 0.67892   ] 0.5673589450991758
+1 [0.85062493 0.62979741 0.82049013 0.30158774 0.36752072 0.46639429
+ 0.44109248 0.613409   0.7598342  0.46163057 0.81819657 0.70491033
+ 0.42825172 0.86405667 0.21353629 0.22314834 0.18946164 0.36897135
+ 0.67281834] 0.5366175117027736
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.587, MeanIU:  0.5366, Best_mIoU:  0.5617
+[0.85062493 0.62979741 0.82049013 0.30158774 0.36752072 0.46639429
+ 0.44109248 0.613409   0.7598342  0.46163057 0.81819657 0.70491033
+ 0.42825172 0.86405667 0.21353629 0.22314834 0.18946164 0.36897135
+ 0.67281834]
+Epoch: [5/484] Iter:[0/991], Time: 0.85, lr: [0.009906976586101339], Loss: 0.492685
+Epoch: [5/484] Iter:[10/991], Time: 0.51, lr: [0.009906788751786256], Loss: 0.371241
+Epoch: [5/484] Iter:[20/991], Time: 0.49, lr: [0.009906600917075464], Loss: 0.369576
+Epoch: [5/484] Iter:[30/991], Time: 0.48, lr: [0.009906413081968955], Loss: 0.368351
+Epoch: [5/484] Iter:[40/991], Time: 0.48, lr: [0.00990622524646672], Loss: 0.377338
+Epoch: [5/484] Iter:[50/991], Time: 0.48, lr: [0.009906037410568745], Loss: 0.414509
+Epoch: [5/484] Iter:[60/991], Time: 0.48, lr: [0.009905849574275028], Loss: 0.428229
+Epoch: [5/484] Iter:[70/991], Time: 0.48, lr: [0.009905661737585555], Loss: 0.441086
+Epoch: [5/484] Iter:[80/991], Time: 0.48, lr: [0.00990547390050032], Loss: 0.441836
+Epoch: [5/484] Iter:[90/991], Time: 0.48, lr: [0.009905286063019311], Loss: 0.439979
+Epoch: [5/484] Iter:[100/991], Time: 0.47, lr: [0.009905098225142522], Loss: 0.443276
+Epoch: [5/484] Iter:[110/991], Time: 0.47, lr: [0.00990491038686994], Loss: 0.439618
+Epoch: [5/484] Iter:[120/991], Time: 0.47, lr: [0.009904722548201558], Loss: 0.435795
+Epoch: [5/484] Iter:[130/991], Time: 0.47, lr: [0.009904534709137368], Loss: 0.434459
+Epoch: [5/484] Iter:[140/991], Time: 0.47, lr: [0.00990434686967736], Loss: 0.434565
+Epoch: [5/484] Iter:[150/991], Time: 0.47, lr: [0.009904159029821521], Loss: 0.437359
+Epoch: [5/484] Iter:[160/991], Time: 0.47, lr: [0.009903971189569849], Loss: 0.434703
+Epoch: [5/484] Iter:[170/991], Time: 0.47, lr: [0.009903783348922328], Loss: 0.431862
+Epoch: [5/484] Iter:[180/991], Time: 0.47, lr: [0.009903595507878952], Loss: 0.437443
+Epoch: [5/484] Iter:[190/991], Time: 0.47, lr: [0.009903407666439712], Loss: 0.437937
+Epoch: [5/484] Iter:[200/991], Time: 0.47, lr: [0.0099032198246046], Loss: 0.442809
+Epoch: [5/484] Iter:[210/991], Time: 0.47, lr: [0.009903031982373602], Loss: 0.439646
+Epoch: [5/484] Iter:[220/991], Time: 0.47, lr: [0.009902844139746715], Loss: 0.437092
+Epoch: [5/484] Iter:[230/991], Time: 0.47, lr: [0.009902656296723926], Loss: 0.432660
+Epoch: [5/484] Iter:[240/991], Time: 0.47, lr: [0.009902468453305226], Loss: 0.429560
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.96478336 0.77234945 0.88033635 0.31507334 0.42280176 0.48387449
+ 0.50300365 0.63162828 0.89282987 0.49689917 0.9226934  0.72562822
+ 0.43383303 0.89589118 0.3358239  0.43792527 0.21021917 0.33746397
+ 0.67611996] 0.5967988320141232
+1 [0.96400064 0.76939512 0.86881333 0.30962222 0.4433259  0.48258242
+ 0.52089162 0.63042239 0.89019558 0.49084874 0.92055574 0.71738438
+ 0.43704888 0.8730118  0.29939001 0.33794614 0.15367312 0.35367307
+ 0.66909939] 0.5858884463069088
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.342, MeanIU:  0.5859, Best_mIoU:  0.5859
+[0.96400064 0.76939512 0.86881333 0.30962222 0.4433259  0.48258242
+ 0.52089162 0.63042239 0.89019558 0.49084874 0.92055574 0.71738438
+ 0.43704888 0.8730118  0.29939001 0.33794614 0.15367312 0.35367307
+ 0.66909939]
+Epoch: [6/484] Iter:[0/991], Time: 0.81, lr: [0.009888360280550665], Loss: 0.335507
+Epoch: [6/484] Iter:[10/991], Time: 0.50, lr: [0.00988817240697623], Loss: 0.362371
+Epoch: [6/484] Iter:[20/991], Time: 0.49, lr: [0.009887984533005177], Loss: 0.382418
+Epoch: [6/484] Iter:[30/991], Time: 0.48, lr: [0.009887796658637494], Loss: 0.380551
+Epoch: [6/484] Iter:[40/991], Time: 0.48, lr: [0.009887608783873176], Loss: 0.386236
+Epoch: [6/484] Iter:[50/991], Time: 0.48, lr: [0.009887420908712209], Loss: 0.396120
+Epoch: [6/484] Iter:[60/991], Time: 0.48, lr: [0.009887233033154585], Loss: 0.397720
+Epoch: [6/484] Iter:[70/991], Time: 0.48, lr: [0.009887045157200298], Loss: 0.390261
+Epoch: [6/484] Iter:[80/991], Time: 0.48, lr: [0.009886857280849336], Loss: 0.388442
+Epoch: [6/484] Iter:[90/991], Time: 0.48, lr: [0.00988666940410169], Loss: 0.382343
+Epoch: [6/484] Iter:[100/991], Time: 0.48, lr: [0.009886481526957352], Loss: 0.380561
+Epoch: [6/484] Iter:[110/991], Time: 0.48, lr: [0.00988629364941631], Loss: 0.379617
+Epoch: [6/484] Iter:[120/991], Time: 0.48, lr: [0.009886105771478557], Loss: 0.375999
+Epoch: [6/484] Iter:[130/991], Time: 0.47, lr: [0.009885917893144086], Loss: 0.388458
+Epoch: [6/484] Iter:[140/991], Time: 0.47, lr: [0.009885730014412881], Loss: 0.383126
+Epoch: [6/484] Iter:[150/991], Time: 0.47, lr: [0.00988554213528494], Loss: 0.379991
+Epoch: [6/484] Iter:[160/991], Time: 0.47, lr: [0.009885354255760249], Loss: 0.374324
+Epoch: [6/484] Iter:[170/991], Time: 0.47, lr: [0.009885166375838802], Loss: 0.371294
+Epoch: [6/484] Iter:[180/991], Time: 0.47, lr: [0.009884978495520587], Loss: 0.373964
+Epoch: [6/484] Iter:[190/991], Time: 0.47, lr: [0.009884790614805598], Loss: 0.379348
+Epoch: [6/484] Iter:[200/991], Time: 0.47, lr: [0.009884602733693822], Loss: 0.383666
+Epoch: [6/484] Iter:[210/991], Time: 0.47, lr: [0.009884414852185252], Loss: 0.383561
+Epoch: [6/484] Iter:[220/991], Time: 0.47, lr: [0.009884226970279878], Loss: 0.385864
+Epoch: [6/484] Iter:[230/991], Time: 0.47, lr: [0.009884039087977694], Loss: 0.383862
+Epoch: [6/484] Iter:[240/991], Time: 0.47, lr: [0.009883851205278687], Loss: 0.385245
+00
+
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.96253136 0.75846602 0.88178173 0.31768922 0.45144907 0.50216154
+ 0.51832584 0.67353653 0.90099679 0.49676223 0.9026931  0.73355486
+ 0.44340814 0.89708563 0.30966571 0.57372964 0.44995098 0.40219903
+ 0.69035287] 0.6245442259219113
+1 [0.95929216 0.7508372  0.8754356  0.31260495 0.46536919 0.50708978
+ 0.54570256 0.67888445 0.89635385 0.48113234 0.899934   0.7250647
+ 0.44457677 0.9000284  0.29858051 0.5689619  0.3096563  0.43591386
+ 0.68761707] 0.6180545038626655
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.311, MeanIU:  0.6181, Best_mIoU:  0.6181
+[0.95929216 0.7508372  0.8754356  0.31260495 0.46536919 0.50708978
+ 0.54570256 0.67888445 0.89635385 0.48113234 0.899934   0.7250647
+ 0.44457677 0.9000284  0.29858051 0.5689619  0.3096563  0.43591386
+ 0.68761707]
+Epoch: [7/484] Iter:[0/991], Time: 0.85, lr: [0.009869740079964998], Loss: 0.417430
+Epoch: [7/484] Iter:[10/991], Time: 0.51, lr: [0.009869552167040763], Loss: 0.410177
+Epoch: [7/484] Iter:[20/991], Time: 0.49, lr: [0.009869364253718992], Loss: 0.394186
+Epoch: [7/484] Iter:[30/991], Time: 0.48, lr: [0.00986917633999968], Loss: 0.385313
+Epoch: [7/484] Iter:[40/991], Time: 0.48, lr: [0.009868988425882814], Loss: 0.376648
+Epoch: [7/484] Iter:[50/991], Time: 0.48, lr: [0.009868800511368387], Loss: 0.363893
+Epoch: [7/484] Iter:[60/991], Time: 0.48, lr: [0.009868612596456388], Loss: 0.356604
+Epoch: [7/484] Iter:[70/991], Time: 0.48, lr: [0.00986842468114681], Loss: 0.360100
+Epoch: [7/484] Iter:[80/991], Time: 0.48, lr: [0.009868236765439641], Loss: 0.355920
+Epoch: [7/484] Iter:[90/991], Time: 0.48, lr: [0.009868048849334874], Loss: 0.359211
+Epoch: [7/484] Iter:[100/991], Time: 0.48, lr: [0.0098678609328325], Loss: 0.359622
+Epoch: [7/484] Iter:[110/991], Time: 0.48, lr: [0.009867673015932507], Loss: 0.359038
+Epoch: [7/484] Iter:[120/991], Time: 0.48, lr: [0.009867485098634889], Loss: 0.354937
+Epoch: [7/484] Iter:[130/991], Time: 0.48, lr: [0.009867297180939634], Loss: 0.362348
+Epoch: [7/484] Iter:[140/991], Time: 0.48, lr: [0.009867109262846735], Loss: 0.361646
+Epoch: [7/484] Iter:[150/991], Time: 0.48, lr: [0.009866921344356181], Loss: 0.361147
+Epoch: [7/484] Iter:[160/991], Time: 0.48, lr: [0.009866733425467964], Loss: 0.358989
+Epoch: [7/484] Iter:[170/991], Time: 0.47, lr: [0.009866545506182073], Loss: 0.357203
+Epoch: [7/484] Iter:[180/991], Time: 0.47, lr: [0.009866357586498502], Loss: 0.355898
+Epoch: [7/484] Iter:[190/991], Time: 0.47, lr: [0.009866169666417238], Loss: 0.355999
+Epoch: [7/484] Iter:[200/991], Time: 0.47, lr: [0.009865981745938274], Loss: 0.355097
+Epoch: [7/484] Iter:[210/991], Time: 0.47, lr: [0.0098657938250616], Loss: 0.359244
+Epoch: [7/484] Iter:[220/991], Time: 0.47, lr: [0.009865605903787208], Loss: 0.357208
+Epoch: [7/484] Iter:[230/991], Time: 0.47, lr: [0.009865417982115085], Loss: 0.356667
+Epoch: [7/484] Iter:[240/991], Time: 0.47, lr: [0.009865230060045228], Loss: 0.355728
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.96517999 0.74561209 0.87881884 0.34421468 0.4731856  0.53650359
+ 0.55682896 0.69209609 0.88562267 0.49869102 0.91495128 0.73973615
+ 0.48210364 0.90574301 0.41696187 0.59779854 0.10364919 0.4044699
+ 0.69949629] 0.6232454407277771
+1 [9.62931472e-01 7.45464869e-01 8.75742163e-01 3.35192259e-01
+ 5.09011853e-01 5.35694582e-01 5.69347737e-01 6.89246096e-01
+ 8.85930053e-01 4.90260754e-01 9.14560926e-01 7.37702090e-01
+ 4.75735394e-01 9.06872270e-01 4.51900201e-01 5.86424676e-01
+ 1.29476230e-04 4.33917339e-01 7.03061813e-01] 0.6215329485566476
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.305, MeanIU:  0.6215, Best_mIoU:  0.6215
+[9.62931472e-01 7.45464869e-01 8.75742163e-01 3.35192259e-01
+ 5.09011853e-01 5.35694582e-01 5.69347737e-01 6.89246096e-01
+ 8.85930053e-01 4.90260754e-01 9.14560926e-01 7.37702090e-01
+ 4.75735394e-01 9.06872270e-01 4.51900201e-01 5.86424676e-01
+ 1.29476230e-04 4.33917339e-01 7.03061813e-01]
+Epoch: [8/484] Iter:[0/991], Time: 0.85, lr: [0.009851115975361124], Loss: 0.411933
+Epoch: [8/484] Iter:[10/991], Time: 0.51, lr: [0.009850928022996237], Loss: 0.340602
+Epoch: [8/484] Iter:[20/991], Time: 0.49, lr: [0.009850740070232896], Loss: 0.337987
+Epoch: [8/484] Iter:[30/991], Time: 0.48, lr: [0.009850552117071094], Loss: 0.348869
+Epoch: [8/484] Iter:[40/991], Time: 0.48, lr: [0.009850364163510822], Loss: 0.354647
+Epoch: [8/484] Iter:[50/991], Time: 0.48, lr: [0.009850176209552069], Loss: 0.348356
+Epoch: [8/484] Iter:[60/991], Time: 0.48, lr: [0.009849988255194824], Loss: 0.339193
+Epoch: [8/484] Iter:[70/991], Time: 0.48, lr: [0.00984980030043908], Loss: 0.346083
+Epoch: [8/484] Iter:[80/991], Time: 0.48, lr: [0.00984961234528483], Loss: 0.344035
+Epoch: [8/484] Iter:[90/991], Time: 0.48, lr: [0.00984942438973206], Loss: 0.354939
+Epoch: [8/484] Iter:[100/991], Time: 0.48, lr: [0.009849236433780764], Loss: 0.367244
+Epoch: [8/484] Iter:[110/991], Time: 0.48, lr: [0.009849048477430929], Loss: 0.366799
+Epoch: [8/484] Iter:[120/991], Time: 0.48, lr: [0.009848860520682552], Loss: 0.360452
+Epoch: [8/484] Iter:[130/991], Time: 0.48, lr: [0.009848672563535617], Loss: 0.371927
+Epoch: [8/484] Iter:[140/991], Time: 0.48, lr: [0.00984848460599012], Loss: 0.372006
+Epoch: [8/484] Iter:[150/991], Time: 0.48, lr: [0.009848296648046049], Loss: 0.372890
+Epoch: [8/484] Iter:[160/991], Time: 0.48, lr: [0.009848108689703393], Loss: 0.370631
+Epoch: [8/484] Iter:[170/991], Time: 0.48, lr: [0.009847920730962146], Loss: 0.366470
+Epoch: [8/484] Iter:[180/991], Time: 0.48, lr: [0.009847732771822298], Loss: 0.368441
+Epoch: [8/484] Iter:[190/991], Time: 0.48, lr: [0.009847544812283839], Loss: 0.369243
+Epoch: [8/484] Iter:[200/991], Time: 0.48, lr: [0.00984735685234676], Loss: 0.371795
+Epoch: [8/484] Iter:[210/991], Time: 0.48, lr: [0.009847168892011052], Loss: 0.373209
+Epoch: [8/484] Iter:[220/991], Time: 0.48, lr: [0.009846980931276705], Loss: 0.375855
+Epoch: [8/484] Iter:[230/991], Time: 0.48, lr: [0.00984679297014371], Loss: 0.380895
+Epoch: [8/484] Iter:[240/991], Time: 0.48, lr: [0.009846605008612057], Loss: 0.380908
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.96495297 0.76708012 0.8819918  0.31222765 0.47535519 0.51464904
+ 0.53783237 0.68122609 0.89833426 0.43550658 0.91627615 0.75188546
+ 0.51074674 0.90656441 0.37034987 0.33603    0.27783537 0.39284862
+ 0.68947698] 0.6116405085559447
+1 [0.95649507 0.75480044 0.87479993 0.27737546 0.48374029 0.51007099
+ 0.54261882 0.69102972 0.89329215 0.41381613 0.91816831 0.74738772
+ 0.49069872 0.91547178 0.51006404 0.27161182 0.23645941 0.47524546
+ 0.68758012] 0.6131961249438942
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.303, MeanIU:  0.6132, Best_mIoU:  0.6215
+[0.95649507 0.75480044 0.87479993 0.27737546 0.48374029 0.51007099
+ 0.54261882 0.69102972 0.89329215 0.41381613 0.91816831 0.74738772
+ 0.49069872 0.91547178 0.51006404 0.27161182 0.23645941 0.47524546
+ 0.68758012]
+Epoch: [9/484] Iter:[0/991], Time: 0.85, lr: [0.00983248795771619], Loss: 0.296960
+Epoch: [9/484] Iter:[10/991], Time: 0.51, lr: [0.009832299965819401], Loss: 0.427494
+Epoch: [9/484] Iter:[20/991], Time: 0.49, lr: [0.009832111973523235], Loss: 0.421279
+Epoch: [9/484] Iter:[30/991], Time: 0.49, lr: [0.009831923980827688], Loss: 0.452756
+Epoch: [9/484] Iter:[40/991], Time: 0.48, lr: [0.009831735987732742], Loss: 0.444756
+Epoch: [9/484] Iter:[50/991], Time: 0.48, lr: [0.009831547994238396], Loss: 0.461626
+Epoch: [9/484] Iter:[60/991], Time: 0.48, lr: [0.009831360000344635], Loss: 0.452485
+Epoch: [9/484] Iter:[70/991], Time: 0.48, lr: [0.009831172006051452], Loss: 0.434488
+Epoch: [9/484] Iter:[80/991], Time: 0.48, lr: [0.009830984011358838], Loss: 0.424465
+Epoch: [9/484] Iter:[90/991], Time: 0.48, lr: [0.009830796016266782], Loss: 0.433991
+Epoch: [9/484] Iter:[100/991], Time: 0.48, lr: [0.009830608020775277], Loss: 0.423245
+Epoch: [9/484] Iter:[110/991], Time: 0.48, lr: [0.009830420024884311], Loss: 0.423721
+Epoch: [9/484] Iter:[120/991], Time: 0.48, lr: [0.009830232028593877], Loss: 0.416706
+Epoch: [9/484] Iter:[130/991], Time: 0.48, lr: [0.009830044031903963], Loss: 0.406155
+Epoch: [9/484] Iter:[140/991], Time: 0.48, lr: [0.009829856034814564], Loss: 0.396730
+Epoch: [9/484] Iter:[150/991], Time: 0.48, lr: [0.009829668037325667], Loss: 0.392901
+Epoch: [9/484] Iter:[160/991], Time: 0.47, lr: [0.009829480039437262], Loss: 0.385280
+Epoch: [9/484] Iter:[170/991], Time: 0.47, lr: [0.009829292041149344], Loss: 0.380544
+Epoch: [9/484] Iter:[180/991], Time: 0.47, lr: [0.009829104042461899], Loss: 0.387003
+Epoch: [9/484] Iter:[190/991], Time: 0.47, lr: [0.009828916043374922], Loss: 0.391549
+Epoch: [9/484] Iter:[200/991], Time: 0.47, lr: [0.009828728043888398], Loss: 0.388482
+Epoch: [9/484] Iter:[210/991], Time: 0.47, lr: [0.009828540044002325], Loss: 0.384851
+Epoch: [9/484] Iter:[220/991], Time: 0.47, lr: [0.009828352043716685], Loss: 0.388903
+Epoch: [9/484] Iter:[230/991], Time: 0.47, lr: [0.009828164043031476], Loss: 0.389606
+Epoch: [9/484] Iter:[240/991], Time: 0.47, lr: [0.009827976041946686], Loss: 0.386453
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.96596101 0.76742928 0.89343741 0.28120992 0.45800037 0.54238953
+ 0.5298926  0.68952374 0.8992673  0.4907641  0.92142492 0.76346333
+ 0.51418398 0.91221433 0.45841975 0.50870113 0.31763421 0.48689815
+ 0.7136423 ] 0.637603019591024
+1 [0.96736502 0.76329189 0.89323245 0.28679481 0.45154935 0.54687849
+ 0.54934767 0.69243604 0.90063903 0.47397996 0.92182243 0.76589211
+ 0.52463209 0.92535028 0.66442806 0.4724843  0.26511852 0.51560924
+ 0.71520666] 0.6471609695456876
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.278, MeanIU:  0.6472, Best_mIoU:  0.6472
+[0.96736502 0.76329189 0.89323245 0.28679481 0.45154935 0.54687849
+ 0.54934767 0.69243604 0.90063903 0.47397996 0.92182243 0.76589211
+ 0.52463209 0.92535028 0.66442806 0.4724843  0.26511852 0.51560924
+ 0.71520666]
+Epoch: [10/484] Iter:[0/991], Time: 0.83, lr: [0.00981385601796745], Loss: 0.186205
+Epoch: [10/484] Iter:[10/991], Time: 0.51, lr: [0.009813667986447104], Loss: 0.316719
+Epoch: [10/484] Iter:[20/991], Time: 0.49, lr: [0.009813479954526456], Loss: 0.352187
+Epoch: [10/484] Iter:[30/991], Time: 0.49, lr: [0.009813291922205496], Loss: 0.336957
+Epoch: [10/484] Iter:[40/991], Time: 0.48, lr: [0.009813103889484216], Loss: 0.345614
+Epoch: [10/484] Iter:[50/991], Time: 0.48, lr: [0.009812915856362603], Loss: 0.331339
+Epoch: [10/484] Iter:[60/991], Time: 0.48, lr: [0.00981272782284065], Loss: 0.329365
+Epoch: [10/484] Iter:[70/991], Time: 0.48, lr: [0.00981253978891835], Loss: 0.331910
+Epoch: [10/484] Iter:[80/991], Time: 0.48, lr: [0.009812351754595687], Loss: 0.334354
+Epoch: [10/484] Iter:[90/991], Time: 0.48, lr: [0.009812163719872658], Loss: 0.332301
+Epoch: [10/484] Iter:[100/991], Time: 0.48, lr: [0.009811975684749253], Loss: 0.333941
+Epoch: [10/484] Iter:[110/991], Time: 0.48, lr: [0.009811787649225459], Loss: 0.343656
+Epoch: [10/484] Iter:[120/991], Time: 0.48, lr: [0.00981159961330127], Loss: 0.344564
+Epoch: [10/484] Iter:[130/991], Time: 0.48, lr: [0.009811411576976674], Loss: 0.360631
+Epoch: [10/484] Iter:[140/991], Time: 0.48, lr: [0.009811223540251664], Loss: 0.366996
+Epoch: [10/484] Iter:[150/991], Time: 0.48, lr: [0.009811035503126229], Loss: 0.372036
+Epoch: [10/484] Iter:[160/991], Time: 0.48, lr: [0.00981084746560036], Loss: 0.371947
+Epoch: [10/484] Iter:[170/991], Time: 0.48, lr: [0.009810659427674048], Loss: 0.372310
+Epoch: [10/484] Iter:[180/991], Time: 0.48, lr: [0.009810471389347283], Loss: 0.376841
+Epoch: [10/484] Iter:[190/991], Time: 0.48, lr: [0.009810283350620057], Loss: 0.379894
+Epoch: [10/484] Iter:[200/991], Time: 0.48, lr: [0.00981009531149236], Loss: 0.376035
+Epoch: [10/484] Iter:[210/991], Time: 0.48, lr: [0.00980990727196418], Loss: 0.375834
+Epoch: [10/484] Iter:[220/991], Time: 0.48, lr: [0.009809719232035512], Loss: 0.372831
+Epoch: [10/484] Iter:[230/991], Time: 0.48, lr: [0.009809531191706343], Loss: 0.372882
+Epoch: [10/484] Iter:[240/991], Time: 0.48, lr: [0.009809343150976667], Loss: 0.376114
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.95479865 0.71605615 0.87527228 0.23763183 0.4329108  0.47940453
+ 0.45923407 0.67897899 0.8892851  0.43333384 0.90465082 0.72939763
+ 0.4919085  0.86744815 0.31817948 0.42434165 0.15701155 0.36801783
+ 0.68798892] 0.5845184615670915
+1 [0.94388912 0.71054444 0.86251637 0.23884271 0.44404441 0.49534156
+ 0.47751478 0.679726   0.88779717 0.42822791 0.89974095 0.72799153
+ 0.48376955 0.85235134 0.28349637 0.3159668  0.01703427 0.38114194
+ 0.68419563] 0.5691648879269259
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.366, MeanIU:  0.5692, Best_mIoU:  0.6472
+[0.94388912 0.71054444 0.86251637 0.23884271 0.44404441 0.49534156
+ 0.47751478 0.679726   0.88779717 0.42822791 0.89974095 0.72799153
+ 0.48376955 0.85235134 0.28349637 0.3159668  0.01703427 0.38114194
+ 0.68419563]
+Epoch: [11/484] Iter:[0/991], Time: 0.83, lr: [0.009795220147012004], Loss: 0.568066
+Epoch: [11/484] Iter:[10/991], Time: 0.50, lr: [0.009795032075776039], Loss: 0.362484
+Epoch: [11/484] Iter:[20/991], Time: 0.49, lr: [0.009794844004138843], Loss: 0.347525
+Epoch: [11/484] Iter:[30/991], Time: 0.48, lr: [0.009794655932100401], Loss: 0.341162
+Epoch: [11/484] Iter:[40/991], Time: 0.48, lr: [0.009794467859660708], Loss: 0.331991
+Epoch: [11/484] Iter:[50/991], Time: 0.48, lr: [0.009794279786819755], Loss: 0.348031
+Epoch: [11/484] Iter:[60/991], Time: 0.48, lr: [0.009794091713577528], Loss: 0.348980
+Epoch: [11/484] Iter:[70/991], Time: 0.48, lr: [0.00979390363993402], Loss: 0.341556
+Epoch: [11/484] Iter:[80/991], Time: 0.48, lr: [0.009793715565889224], Loss: 0.344549
+Epoch: [11/484] Iter:[90/991], Time: 0.48, lr: [0.009793527491443127], Loss: 0.341346
+Epoch: [11/484] Iter:[100/991], Time: 0.48, lr: [0.009793339416595723], Loss: 0.349481
+Epoch: [11/484] Iter:[110/991], Time: 0.48, lr: [0.009793151341347], Loss: 0.353644
+Epoch: [11/484] Iter:[120/991], Time: 0.48, lr: [0.009792963265696947], Loss: 0.349166
+Epoch: [11/484] Iter:[130/991], Time: 0.48, lr: [0.009792775189645558], Loss: 0.344025
+Epoch: [11/484] Iter:[140/991], Time: 0.48, lr: [0.009792587113192822], Loss: 0.338527
+Epoch: [11/484] Iter:[150/991], Time: 0.48, lr: [0.009792399036338731], Loss: 0.339322
+Epoch: [11/484] Iter:[160/991], Time: 0.48, lr: [0.009792210959083275], Loss: 0.334736
+Epoch: [11/484] Iter:[170/991], Time: 0.48, lr: [0.009792022881426443], Loss: 0.337013
+Epoch: [11/484] Iter:[180/991], Time: 0.48, lr: [0.009791834803368227], Loss: 0.343417
+Epoch: [11/484] Iter:[190/991], Time: 0.47, lr: [0.009791646724908617], Loss: 0.346760
+Epoch: [11/484] Iter:[200/991], Time: 0.47, lr: [0.009791458646047604], Loss: 0.344191
+Epoch: [11/484] Iter:[210/991], Time: 0.47, lr: [0.009791270566785179], Loss: 0.347790
+Epoch: [11/484] Iter:[220/991], Time: 0.47, lr: [0.00979108248712133], Loss: 0.347048
+Epoch: [11/484] Iter:[230/991], Time: 0.47, lr: [0.009790894407056052], Loss: 0.347180
+Epoch: [11/484] Iter:[240/991], Time: 0.47, lr: [0.009790706326589332], Loss: 0.349641
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.9710596  0.77608628 0.89875764 0.32290698 0.49968385 0.54142559
+ 0.56120239 0.69538392 0.9078805  0.50198156 0.92516898 0.72837073
+ 0.49200082 0.87639825 0.33233975 0.36429206 0.41622354 0.4840998
+ 0.71560504] 0.6321509084318473
+1 [0.97169783 0.77777933 0.89975956 0.332359   0.50326088 0.5520526
+ 0.56896443 0.69592794 0.90892057 0.51545556 0.92029409 0.73193427
+ 0.51524806 0.89226572 0.46176851 0.46386582 0.52776104 0.50230853
+ 0.71948016] 0.6558475740976449
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.275, MeanIU:  0.6558, Best_mIoU:  0.6558
+[0.97169783 0.77777933 0.89975956 0.332359   0.50326088 0.5520526
+ 0.56896443 0.69592794 0.90892057 0.51545556 0.92029409 0.73193427
+ 0.51524806 0.89226572 0.46176851 0.46386582 0.52776104 0.50230853
+ 0.71948016]
+Epoch: [12/484] Iter:[0/991], Time: 0.85, lr: [0.009776580335706525], Loss: 0.310728
+Epoch: [12/484] Iter:[10/991], Time: 0.51, lr: [0.009776392224662474], Loss: 0.276906
+Epoch: [12/484] Iter:[20/991], Time: 0.49, lr: [0.00977620411321625], Loss: 0.284803
+Epoch: [12/484] Iter:[30/991], Time: 0.48, lr: [0.009776016001367854], Loss: 0.292394
+Epoch: [12/484] Iter:[40/991], Time: 0.48, lr: [0.009775827889117265], Loss: 0.293415
+Epoch: [12/484] Iter:[50/991], Time: 0.48, lr: [0.00977563977646448], Loss: 0.294867
+Epoch: [12/484] Iter:[60/991], Time: 0.48, lr: [0.009775451663409492], Loss: 0.295613
+Epoch: [12/484] Iter:[70/991], Time: 0.48, lr: [0.009775263549952284], Loss: 0.292017
+Epoch: [12/484] Iter:[80/991], Time: 0.48, lr: [0.00977507543609285], Loss: 0.309610
+Epoch: [12/484] Iter:[90/991], Time: 0.48, lr: [0.009774887321831184], Loss: 0.315656
+Epoch: [12/484] Iter:[100/991], Time: 0.48, lr: [0.00977469920716727], Loss: 0.319906
+Epoch: [12/484] Iter:[110/991], Time: 0.48, lr: [0.009774511092101106], Loss: 0.317637
+Epoch: [12/484] Iter:[120/991], Time: 0.48, lr: [0.009774322976632678], Loss: 0.322260
+Epoch: [12/484] Iter:[130/991], Time: 0.48, lr: [0.009774134860761974], Loss: 0.316450
+Epoch: [12/484] Iter:[140/991], Time: 0.48, lr: [0.00977394674448899], Loss: 0.316799
+Epoch: [12/484] Iter:[150/991], Time: 0.48, lr: [0.009773758627813713], Loss: 0.311401
+Epoch: [12/484] Iter:[160/991], Time: 0.48, lr: [0.009773570510736134], Loss: 0.312252
+Epoch: [12/484] Iter:[170/991], Time: 0.48, lr: [0.009773382393256248], Loss: 0.313878
+Epoch: [12/484] Iter:[180/991], Time: 0.48, lr: [0.009773194275374038], Loss: 0.318828
+Epoch: [12/484] Iter:[190/991], Time: 0.48, lr: [0.0097730061570895], Loss: 0.318227
+Epoch: [12/484] Iter:[200/991], Time: 0.48, lr: [0.009772818038402622], Loss: 0.318461
+Epoch: [12/484] Iter:[210/991], Time: 0.48, lr: [0.009772629919313396], Loss: 0.321414
+Epoch: [12/484] Iter:[220/991], Time: 0.47, lr: [0.009772441799821813], Loss: 0.321533
+Epoch: [12/484] Iter:[230/991], Time: 0.47, lr: [0.00977225367992786], Loss: 0.322148
+Epoch: [12/484] Iter:[240/991], Time: 0.47, lr: [0.009772065559631532], Loss: 0.320378
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.97350166 0.80873909 0.89051562 0.36123814 0.43270748 0.55962072
+ 0.58622861 0.6769477  0.90819605 0.57003958 0.92238663 0.76949218
+ 0.51997772 0.90884461 0.25488615 0.58019392 0.3112569  0.40472872
+ 0.71331695] 0.6396220232586743
+1 [0.97325492 0.80837359 0.88927805 0.37592598 0.41966108 0.56420796
+ 0.59360042 0.67894092 0.90816838 0.56967863 0.92355764 0.77833918
+ 0.5359323  0.91443326 0.25793444 0.56814769 0.32775428 0.42011375
+ 0.71782766] 0.6434279017968807
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.263, MeanIU:  0.6434, Best_mIoU:  0.6558
+[0.97325492 0.80837359 0.88927805 0.37592598 0.41966108 0.56420796
+ 0.59360042 0.67894092 0.90816838 0.56967863 0.92355764 0.77833918
+ 0.5359323  0.91443326 0.25793444 0.56814769 0.32775428 0.42011375
+ 0.71782766]
+Epoch: [13/484] Iter:[0/991], Time: 0.85, lr: [0.009757936574867013], Loss: 0.287742
+Epoch: [13/484] Iter:[10/991], Time: 0.51, lr: [0.00975774842392199], Loss: 0.295601
+Epoch: [13/484] Iter:[20/991], Time: 0.49, lr: [0.00975756027257386], Loss: 0.283583
+Epoch: [13/484] Iter:[30/991], Time: 0.48, lr: [0.00975737212082261], Loss: 0.290272
+Epoch: [13/484] Iter:[40/991], Time: 0.48, lr: [0.009757183968668233], Loss: 0.305143
+Epoch: [13/484] Iter:[50/991], Time: 0.48, lr: [0.009756995816110722], Loss: 0.300733
+Epoch: [13/484] Iter:[60/991], Time: 0.48, lr: [0.009756807663150062], Loss: 0.312498
+Epoch: [13/484] Iter:[70/991], Time: 0.48, lr: [0.009756619509786247], Loss: 0.309344
+Epoch: [13/484] Iter:[80/991], Time: 0.48, lr: [0.009756431356019267], Loss: 0.314496
+Epoch: [13/484] Iter:[90/991], Time: 0.48, lr: [0.009756243201849113], Loss: 0.314188
+Epoch: [13/484] Iter:[100/991], Time: 0.48, lr: [0.009756055047275775], Loss: 0.311223
+Epoch: [13/484] Iter:[110/991], Time: 0.48, lr: [0.009755866892299242], Loss: 0.312351
+Epoch: [13/484] Iter:[120/991], Time: 0.48, lr: [0.009755678736919507], Loss: 0.320466
+Epoch: [13/484] Iter:[130/991], Time: 0.47, lr: [0.009755490581136558], Loss: 0.324592
+Epoch: [13/484] Iter:[140/991], Time: 0.47, lr: [0.009755302424950388], Loss: 0.323131
+Epoch: [13/484] Iter:[150/991], Time: 0.47, lr: [0.009755114268360985], Loss: 0.331673
+Epoch: [13/484] Iter:[160/991], Time: 0.47, lr: [0.00975492611136834], Loss: 0.343317
+Epoch: [13/484] Iter:[170/991], Time: 0.47, lr: [0.009754737953972447], Loss: 0.352384
+Epoch: [13/484] Iter:[180/991], Time: 0.47, lr: [0.009754549796173293], Loss: 0.351518
+Epoch: [13/484] Iter:[190/991], Time: 0.47, lr: [0.009754361637970868], Loss: 0.356338
+Epoch: [13/484] Iter:[200/991], Time: 0.47, lr: [0.009754173479365165], Loss: 0.353242
+Epoch: [13/484] Iter:[210/991], Time: 0.47, lr: [0.009753985320356174], Loss: 0.351000
+Epoch: [13/484] Iter:[220/991], Time: 0.47, lr: [0.009753797160943883], Loss: 0.348586
+Epoch: [13/484] Iter:[230/991], Time: 0.47, lr: [0.009753609001128285], Loss: 0.346787
+Epoch: [13/484] Iter:[240/991], Time: 0.47, lr: [0.009753420840909369], Loss: 0.343344
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.9659937  0.76145239 0.89728752 0.33745828 0.49593719 0.55184025
+ 0.55751239 0.70138951 0.90759831 0.54185895 0.92600297 0.76955641
+ 0.53707231 0.92152551 0.55468269 0.62618083 0.49912475 0.5047544
+ 0.71340516] 0.6721386063349291
+1 [0.96663755 0.76732304 0.89744072 0.33218599 0.49334511 0.5639041
+ 0.57457685 0.71397368 0.90900648 0.54746261 0.92658856 0.77256002
+ 0.54029942 0.9298846  0.65436151 0.74931945 0.58969785 0.52501369
+ 0.71283867] 0.6929694684045158
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.262, MeanIU:  0.6930, Best_mIoU:  0.6930
+[0.96663755 0.76732304 0.89744072 0.33218599 0.49334511 0.5639041
+ 0.57457685 0.71397368 0.90900648 0.54746261 0.92658856 0.77256002
+ 0.54029942 0.9298846  0.65436151 0.74931945 0.58969785 0.52501369
+ 0.71283867]
+Epoch: [14/484] Iter:[0/991], Time: 0.83, lr: [0.009739288855268508], Loss: 0.180440
+Epoch: [14/484] Iter:[10/991], Time: 0.50, lr: [0.009739100664329217], Loss: 0.337881
+Epoch: [14/484] Iter:[20/991], Time: 0.49, lr: [0.009738912472985873], Loss: 0.343878
+Epoch: [14/484] Iter:[30/991], Time: 0.48, lr: [0.00973872428123847], Loss: 0.341962
+Epoch: [14/484] Iter:[40/991], Time: 0.48, lr: [0.009738536089086995], Loss: 0.349241
+Epoch: [14/484] Iter:[50/991], Time: 0.48, lr: [0.009738347896531439], Loss: 0.362195
+Epoch: [14/484] Iter:[60/991], Time: 0.48, lr: [0.009738159703571794], Loss: 0.353984
+Epoch: [14/484] Iter:[70/991], Time: 0.48, lr: [0.009737971510208051], Loss: 0.354900
+Epoch: [14/484] Iter:[80/991], Time: 0.48, lr: [0.009737783316440197], Loss: 0.343606
+Epoch: [14/484] Iter:[90/991], Time: 0.48, lr: [0.009737595122268225], Loss: 0.338944
+Epoch: [14/484] Iter:[100/991], Time: 0.48, lr: [0.009737406927692123], Loss: 0.332835
+Epoch: [14/484] Iter:[110/991], Time: 0.48, lr: [0.009737218732711887], Loss: 0.328261
+Epoch: [14/484] Iter:[120/991], Time: 0.48, lr: [0.009737030537327501], Loss: 0.323393
+Epoch: [14/484] Iter:[130/991], Time: 0.48, lr: [0.00973684234153896], Loss: 0.324417
+Epoch: [14/484] Iter:[140/991], Time: 0.48, lr: [0.009736654145346251], Loss: 0.323974
+Epoch: [14/484] Iter:[150/991], Time: 0.48, lr: [0.009736465948749369], Loss: 0.324128
+Epoch: [14/484] Iter:[160/991], Time: 0.48, lr: [0.009736277751748299], Loss: 0.322191
+Epoch: [14/484] Iter:[170/991], Time: 0.47, lr: [0.009736089554343033], Loss: 0.318069
+Epoch: [14/484] Iter:[180/991], Time: 0.47, lr: [0.009735901356533565], Loss: 0.318653
+Epoch: [14/484] Iter:[190/991], Time: 0.47, lr: [0.009735713158319883], Loss: 0.318277
+Epoch: [14/484] Iter:[200/991], Time: 0.47, lr: [0.009735524959701976], Loss: 0.320234
+Epoch: [14/484] Iter:[210/991], Time: 0.47, lr: [0.009735336760679838], Loss: 0.322462
+Epoch: [14/484] Iter:[220/991], Time: 0.47, lr: [0.009735148561253456], Loss: 0.322169
+Epoch: [14/484] Iter:[230/991], Time: 0.47, lr: [0.009734960361422821], Loss: 0.321818
+Epoch: [14/484] Iter:[240/991], Time: 0.47, lr: [0.009734772161187925], Loss: 0.321607
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.9704572  0.78938804 0.9010111  0.3214098  0.50024269 0.5683835
+ 0.5873216  0.71931748 0.91210782 0.48734317 0.91142948 0.77612142
+ 0.54098984 0.92623663 0.49857046 0.67489054 0.42023947 0.52074192
+ 0.71796684] 0.6707457368506359
+1 [0.97000237 0.78524562 0.90150858 0.33022416 0.52596737 0.5755306
+ 0.58718577 0.72511171 0.91284082 0.46247675 0.90414024 0.77562865
+ 0.53818525 0.92660391 0.47437545 0.67687298 0.34806604 0.55346477
+ 0.72011856] 0.668081558521569
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.248, MeanIU:  0.6681, Best_mIoU:  0.6930
+[0.97000237 0.78524562 0.90150858 0.33022416 0.52596737 0.5755306
+ 0.58718577 0.72511171 0.91284082 0.46247675 0.90414024 0.77562865
+ 0.53818525 0.92660391 0.47437545 0.67687298 0.34806604 0.55346477
+ 0.72011856]
+Epoch: [15/484] Iter:[0/991], Time: 0.84, lr: [0.00972063716764483], Loss: 0.169650
+Epoch: [15/484] Iter:[10/991], Time: 0.51, lr: [0.009720448936617556], Loss: 0.284900
+Epoch: [15/484] Iter:[20/991], Time: 0.49, lr: [0.009720260705185283], Loss: 0.287391
+Epoch: [15/484] Iter:[30/991], Time: 0.48, lr: [0.009720072473348001], Loss: 0.284588
+Epoch: [15/484] Iter:[40/991], Time: 0.48, lr: [0.009719884241105701], Loss: 0.307612
+Epoch: [15/484] Iter:[50/991], Time: 0.48, lr: [0.009719696008458371], Loss: 0.305599
+Epoch: [15/484] Iter:[60/991], Time: 0.48, lr: [0.009719507775406004], Loss: 0.307439
+Epoch: [15/484] Iter:[70/991], Time: 0.48, lr: [0.00971931954194859], Loss: 0.304658
+Epoch: [15/484] Iter:[80/991], Time: 0.48, lr: [0.00971913130808612], Loss: 0.313674
+Epoch: [15/484] Iter:[90/991], Time: 0.48, lr: [0.009718943073818582], Loss: 0.311518
+Epoch: [15/484] Iter:[100/991], Time: 0.48, lr: [0.00971875483914597], Loss: 0.311956
+Epoch: [15/484] Iter:[110/991], Time: 0.48, lr: [0.009718566604068269], Loss: 0.310276
+Epoch: [15/484] Iter:[120/991], Time: 0.48, lr: [0.009718378368585473], Loss: 0.310500
+Epoch: [15/484] Iter:[130/991], Time: 0.48, lr: [0.009718190132697573], Loss: 0.313075
+Epoch: [15/484] Iter:[140/991], Time: 0.47, lr: [0.009718001896404559], Loss: 0.318714
+Epoch: [15/484] Iter:[150/991], Time: 0.47, lr: [0.009717813659706418], Loss: 0.329122
+Epoch: [15/484] Iter:[160/991], Time: 0.47, lr: [0.009717625422603146], Loss: 0.335097
+Epoch: [15/484] Iter:[170/991], Time: 0.47, lr: [0.00971743718509473], Loss: 0.342709
+Epoch: [15/484] Iter:[180/991], Time: 0.47, lr: [0.009717248947181161], Loss: 0.346470
+Epoch: [15/484] Iter:[190/991], Time: 0.47, lr: [0.009717060708862428], Loss: 0.350083
+Epoch: [15/484] Iter:[200/991], Time: 0.47, lr: [0.009716872470138525], Loss: 0.351186
+Epoch: [15/484] Iter:[210/991], Time: 0.47, lr: [0.009716684231009439], Loss: 0.350964
+Epoch: [15/484] Iter:[220/991], Time: 0.47, lr: [0.009716495991475163], Loss: 0.352117
+Epoch: [15/484] Iter:[230/991], Time: 0.47, lr: [0.009716307751535687], Loss: 0.352070
+Epoch: [15/484] Iter:[240/991], Time: 0.47, lr: [0.009716119511190996], Loss: 0.352287
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.9665788  0.76665234 0.88627166 0.29061232 0.47559931 0.52677149
+ 0.55603828 0.68517034 0.89945953 0.55021903 0.89751083 0.73174825
+ 0.51455386 0.89597738 0.42756364 0.65956654 0.46952823 0.45651334
+ 0.69797109] 0.6502266444910618
+1 [0.9667398  0.76589625 0.88424616 0.3139364  0.49722003 0.53235545
+ 0.57035557 0.66513759 0.90018498 0.57067272 0.89845038 0.73465367
+ 0.51970065 0.91207632 0.49211333 0.68636387 0.22186136 0.52447036
+ 0.69874887] 0.6502728282661112
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.287, MeanIU:  0.6503, Best_mIoU:  0.6930
+[0.9667398  0.76589625 0.88424616 0.3139364  0.49722003 0.53235545
+ 0.57035557 0.66513759 0.90018498 0.57067272 0.89845038 0.73465367
+ 0.51970065 0.91207632 0.49211333 0.68636387 0.22186136 0.52447036
+ 0.69874887]
+Epoch: [16/484] Iter:[0/991], Time: 0.85, lr: [0.0097019815026883], Loss: 0.231412
+Epoch: [16/484] Iter:[10/991], Time: 0.51, lr: [0.009701793231478911], Loss: 0.293293
+Epoch: [16/484] Iter:[20/991], Time: 0.49, lr: [0.00970160495986357], Loss: 0.340443
+Epoch: [16/484] Iter:[30/991], Time: 0.49, lr: [0.009701416687842267], Loss: 0.333184
+Epoch: [16/484] Iter:[40/991], Time: 0.48, lr: [0.009701228415414993], Loss: 0.328437
+Epoch: [16/484] Iter:[50/991], Time: 0.48, lr: [0.00970104014258174], Loss: 0.329683
+Epoch: [16/484] Iter:[60/991], Time: 0.48, lr: [0.009700851869342495], Loss: 0.333135
+Epoch: [16/484] Iter:[70/991], Time: 0.48, lr: [0.009700663595697252], Loss: 0.339642
+Epoch: [16/484] Iter:[80/991], Time: 0.48, lr: [0.009700475321646], Loss: 0.332702
+Epoch: [16/484] Iter:[90/991], Time: 0.48, lr: [0.009700287047188727], Loss: 0.333772
+Epoch: [16/484] Iter:[100/991], Time: 0.48, lr: [0.009700098772325427], Loss: 0.333431
+Epoch: [16/484] Iter:[110/991], Time: 0.48, lr: [0.009699910497056088], Loss: 0.333336
+Epoch: [16/484] Iter:[120/991], Time: 0.48, lr: [0.009699722221380701], Loss: 0.331482
+Epoch: [16/484] Iter:[130/991], Time: 0.48, lr: [0.009699533945299257], Loss: 0.326570
+Epoch: [16/484] Iter:[140/991], Time: 0.47, lr: [0.009699345668811747], Loss: 0.327343
+Epoch: [16/484] Iter:[150/991], Time: 0.47, lr: [0.009699157391918158], Loss: 0.326107
+Epoch: [16/484] Iter:[160/991], Time: 0.47, lr: [0.009698969114618483], Loss: 0.325425
+Epoch: [16/484] Iter:[170/991], Time: 0.47, lr: [0.009698780836912712], Loss: 0.323483
+Epoch: [16/484] Iter:[180/991], Time: 0.47, lr: [0.009698592558800836], Loss: 0.322862
+Epoch: [16/484] Iter:[190/991], Time: 0.47, lr: [0.009698404280282845], Loss: 0.320395
+Epoch: [16/484] Iter:[200/991], Time: 0.47, lr: [0.009698216001358726], Loss: 0.326172
+Epoch: [16/484] Iter:[210/991], Time: 0.47, lr: [0.009698027722028477], Loss: 0.325744
+Epoch: [16/484] Iter:[220/991], Time: 0.47, lr: [0.00969783944229208], Loss: 0.322626
+Epoch: [16/484] Iter:[230/991], Time: 0.47, lr: [0.009697651162149531], Loss: 0.321841
+Epoch: [16/484] Iter:[240/991], Time: 0.47, lr: [0.009697462881600819], Loss: 0.319705
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.97409746 0.79314942 0.89995919 0.31992    0.51298674 0.57009985
+ 0.58998944 0.71174425 0.90971717 0.56263927 0.92831337 0.76692192
+ 0.54478631 0.92254608 0.40124215 0.68786473 0.48507515 0.52432493
+ 0.72249502] 0.6751511806482735
+1 [0.97512588 0.79887926 0.90134298 0.33531136 0.52792943 0.57367721
+ 0.6040763  0.715153   0.90948252 0.5768903  0.93075378 0.7691701
+ 0.54392332 0.92548663 0.47044471 0.68065731 0.35307861 0.56249298
+ 0.71874399] 0.6775062978215329
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.248, MeanIU:  0.6775, Best_mIoU:  0.6930
+[0.97512588 0.79887926 0.90134298 0.33531136 0.52792943 0.57367721
+ 0.6040763  0.715153   0.90948252 0.5768903  0.93075378 0.7691701
+ 0.54392332 0.92548663 0.47044471 0.68065731 0.35307861 0.56249298
+ 0.71874399]
+Epoch: [17/484] Iter:[0/991], Time: 0.83, lr: [0.009683321851049479], Loss: 0.266942
+Epoch: [17/484] Iter:[10/991], Time: 0.51, lr: [0.009683133539563417], Loss: 0.275610
+Epoch: [17/484] Iter:[20/991], Time: 0.49, lr: [0.009682945227670445], Loss: 0.278931
+Epoch: [17/484] Iter:[30/991], Time: 0.49, lr: [0.009682756915370556], Loss: 0.282293
+Epoch: [17/484] Iter:[40/991], Time: 0.48, lr: [0.009682568602663739], Loss: 0.273446
+Epoch: [17/484] Iter:[50/991], Time: 0.48, lr: [0.009682380289549986], Loss: 0.272578
+Epoch: [17/484] Iter:[60/991], Time: 0.48, lr: [0.009682191976029285], Loss: 0.274140
+Epoch: [17/484] Iter:[70/991], Time: 0.48, lr: [0.00968200366210163], Loss: 0.272660
+Epoch: [17/484] Iter:[80/991], Time: 0.48, lr: [0.009681815347767006], Loss: 0.280885
+Epoch: [17/484] Iter:[90/991], Time: 0.48, lr: [0.009681627033025409], Loss: 0.284438
+Epoch: [17/484] Iter:[100/991], Time: 0.48, lr: [0.009681438717876826], Loss: 0.284861
+Epoch: [17/484] Iter:[110/991], Time: 0.48, lr: [0.009681250402321248], Loss: 0.281977
+Epoch: [17/484] Iter:[120/991], Time: 0.48, lr: [0.009681062086358666], Loss: 0.288271
+Epoch: [17/484] Iter:[130/991], Time: 0.48, lr: [0.009680873769989069], Loss: 0.293199
+Epoch: [17/484] Iter:[140/991], Time: 0.48, lr: [0.009680685453212446], Loss: 0.296767
+Epoch: [17/484] Iter:[150/991], Time: 0.48, lr: [0.009680497136028794], Loss: 0.299228
+Epoch: [17/484] Iter:[160/991], Time: 0.48, lr: [0.009680308818438094], Loss: 0.298929
+Epoch: [17/484] Iter:[170/991], Time: 0.48, lr: [0.009680120500440344], Loss: 0.301807
+Epoch: [17/484] Iter:[180/991], Time: 0.48, lr: [0.00967993218203553], Loss: 0.301494
+Epoch: [17/484] Iter:[190/991], Time: 0.47, lr: [0.009679743863223643], Loss: 0.300706
+Epoch: [17/484] Iter:[200/991], Time: 0.47, lr: [0.009679555544004674], Loss: 0.299937
+Epoch: [17/484] Iter:[210/991], Time: 0.47, lr: [0.009679367224378614], Loss: 0.299541
+Epoch: [17/484] Iter:[220/991], Time: 0.47, lr: [0.009679178904345455], Loss: 0.301789
+Epoch: [17/484] Iter:[230/991], Time: 0.47, lr: [0.00967899058390518], Loss: 0.301877
+Epoch: [17/484] Iter:[240/991], Time: 0.47, lr: [0.009678802263057786], Loss: 0.300060
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.97157478 0.78884012 0.88967439 0.29536282 0.25087748 0.55148421
+ 0.59876857 0.70887585 0.90321607 0.53741628 0.92235793 0.71668269
+ 0.52043817 0.9191607  0.44367883 0.67930246 0.25239718 0.46902549
+ 0.71773388] 0.6387825208152516
+1 [0.97073584 0.78379233 0.88219542 0.2497857  0.08525395 0.54606906
+ 0.60426143 0.71026575 0.90453054 0.54817457 0.92096031 0.70793642
+ 0.52346945 0.91953859 0.49399349 0.74412965 0.37553141 0.47720733
+ 0.71085176] 0.6399306847337213
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.282, MeanIU:  0.6399, Best_mIoU:  0.6930
+[0.97073584 0.78379233 0.88219542 0.2497857  0.08525395 0.54606906
+ 0.60426143 0.71026575 0.90453054 0.54817457 0.92096031 0.70793642
+ 0.52346945 0.91953859 0.49399349 0.74412965 0.37553141 0.47720733
+ 0.71085176]
+Epoch: [18/484] Iter:[0/991], Time: 0.84, lr: [0.009664658203336873], Loss: 0.389296
+Epoch: [18/484] Iter:[10/991], Time: 0.51, lr: [0.009664469851479151], Loss: 0.307100
+Epoch: [18/484] Iter:[20/991], Time: 0.49, lr: [0.009664281499213561], Loss: 0.296733
+Epoch: [18/484] Iter:[30/991], Time: 0.48, lr: [0.009664093146540095], Loss: 0.313383
+Epoch: [18/484] Iter:[40/991], Time: 0.48, lr: [0.009663904793458739], Loss: 0.320260
+Epoch: [18/484] Iter:[50/991], Time: 0.48, lr: [0.009663716439969487], Loss: 0.320098
+Epoch: [18/484] Iter:[60/991], Time: 0.48, lr: [0.009663528086072326], Loss: 0.316627
+Epoch: [18/484] Iter:[70/991], Time: 0.48, lr: [0.009663339731767247], Loss: 0.316969
+Epoch: [18/484] Iter:[80/991], Time: 0.48, lr: [0.009663151377054244], Loss: 0.331522
+Epoch: [18/484] Iter:[90/991], Time: 0.48, lr: [0.0096629630219333], Loss: 0.330648
+Epoch: [18/484] Iter:[100/991], Time: 0.48, lr: [0.009662774666404415], Loss: 0.325245
+Epoch: [18/484] Iter:[110/991], Time: 0.48, lr: [0.00966258631046757], Loss: 0.325825
+Epoch: [18/484] Iter:[120/991], Time: 0.48, lr: [0.009662397954122761], Loss: 0.329739
+Epoch: [18/484] Iter:[130/991], Time: 0.48, lr: [0.009662209597369978], Loss: 0.329677
+Epoch: [18/484] Iter:[140/991], Time: 0.48, lr: [0.009662021240209206], Loss: 0.327501
+Epoch: [18/484] Iter:[150/991], Time: 0.48, lr: [0.009661832882640442], Loss: 0.325397
+Epoch: [18/484] Iter:[160/991], Time: 0.48, lr: [0.009661644524663674], Loss: 0.323966
+Epoch: [18/484] Iter:[170/991], Time: 0.48, lr: [0.009661456166278889], Loss: 0.321214
+Epoch: [18/484] Iter:[180/991], Time: 0.48, lr: [0.009661267807486083], Loss: 0.319386
+Epoch: [18/484] Iter:[190/991], Time: 0.47, lr: [0.009661079448285242], Loss: 0.315139
+Epoch: [18/484] Iter:[200/991], Time: 0.47, lr: [0.009660891088676356], Loss: 0.313648
+Epoch: [18/484] Iter:[210/991], Time: 0.47, lr: [0.009660702728659418], Loss: 0.312189
+Epoch: [18/484] Iter:[220/991], Time: 0.47, lr: [0.009660514368234417], Loss: 0.314657
+Epoch: [18/484] Iter:[230/991], Time: 0.47, lr: [0.009660326007401344], Loss: 0.315476
+Epoch: [18/484] Iter:[240/991], Time: 0.47, lr: [0.009660137646160187], Loss: 0.318714
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.97294021 0.7872934  0.88990046 0.32262481 0.44719661 0.55126386
+ 0.56386359 0.70515235 0.90041699 0.49808754 0.92575534 0.74205667
+ 0.50843692 0.89158052 0.34185864 0.59544051 0.0071828  0.49210255
+ 0.70064314] 0.6233577309822593
+1 [0.97312935 0.7910017  0.88833768 0.31881816 0.47034921 0.55719146
+ 0.58717283 0.7121026  0.90276085 0.48906158 0.92834356 0.75341297
+ 0.49913777 0.87366617 0.31837622 0.56404689 0.         0.50849832
+ 0.69968266] 0.6228994734503093
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.285, MeanIU:  0.6229, Best_mIoU:  0.6930
+[0.97312935 0.7910017  0.88833768 0.31881816 0.47034921 0.55719146
+ 0.58717283 0.7121026  0.90276085 0.48906158 0.92834356 0.75341297
+ 0.49913777 0.87366617 0.31837622 0.56404689 0.         0.50849832
+ 0.69968266]
+Epoch: [19/484] Iter:[0/991], Time: 0.84, lr: [0.00964599055011666], Loss: 0.102294
+Epoch: [19/484] Iter:[10/991], Time: 0.50, lr: [0.009645802157791872], Loss: 0.284269
+Epoch: [19/484] Iter:[20/991], Time: 0.49, lr: [0.009645613765058248], Loss: 0.377084
+Epoch: [19/484] Iter:[30/991], Time: 0.48, lr: [0.009645425371915782], Loss: 0.361680
+Epoch: [19/484] Iter:[40/991], Time: 0.48, lr: [0.009645236978364464], Loss: 0.366480
+Epoch: [19/484] Iter:[50/991], Time: 0.48, lr: [0.00964504858440428], Loss: 0.359579
+Epoch: [19/484] Iter:[60/991], Time: 0.48, lr: [0.009644860190035227], Loss: 0.351444
+Epoch: [19/484] Iter:[70/991], Time: 0.48, lr: [0.00964467179525729], Loss: 0.351834
+Epoch: [19/484] Iter:[80/991], Time: 0.48, lr: [0.00964448340007046], Loss: 0.347616
+Epoch: [19/484] Iter:[90/991], Time: 0.48, lr: [0.009644295004474729], Loss: 0.343518
+Epoch: [19/484] Iter:[100/991], Time: 0.48, lr: [0.009644106608470086], Loss: 0.336036
+Epoch: [19/484] Iter:[110/991], Time: 0.48, lr: [0.009643918212056523], Loss: 0.341701
+Epoch: [19/484] Iter:[120/991], Time: 0.48, lr: [0.009643729815234028], Loss: 0.337015
+Epoch: [19/484] Iter:[130/991], Time: 0.48, lr: [0.009643541418002591], Loss: 0.331304
+Epoch: [19/484] Iter:[140/991], Time: 0.48, lr: [0.009643353020362205], Loss: 0.329046
+Epoch: [19/484] Iter:[150/991], Time: 0.48, lr: [0.009643164622312858], Loss: 0.328445
+Epoch: [19/484] Iter:[160/991], Time: 0.48, lr: [0.009642976223854542], Loss: 0.327142
+Epoch: [19/484] Iter:[170/991], Time: 0.48, lr: [0.009642787824987245], Loss: 0.326710
+Epoch: [19/484] Iter:[180/991], Time: 0.48, lr: [0.009642599425710958], Loss: 0.325611
+Epoch: [19/484] Iter:[190/991], Time: 0.47, lr: [0.009642411026025671], Loss: 0.322518
+Epoch: [19/484] Iter:[200/991], Time: 0.47, lr: [0.009642222625931377], Loss: 0.319654
+Epoch: [19/484] Iter:[210/991], Time: 0.47, lr: [0.00964203422542806], Loss: 0.326063
+Epoch: [19/484] Iter:[220/991], Time: 0.47, lr: [0.009641845824515717], Loss: 0.324931
+Epoch: [19/484] Iter:[230/991], Time: 0.47, lr: [0.009641657423194335], Loss: 0.325177
+Epoch: [19/484] Iter:[240/991], Time: 0.47, lr: [0.009641469021463905], Loss: 0.323921
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.97477852 0.81334304 0.89966037 0.43684644 0.49533185 0.56185634
+ 0.51384887 0.73212899 0.90841321 0.54722076 0.93311115 0.78039461
+ 0.55387966 0.92328289 0.5175232  0.63162347 0.46277695 0.54980739
+ 0.72885317] 0.6823516244382457
+1 [0.97475191 0.81091157 0.90223142 0.46094459 0.51611674 0.57000338
+ 0.51463771 0.73624323 0.90967529 0.54038979 0.93502237 0.78541082
+ 0.54651461 0.92989924 0.73043625 0.7254314  0.60371145 0.5468655
+ 0.73227511] 0.7090248626000256
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.239, MeanIU:  0.7090, Best_mIoU:  0.7090
+[0.97475191 0.81091157 0.90223142 0.46094459 0.51611674 0.57000338
+ 0.51463771 0.73624323 0.90967529 0.54038979 0.93502237 0.78541082
+ 0.54651461 0.92989924 0.73043625 0.7254314  0.60371145 0.5468655
+ 0.73227511]
+Epoch: [20/484] Iter:[0/991], Time: 0.85, lr: [0.009627318881912417], Loss: 0.218418
+Epoch: [20/484] Iter:[10/991], Time: 0.51, lr: [0.009627130449024716], Loss: 0.314039
+Epoch: [20/484] Iter:[20/991], Time: 0.49, lr: [0.009626942015727212], Loss: 0.297561
+Epoch: [20/484] Iter:[30/991], Time: 0.49, lr: [0.009626753582019896], Loss: 0.311529
+Epoch: [20/484] Iter:[40/991], Time: 0.48, lr: [0.009626565147902756], Loss: 0.322154
+Epoch: [20/484] Iter:[50/991], Time: 0.48, lr: [0.009626376713375785], Loss: 0.309628
+Epoch: [20/484] Iter:[60/991], Time: 0.48, lr: [0.00962618827843897], Loss: 0.306652
+Epoch: [20/484] Iter:[70/991], Time: 0.48, lr: [0.009625999843092306], Loss: 0.304226
+Epoch: [20/484] Iter:[80/991], Time: 0.48, lr: [0.00962581140733578], Loss: 0.298289
+Epoch: [20/484] Iter:[90/991], Time: 0.48, lr: [0.00962562297116938], Loss: 0.299082
+Epoch: [20/484] Iter:[100/991], Time: 0.48, lr: [0.009625434534593101], Loss: 0.295839
+Epoch: [20/484] Iter:[110/991], Time: 0.48, lr: [0.00962524609760693], Loss: 0.293236
+Epoch: [20/484] Iter:[120/991], Time: 0.48, lr: [0.009625057660210858], Loss: 0.292476
+Epoch: [20/484] Iter:[130/991], Time: 0.48, lr: [0.009624869222404875], Loss: 0.297756
+Epoch: [20/484] Iter:[140/991], Time: 0.48, lr: [0.009624680784188972], Loss: 0.306377
+Epoch: [20/484] Iter:[150/991], Time: 0.48, lr: [0.009624492345563139], Loss: 0.312958
+Epoch: [20/484] Iter:[160/991], Time: 0.48, lr: [0.009624303906527364], Loss: 0.318781
+Epoch: [20/484] Iter:[170/991], Time: 0.47, lr: [0.00962411546708164], Loss: 0.322127
+Epoch: [20/484] Iter:[180/991], Time: 0.47, lr: [0.009623927027225957], Loss: 0.322252
+Epoch: [20/484] Iter:[190/991], Time: 0.47, lr: [0.009623738586960303], Loss: 0.322794
+Epoch: [20/484] Iter:[200/991], Time: 0.47, lr: [0.009623550146284672], Loss: 0.322078
+Epoch: [20/484] Iter:[210/991], Time: 0.47, lr: [0.00962336170519905], Loss: 0.321050
+Epoch: [20/484] Iter:[220/991], Time: 0.47, lr: [0.00962317326370343], Loss: 0.318437
+Epoch: [20/484] Iter:[230/991], Time: 0.47, lr: [0.0096229848217978], Loss: 0.319608
+Epoch: [20/484] Iter:[240/991], Time: 0.47, lr: [0.009622796379482152], Loss: 0.320567
+0
+0
+0
+0
+10
+10
+10
+10
+20
+20
+20
+20
+30
+30
+30
+30
+40
+40
+40
+40
+0 [0.97180111 0.79653101 0.90060204 0.27417897 0.5048335  0.57508336
+ 0.58378603 0.69010479 0.90610152 0.56942817 0.92701573 0.74777918
+ 0.47710719 0.89796909 0.47299559 0.59898691 0.46568552 0.31380073
+ 0.7045363 ] 0.6514908803318308
+1 [0.97104873 0.79412787 0.89892271 0.24016436 0.50832919 0.57736925
+ 0.58805639 0.69423064 0.90305833 0.58235108 0.92639364 0.71876378
+ 0.41619887 0.89623556 0.61381158 0.72896816 0.48785226 0.24808629
+ 0.70452646] 0.65781553452264
+=> saving checkpoint to output/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484checkpoint.pth.tar
+Loss: 0.262, MeanIU:  0.6578, Best_mIoU:  0.7090
+[0.97104873 0.79412787 0.89892271 0.24016436 0.50832919 0.57736925
+ 0.58805639 0.69423064 0.90305833 0.58235108 0.92639364 0.71876378
+ 0.41619887 0.89623556 0.61381158 0.72896816 0.48785226 0.24808629
+ 0.70452646]
+Epoch: [21/484] Iter:[0/991], Time: 0.84, lr: [0.00960864318920482], Loss: 0.264094
+Epoch: [21/484] Iter:[10/991], Time: 0.51, lr: [0.00960845471565793], Loss: 0.316663
+Epoch: [21/484] Iter:[20/991], Time: 0.49, lr: [0.009608266241700261], Loss: 0.314511
+Epoch: [21/484] Iter:[30/991], Time: 0.48, lr: [0.00960807776733181], Loss: 0.310708
+slurmstepd: error: *** JOB 45905984 ON spartan-gpgpu121 CANCELLED AT 2023-03-29T20:09:26 DUE TO TIME LIMIT ***
