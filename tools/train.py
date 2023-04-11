@@ -17,8 +17,6 @@ import time
 import timeit
 from pathlib import Path
 
-import numpy as np
-
 import torch
 import torch.nn as nn
 import torch.backends.cudnn as cudnn
@@ -34,6 +32,9 @@ from core.criterion import CrossEntropy, OhemCrossEntropy
 from core.function import train, validate
 from utils.modelsummary import get_model_summary
 from utils.utils import create_logger, FullModel
+
+from cords.selectionstrategies.SL.randomstrategy import RandomStrategy
+import numpy as np
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train segmentation network')
@@ -133,7 +134,6 @@ def main():
                         crop_size=crop_size,
                         downsample_rate=config.TRAIN.DOWNSAMPLERATE,
                         scale_factor=config.TRAIN.SCALE_FACTOR)
-
     train_sampler = get_sampler(train_dataset)
     trainloader = torch.utils.data.DataLoader(
         train_dataset,
@@ -269,6 +269,7 @@ def main():
     end_epoch = config.TRAIN.END_EPOCH + config.TRAIN.EXTRA_EPOCH
     num_iters = config.TRAIN.END_EPOCH * epoch_iters
     extra_iters = config.TRAIN.EXTRA_EPOCH * extra_epoch_iters
+
     
     for epoch in range(last_epoch, end_epoch):
 
@@ -280,11 +281,15 @@ def main():
         #             testloader, model, writer_dict)
 
         if epoch >= config.TRAIN.END_EPOCH:
+            # Cords
+            extra_trainloader = RandomStrategy(extra_trainloader)
             train(config, epoch-config.TRAIN.END_EPOCH, 
                   config.TRAIN.EXTRA_EPOCH, extra_epoch_iters, 
                   config.TRAIN.EXTRA_LR, extra_iters, 
                   extra_trainloader, optimizer, model, writer_dict)
         else:
+            # Cords
+            trainloader = RandomStrategy(trainloader)
             train(config, epoch, config.TRAIN.END_EPOCH, 
                   epoch_iters, config.TRAIN.LR, num_iters,
                   trainloader, optimizer, model, writer_dict)

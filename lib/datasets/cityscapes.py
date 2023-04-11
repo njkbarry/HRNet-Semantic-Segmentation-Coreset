@@ -42,6 +42,8 @@ class Cityscapes(BaseDataset):
         self.flip = flip
         
         self.img_list = [line.strip().split() for line in open(root+list_path)]
+        # TODO:
+        #   - Add random subsampling method here to select a random subset of the full image_list
 
         self.files = self.read_files()
         if num_samples:
