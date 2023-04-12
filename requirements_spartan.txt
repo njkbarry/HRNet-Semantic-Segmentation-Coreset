@@ -1,6 +1,5 @@
-pandas==1.1.4
-EasyDict==1.10
-shapely==2.0.1
-json_tricks==3.16.1
+git+https://github.com/decile-team/cords.git
+# install cords/requirements/requirements.txt
+# remove load_boston
+opencv-python==4.7.0.72
 yacs==0.1.8
-tensorboardX==2.6
