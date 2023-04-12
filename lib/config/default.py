@@ -101,6 +101,8 @@ _C.TRAIN.BATCH_SIZE_PER_GPU = 32
 _C.TRAIN.SHUFFLE = True
 # only using some training samples
 _C.TRAIN.NUM_SAMPLES = 0
+# random subset training
+_C.TRAIN.RANDOM_SUBSET = 1.0
 
 # testing
 _C.TEST = CN()

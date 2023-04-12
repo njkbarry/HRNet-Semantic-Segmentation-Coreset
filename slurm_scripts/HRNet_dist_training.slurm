@@ -35,7 +35,7 @@
 #SBATCH --mail-type=END
 
 # The maximum running time of the job in days-hours:mins:sec
-#SBATCH --time=0-23:0:00
+#SBATCH --time=0-6:0:00
 
 # check that the script is launched with sbatch
 if [ "x$SLURM_JOB_ID" == "x" ]; then
@@ -44,17 +44,13 @@ if [ "x$SLURM_JOB_ID" == "x" ]; then
 fi
 
 # Run the job from this directory:
-cd /data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation/
+cd /data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/
 
 # The modules to load:
 module purge
 module load fosscuda/2020b
-module load pytorch/1.7.1-python-3.8.6
-module load opencv/4.5.1-python-3.8.6-contrib
-module load pyyaml/5.3.1-python-3.8.6
-module load cython/0.29.22
-module load ninja/1.10.1-python-3.8.6
-module load tqdm/4.60.0
+module load python/3.8.6
+module load tkinter/3.8.6
 
 # The job command(s):
 source venv/bin/activate

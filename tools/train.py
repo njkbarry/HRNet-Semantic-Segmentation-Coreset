@@ -135,7 +135,8 @@ def main():
                         base_size=config.TRAIN.BASE_SIZE,
                         crop_size=crop_size,
                         downsample_rate=config.TRAIN.DOWNSAMPLERATE,
-                        scale_factor=config.TRAIN.SCALE_FACTOR)
+                        scale_factor=config.TRAIN.SCALE_FACTOR,
+                        random_subset=config.TRAIN.RANDOM_SUBSET)
     train_sampler = get_sampler(train_dataset)
     trainloader = torch.utils.data.DataLoader(
         train_dataset,
