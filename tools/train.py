@@ -33,7 +33,7 @@ from core.function import train, validate
 from utils.modelsummary import get_model_summary
 from utils.utils import create_logger, FullModel
 
-from cords.selectionstrategies.SL.randomstrategy import RandomStrategy
+# from cords.selectionstrategies.SL.randomstrategy import RandomStrategy
 import numpy as np
 
 def parse_args():
@@ -281,15 +281,11 @@ def main():
         #             testloader, model, writer_dict)
 
         if epoch >= config.TRAIN.END_EPOCH:
-            # Cords
-            extra_trainloader = RandomStrategy(extra_trainloader)
             train(config, epoch-config.TRAIN.END_EPOCH, 
                   config.TRAIN.EXTRA_EPOCH, extra_epoch_iters, 
                   config.TRAIN.EXTRA_LR, extra_iters, 
                   extra_trainloader, optimizer, model, writer_dict)
         else:
-            # Cords
-            trainloader = RandomStrategy(trainloader)
             train(config, epoch, config.TRAIN.END_EPOCH, 
                   epoch_iters, config.TRAIN.LR, num_iters,
                   trainloader, optimizer, model, writer_dict)
