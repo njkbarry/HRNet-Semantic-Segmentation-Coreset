@@ -122,6 +122,8 @@ def main():
 
     # prepare data
     crop_size = (config.TRAIN.IMAGE_SIZE[1], config.TRAIN.IMAGE_SIZE[0])
+
+    # TODO: Add random subset capability
     train_dataset = eval('datasets.'+config.DATASET.DATASET)(
                         root=config.DATASET.ROOT,
                         list_path=config.DATASET.TRAIN_SET,
