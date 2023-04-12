@@ -3,3 +3,11 @@ git+https://github.com/decile-team/cords.git
 # remove load_boston
 opencv-python==4.7.0.72
 yacs==0.1.8
+-i https://test.pypi.org/simple/ 
+--extra-index-url https://pypi.org/simple/
+submodlib==1.1.5
+datasets==2.11.0
+transformers==4.27.4
+sentence-transformers==2.2.2
+h5py==3.8.0
+# comment out load_dataset # pass gen_dataset()
