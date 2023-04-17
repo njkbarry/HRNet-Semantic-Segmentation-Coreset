@@ -275,10 +275,68 @@ def main():
     extra_iters = config.TRAIN.EXTRA_EPOCH * extra_epoch_iters
 
 
-    """
-    ############################## AdaptiveRandom Dataloader Additional Arguments ##############################
-    """
-    if config.TRAIN.RANDOM_SUBSET:
+    if hasattr(config.TRAIN, 'CORESET_ALGORITHM') and config.TRAIN.CORESET_ALGORITHM == 'MILO':
+        """
+        ############################## MILO Dataloader Additional Arguments ##############################
+        """
+        pass
+        num_epochs = end_epoch - last_epoch
+
+        # TODO: Abastract and implement initialisation
+        #   - Save pickled stochastic_subsets and global_order
+        #   - Fix pathing
+        #   - Fix args
+
+        subset_selection_name = dss_args.type + "_" + dss_args.submod_function + "_" + str(dss_args.gc_ratio) + "_" + str(dss_args.kw)
+        gc_stochastic_subsets_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_0.1_stochastic_subsets.pkl'),
+        if not os.path.exists(gc_stochastic_subsets_file_path):
+            stochastic_subsets = generate_image_stochastic_subsets(dataset, model, submod_function, metric, kw, fraction, n_subsets, seed=42, data_dir='../data', device='cpu')    
+    
+        global_order_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_global_order.pkl')
+        if not os.path.exists(global_order_file_path):
+            global_order, global_knn, global_r2, cluster_idxs = generate_image_global_order(dataset, model, submod_function, metric, kw, r2_coefficient, knn, seed=42, data_dir='../data', device='cpu')    
+    
+        dss_args=DotMap(
+            dict(
+                type="MILO",
+                fraction=config.TRAIN.RANDOM_SUBSET,
+                kw=0.1,
+                # TODO: generate
+                global_order_file=os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_global_order.pkl'),
+                gc_ratio=1/6,
+                # TODO: generate
+                gc_stochastic_subsets_file=os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_0.1_stochastic_subsets.pkl'),
+                submod_function = 'fl',
+                select_every=1,
+                kappa=0,
+                per_class=True,
+                temperature=1,
+                collate_fn = None,
+                device= device,
+                num_epochs=num_epochs,
+                subset_selection_name=subset_selection_name,
+                )
+            )
+        
+        trainloader = MILODataLoader(
+            train_loader=trainloader,
+            dss_args=dss_args,
+            logger=logger,
+            batch_size=batch_size,
+            shuffle=config.TRAIN.SHUFFLE and train_sampler is None,
+            pin_memory=True,
+            collate_fn = dss_args.collate_fn,
+        )
+        
+        epoch_iters = int(np.floor(epoch_iters*config.TRAIN.RANDOM_SUBSET))
+
+        
+
+    
+    elif not hasattr(config.TRAIN, 'CORESET_ALGORITHM') and config.TRAIN.RANDOM_SUBSET:
+        """
+        ############################## AdaptiveRandom Dataloader Additional Arguments ##############################
+        """
         # device = None
         # Fix Me: This may need a +1 adjustment and assurance to be >0
         num_epochs = end_epoch - last_epoch
@@ -300,13 +358,13 @@ def main():
         trainloader = AdaptiveRandomDataLoader(
             train_loader=trainloader,
             dss_args=dss_args,
-            logger=logger,  # This is very naive and may not work, it is the default HRNet logger
+            logger=logger,
             batch_size=batch_size,
             shuffle=config.TRAIN.SHUFFLE and train_sampler is None,
             pin_memory=True,
-            collate_fn = dss_args.collate_fn
+            collate_fn = dss_args.collate_fn,
         )
-
+        
         epoch_iters = int(np.floor(epoch_iters*config.TRAIN.RANDOM_SUBSET))
 
     

@@ -103,6 +103,8 @@ _C.TRAIN.SHUFFLE = True
 _C.TRAIN.NUM_SAMPLES = 0
 # random subset training
 _C.TRAIN.RANDOM_SUBSET = 1.0
+# Coreset selection algorithm
+_C.TRAIN.CORESET_ALGORITHM = None
 
 # testing
 _C.TEST = CN()
