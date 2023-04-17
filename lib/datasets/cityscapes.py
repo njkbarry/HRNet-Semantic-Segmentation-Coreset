@@ -31,14 +31,12 @@ class Cityscapes(BaseDataset):
                  downsample_rate=1,
                  scale_factor=16,
                  mean=[0.485, 0.456, 0.406], 
-                 std=[0.229, 0.224, 0.225],
-                 random_subset = 1.0):
+                 std=[0.229, 0.224, 0.225]
+                 ):
 
         # Input checking for random subset proportion
-        assert(random_subset <=1.0 and random_subset > 0.0), f'random_subset not an appropriate proportion, instead: {random_subset}'
-
         super(Cityscapes, self).__init__(ignore_label, base_size,
-                crop_size, downsample_rate, scale_factor, mean, std,random_subset)
+                crop_size, downsample_rate, scale_factor, mean, std)
 
         self.root = root
         self.list_path = list_path
@@ -48,13 +46,6 @@ class Cityscapes(BaseDataset):
         self.flip = flip
         
         self.img_list = [line.strip().split() for line in open(root+list_path)]
-
-        # Train on a random subset - coreset benchmarking
-        if random_subset != 1.0:
-            np.random.seed(RANDOM_SEED)
-            subset_size = int(self.random_subset * len(self.img_list))
-            indices = np.random.choice(len(self.img_list), size=subset_size)
-            self.img_list = [self.img_list[i]for i in indices]
 
         self.files = self.read_files()
         if num_samples:

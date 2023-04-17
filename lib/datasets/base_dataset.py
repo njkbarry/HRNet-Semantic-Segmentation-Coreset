@@ -25,8 +25,8 @@ class BaseDataset(data.Dataset):
                  downsample_rate=1,
                  scale_factor=16,
                  mean=[0.485, 0.456, 0.406],
-                 std=[0.229, 0.224, 0.225],
-                 random_subset: float = 1.0):
+                 std=[0.229, 0.224, 0.225]
+                 ):
 
         self.base_size = base_size
         self.crop_size = crop_size
@@ -38,8 +38,6 @@ class BaseDataset(data.Dataset):
         self.downsample_rate = 1./downsample_rate
 
         self.files = []
-
-        self.random_subset = random_subset
 
     def __len__(self):
         return len(self.files)
