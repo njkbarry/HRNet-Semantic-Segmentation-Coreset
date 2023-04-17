@@ -33,7 +33,9 @@ from core.function import train, validate
 from utils.modelsummary import get_model_summary
 from utils.utils import create_logger, FullModel
 
-# from cords.selectionstrategies.SL.randomstrategy import RandomStrategy
+from cords.utils.data.dataloader.SL.adaptive import AdaptiveRandomDataLoader, StochasticGreedyDataLoader, \
+    RandomDataLoader, WeightedRandomDataLoader, MILODataLoader
+from dotmap import DotMap
 import numpy as np
 
 def parse_args():
@@ -135,8 +137,7 @@ def main():
                         base_size=config.TRAIN.BASE_SIZE,
                         crop_size=crop_size,
                         downsample_rate=config.TRAIN.DOWNSAMPLERATE,
-                        scale_factor=config.TRAIN.SCALE_FACTOR,
-                        random_subset=config.TRAIN.RANDOM_SUBSET)
+                        scale_factor=config.TRAIN.SCALE_FACTOR)
     train_sampler = get_sampler(train_dataset)
     trainloader = torch.utils.data.DataLoader(
         train_dataset,
@@ -273,6 +274,41 @@ def main():
     num_iters = config.TRAIN.END_EPOCH * epoch_iters
     extra_iters = config.TRAIN.EXTRA_EPOCH * extra_epoch_iters
 
+
+    """
+    ############################## AdaptiveRandom Dataloader Additional Arguments ##############################
+    """
+    if config.TRAIN.RANDOM_SUBSET:
+        # device = None
+        # Fix Me: This may need a +1 adjustment and assurance to be >0
+        num_epochs = end_epoch - last_epoch
+
+        # ala https://github.com/decile-team/cords/blob/main/configs/SL/config_adaptiverandom_mnist.py
+        dss_args=DotMap(
+            dict(
+                type="AdaptiveRandom",
+                fraction=config.TRAIN.RANDOM_SUBSET,
+                select_every=1,
+                kappa=0,
+                collate_fn = None,
+                device= "cuda",
+                num_epochs=num_epochs
+                )
+            )
+
+
+        trainloader = AdaptiveRandomDataLoader(
+            train_loader=trainloader,
+            dss_args=dss_args,
+            logger=logger,  # This is very naive and may not work, it is the default HRNet logger
+            batch_size=batch_size,
+            shuffle=config.TRAIN.SHUFFLE and train_sampler is None,
+            pin_memory=True,
+            collate_fn = dss_args.collate_fn
+        )
+
+        epoch_iters = int(np.floor(epoch_iters*config.TRAIN.RANDOM_SUBSET))
+
     
     for epoch in range(last_epoch, end_epoch):
 
@@ -321,7 +357,8 @@ def main():
 
         writer_dict['writer'].close()
         end = timeit.default_timer()
-        logger.info('Hours: %d' % np.int((end-start)/3600))
+        logger.info('Hours: %d' % int((end-start)/3600))
+        logger.info('Minutes: %d' % (int((end-start)/60) - 60*int((end-start)/3600)))
         logger.info('Done')
 
 

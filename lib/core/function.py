@@ -50,7 +50,10 @@ def train(config, epoch, num_epoch, epoch_iters, base_lr,
     global_steps = writer_dict['train_global_steps']
 
     for i_iter, batch in enumerate(trainloader, 0):
-        images, labels, _, _ = batch
+        if 'cords' in str(type(trainloader)):
+            images, labels, _, _, _ = batch
+        else:
+            images, labels, _, _ = batch
         images = images.cuda()
         labels = labels.long().cuda()
 
