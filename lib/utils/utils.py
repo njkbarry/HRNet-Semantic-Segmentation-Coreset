@@ -141,29 +141,7 @@ def adjust_learning_rate(optimizer, base_lr, max_iters,
     return lr
 
 
-def initialise_stochastic_subsets(dss_args: DotMap):
-
-    dss_args=DotMap(
-            dict(
-                type="MILO",
-                fraction=config.TRAIN.RANDOM_SUBSET,
-                kw=0.1,
-                # TODO: generate
-                global_order_file=os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_global_order.pkl'),
-                gc_ratio=1/6,
-                # TODO: generate
-                gc_stochastic_subsets_file=os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_0.1_stochastic_subsets.pkl'),
-                submod_function = 'fl',
-                select_every=1,
-                kappa=0,
-                per_class=True,
-                temperature=1,
-                collate_fn = None,
-                device= device,
-                num_epochs=num_epochs,
-                subset_selection_name=subset_selection_name,
-                )
-            )
+def initialise_stochastic_subsets(dss_args: DotMap, config):
     
     # Generate stochastic subsets
     POSSIBLE_METRICS = ['rbf_kernel', 'dot', 'cossim']  # Best choice described in paper
@@ -191,7 +169,7 @@ def initialise_stochastic_subsets(dss_args: DotMap):
 
 
 
-def initialise_global_order(dss_args: DotMap):
+def initialise_global_order(dss_args: DotMap, config):
     pass
     global_order, global_knn, global_r2, cluster_idxs = generate_image_global_order(dataset, model, submod_function, metric, kw, r2_coefficient, knn, seed=42, data_dir='../data', device='cpu')    
     

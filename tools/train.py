@@ -31,7 +31,7 @@ from config import update_config
 from core.criterion import CrossEntropy, OhemCrossEntropy
 from core.function import train, validate
 from utils.modelsummary import get_model_summary
-from utils.utils import create_logger, FullModel
+from utils.utils import create_logger, FullModel, initialise_stochastic_subsets, initialise_global_order
 
 from cords.utils.data.dataloader.SL.adaptive import AdaptiveRandomDataLoader, StochasticGreedyDataLoader, \
     RandomDataLoader, WeightedRandomDataLoader, MILODataLoader
@@ -318,12 +318,12 @@ def main():
             )
         subset_selection_name = dss_args.type + "_" + dss_args.submod_function + "_" + str(dss_args.gc_ratio) + "_" + str(dss_args.kw)
         dss_args['subset_selection_name'] = subset_selection_name
-        
+
         if not os.path.exists(gc_stochastic_subsets_file_path):
-            initialise_stochastic_subsets(dss_args)
+            initialise_stochastic_subsets(dss_args, config)
 
         if not os.path.exists(global_order_file_path):
-                    initialise_global_order(dss_args)
+                    initialise_global_order(dss_args, config)
                     
 
         trainloader = MILODataLoader(
