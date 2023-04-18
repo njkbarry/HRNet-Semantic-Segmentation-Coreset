@@ -356,9 +356,12 @@ def main():
                 os.path.join(final_output_dir, 'final_state.pth'))
 
         writer_dict['writer'].close()
-        end = timeit.default_timer()
-        logger.info('Hours: %d' % int((end-start)/3600))
-        logger.info('Minutes: %d' % (int((end-start)/60) - 60*int((end-start)/3600)))
+    
+    # Log wall-times of each gpu
+    end = timeit.default_timer()
+    logger.info('GPU: {} - Hours: {}, Minutes: {}'.format(args.local_rank, int((end-start)/3600), (int((end-start)/60) - 60*int((end-start)/3600))))
+    
+    if args.local_rank <= 0:
         logger.info('Done')
 
 
