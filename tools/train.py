@@ -277,7 +277,7 @@ def main():
     extra_iters = config.TRAIN.EXTRA_EPOCH * extra_epoch_iters
 
 
-    if hasattr(config.TRAIN, 'CORESET_ALGORITHM') and config.TRAIN.CORESET_ALGORITHM == 'MILO':
+    if config.TRAIN.CORESET_ALGORITHM == 'MILO':
         """
         ############################## MILO Dataloader Additional Arguments ##############################
         """
@@ -340,7 +340,7 @@ def main():
         
 
     
-    elif not hasattr(config.TRAIN, 'CORESET_ALGORITHM') and config.TRAIN.RANDOM_SUBSET:
+    elif config.TRAIN.CORESET_ALGORITHM is None and config.TRAIN.RANDOM_SUBSET:
         """
         ############################## AdaptiveRandom Dataloader Additional Arguments ##############################
         """
