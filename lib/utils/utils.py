@@ -19,6 +19,7 @@ import torch
 import torch.nn as nn
 
 from cords.utils.data.data_utils.generate_global_order import generate_image_global_order, generate_image_stochastic_subsets
+from dotmap import DotMap
 
 class FullModel(nn.Module):
   """

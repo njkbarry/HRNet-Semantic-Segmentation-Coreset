@@ -289,20 +289,22 @@ def main():
         #   - Fix pathing
         #   - Fix args
 
-        subset_selection_name = dss_args.type + "_" + dss_args.submod_function + "_" + str(dss_args.gc_ratio) + "_" + str(dss_args.kw)
-        gc_stochastic_subsets_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_0.1_stochastic_subsets.pkl')           
-        global_order_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_global_order.pkl')
+        # gc_stochastic_subsets_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_0.1_stochastic_subsets.pkl')           
+        # global_order_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_global_order.pkl')
         
+        gc_stochastic_subsets_file_path = os.path.join('./','preprocessing/', config.DATASET.DATASET, '_0.1_stochastic_subsets.pkl')
+        global_order_file_path = os.path.join('./','preprocessing/', config.DATASET.DATASET, '_global_order.pkl')
+
         dss_args=DotMap(
             dict(
                 type="MILO",
                 fraction=config.TRAIN.RANDOM_SUBSET,
                 kw=0.1,
                 # TODO: generate
-                global_order_file=os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_global_order.pkl'),
+                global_order_file=global_order_file_path,
                 gc_ratio=1/6,
                 # TODO: generate
-                gc_stochastic_subsets_file=os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_0.1_stochastic_subsets.pkl'),
+                gc_stochastic_subsets_file=gc_stochastic_subsets_file_path,
                 submod_function = 'fl',
                 select_every=1,
                 kappa=0,
@@ -311,9 +313,11 @@ def main():
                 collate_fn = None,
                 device= device,
                 num_epochs=num_epochs,
-                subset_selection_name=subset_selection_name,
+                # subset_selection_name=subset_selection_name,
                 )
             )
+        subset_selection_name = dss_args.type + "_" + dss_args.submod_function + "_" + str(dss_args.gc_ratio) + "_" + str(dss_args.kw)
+        dss_args['subset_selection_name'] = subset_selection_name
         
         if not os.path.exists(gc_stochastic_subsets_file_path):
             initialise_stochastic_subsets(dss_args)
