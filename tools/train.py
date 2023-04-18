@@ -281,7 +281,6 @@ def main():
         """
         ############################## MILO Dataloader Additional Arguments ##############################
         """
-        pass
         num_epochs = end_epoch - last_epoch
 
         # TODO: Abastract and implement initialisation
