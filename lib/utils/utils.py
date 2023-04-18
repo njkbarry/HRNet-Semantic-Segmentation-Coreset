@@ -18,6 +18,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 
+from cords.utils.data.data_utils.generate_global_order import generate_image_global_order, generate_image_stochastic_subsets
+
 class FullModel(nn.Module):
   """
   Distribute the loss on multi-gpu to reduce 
@@ -136,3 +138,59 @@ def adjust_learning_rate(optimizer, base_lr, max_iters,
     if len(optimizer.param_groups) == 2:
         optimizer.param_groups[1]['lr'] = lr * nbb_mult
     return lr
+
+
+def initialise_stochastic_subsets(dss_args: DotMap):
+
+    dss_args=DotMap(
+            dict(
+                type="MILO",
+                fraction=config.TRAIN.RANDOM_SUBSET,
+                kw=0.1,
+                # TODO: generate
+                global_order_file=os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_global_order.pkl'),
+                gc_ratio=1/6,
+                # TODO: generate
+                gc_stochastic_subsets_file=os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_0.1_stochastic_subsets.pkl'),
+                submod_function = 'fl',
+                select_every=1,
+                kappa=0,
+                per_class=True,
+                temperature=1,
+                collate_fn = None,
+                device= device,
+                num_epochs=num_epochs,
+                subset_selection_name=subset_selection_name,
+                )
+            )
+    
+    # Generate stochastic subsets
+    POSSIBLE_METRICS = ['rbf_kernel', 'dot', 'cossim']  # Best choice described in paper
+    
+    # TODO: See if default is verified in paper, as above
+    DEFAULT_N_SUBSETS = 300
+
+    stochastic_subsets = generate_image_stochastic_subsets(dataset='cityscape',
+                                                            model='ViT',
+                                                            submod_function=dss_args.submod_function,
+                                                            metric='cossim',
+                                                            kw=dss_args.kw ,
+                                                            fraction = dss_args.fraction,
+                                                            n_subsets=DEFAULT_N_SUBSETS,
+                                                            seed=42,
+                                                            #data_dir='../data',may not be needed in dataloading
+                                                            data_dir = '',
+                                                            device=dss_args.device
+                                                        )
+
+    # Pickle stochastic subsets
+
+
+
+
+
+
+def initialise_global_order(dss_args: DotMap):
+    pass
+    global_order, global_knn, global_r2, cluster_idxs = generate_image_global_order(dataset, model, submod_function, metric, kw, r2_coefficient, knn, seed=42, data_dir='../data', device='cpu')    
+    

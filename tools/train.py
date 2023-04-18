@@ -65,6 +65,8 @@ def get_sampler(dataset):
     else:
         return None
 
+
+
 def main():
     args = parse_args()
 
@@ -288,14 +290,9 @@ def main():
         #   - Fix args
 
         subset_selection_name = dss_args.type + "_" + dss_args.submod_function + "_" + str(dss_args.gc_ratio) + "_" + str(dss_args.kw)
-        gc_stochastic_subsets_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_0.1_stochastic_subsets.pkl'),
-        if not os.path.exists(gc_stochastic_subsets_file_path):
-            stochastic_subsets = generate_image_stochastic_subsets(dataset, model, submod_function, metric, kw, fraction, n_subsets, seed=42, data_dir='../data', device='cpu')    
-    
+        gc_stochastic_subsets_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_0.1_stochastic_subsets.pkl')           
         global_order_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_global_order.pkl')
-        if not os.path.exists(global_order_file_path):
-            global_order, global_knn, global_r2, cluster_idxs = generate_image_global_order(dataset, model, submod_function, metric, kw, r2_coefficient, knn, seed=42, data_dir='../data', device='cpu')    
-    
+        
         dss_args=DotMap(
             dict(
                 type="MILO",
@@ -318,6 +315,13 @@ def main():
                 )
             )
         
+        if not os.path.exists(gc_stochastic_subsets_file_path):
+            initialise_stochastic_subsets(dss_args)
+
+        if not os.path.exists(global_order_file_path):
+                    initialise_global_order(dss_args)
+                    
+
         trainloader = MILODataLoader(
             train_loader=trainloader,
             dss_args=dss_args,
