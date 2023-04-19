@@ -384,7 +384,7 @@ def main():
 
         epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
 
-    elif config.TRAIN.CORESET_ALGORITHM is None and config.TRAIN.RANDOM_SUBSET:
+    elif config.TRAIN.CORESET_ALGORITHM == "AdaptiveRandom":
         """
         ############################## AdaptiveRandom Dataloader Additional Arguments ##############################
         """
@@ -402,6 +402,7 @@ def main():
                 collate_fn=None,
                 device="cuda",
                 num_epochs=num_epochs,
+                num_gpus=len(gpus),
             )
         )
 
@@ -490,17 +491,25 @@ def main():
 
     if args.local_rank <= 0:
 
-        torch.save(model.module.state_dict(),
-                os.path.join(final_output_dir, 'final_state.pth'))
+        torch.save(
+            model.module.state_dict(), os.path.join(final_output_dir, "final_state.pth")
+        )
 
-        writer_dict['writer'].close()
-    
+        writer_dict["writer"].close()
+
     # Log wall-times of each gpu
     end = timeit.default_timer()
-    logger.info('GPU: {} - Hours: {}, Minutes: {}'.format(args.local_rank, int((end-start)/3600), (int((end-start)/60) - 60*int((end-start)/3600))))
-    
+    logger.info(
+        "GPU: {} - Hours: {}, Minutes: {}, Total seconds: {}".format(
+            args.local_rank,
+            int((end - start) / 3600),
+            (int((end - start) / 60) - 60 * int((end - start) / 3600), start - end),
+        )
+    )
+
     if args.local_rank <= 0:
-        logger.info('Done')
+        logger.info("Done")
+
 
 if __name__ == "__main__":
     main()

@@ -69,6 +69,12 @@ def train(config, epoch, num_epoch, epoch_iters, base_lr,
         loss.backward()
         optimizer.step()
 
+        # FIXME: Remove dev code
+        # print('\nworker:', dist.get_rank())
+        # print('\nsees parameter:', model.modules_params[0][0][0][0][0][0])
+        # print('\nat iteration: ', i_iter)
+        # print()
+
         # measure elapsed time
         batch_time.update(time.time() - tic)
         tic = time.time()
