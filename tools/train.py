@@ -490,18 +490,17 @@ def main():
 
     if args.local_rank <= 0:
 
-        torch.save(
-            model.module.state_dict(), os.path.join(final_output_dir, "final_state.pth")
-        )
+        torch.save(model.module.state_dict(),
+                os.path.join(final_output_dir, 'final_state.pth'))
 
-        writer_dict["writer"].close()
-        end = timeit.default_timer()
-        logger.info("Hours: %d" % int((end - start) / 3600))
-        logger.info(
-            "Minutes: %d" % (int((end - start) / 60) - 60 * int((end - start) / 3600))
-        )
-        logger.info("Done")
-
+        writer_dict['writer'].close()
+    
+    # Log wall-times of each gpu
+    end = timeit.default_timer()
+    logger.info('GPU: {} - Hours: {}, Minutes: {}'.format(args.local_rank, int((end-start)/3600), (int((end-start)/60) - 60*int((end-start)/3600))))
+    
+    if args.local_rank <= 0:
+        logger.info('Done')
 
 if __name__ == "__main__":
     main()
