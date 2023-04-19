@@ -339,7 +339,6 @@ def main():
                 type="MILO",
                 fraction=config.TRAIN.RANDOM_SUBSET,
                 kw=0.1,
-                # TODO: generate
                 global_order_file=global_order_file_path,
                 gc_ratio=1 / 6,
                 # TODO: generate
@@ -352,7 +351,6 @@ def main():
                 collate_fn=None,
                 device=device,
                 num_epochs=num_epochs,
-                # subset_selection_name=subset_selection_name,
             )
         )
         subset_selection_name = (
