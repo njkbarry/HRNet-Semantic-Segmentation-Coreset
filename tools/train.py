@@ -503,8 +503,9 @@ def main():
         "GPU: {} - Hours: {}, Minutes: {}, Total seconds: {}".format(
             args.local_rank,
             int((end - start) / 3600),
-            (int((end - start) / 60) - 60 * int((end - start) / 3600), start - end),
-        )
+            (int((end - start) / 60) - 60 * int((end - start) / 3600)),
+            end - start,
+        ),
     )
 
     if args.local_rank <= 0:
