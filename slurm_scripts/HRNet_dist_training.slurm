@@ -9,7 +9,7 @@
 #SBATCH --nodes=1
 
 # The name of the job:
-#SBATCH --job-name="HRNet-dist-training-full-DS"
+#SBATCH --job-name="HRNet-dist-training-0.6-DS"
 
 # The project ID which this job should run under:
 #SBATCH --account="punim1896"
@@ -35,7 +35,7 @@
 #SBATCH --mail-type=END
 
 # The maximum running time of the job in days-hours:mins:sec
-#SBATCH --time=0-10:0:00
+#SBATCH --time=1-22:0:00
 
 # check that the script is launched with sbatch
 if [ "x$SLURM_JOB_ID" == "x" ]; then
