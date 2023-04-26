@@ -171,22 +171,23 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
         config=config,
     )
 
-    # Pickle stochastic subsets
-
-    # SEEMS TO BE HANDLES ALREADY IN FUNCTION ABOVE
-
 
 def initialise_global_order(dss_args: DotMap, config):
-    pass
+
+    # taken from /cords/configs/SL/config_milofixed_cifar100.py
+    DEFAULT_R2_COEFFICIENT = 3  # Multiplier for R2 Variant
+    DEFAULT_KNN = 25  # No of nearest neighbors for KNN variant
+
     global_order, global_knn, global_r2, cluster_idxs = generate_image_global_order(
-        dataset,
-        model,
-        submod_function,
-        metric,
-        kw,
-        r2_coefficient,
-        knn,
+        dataset="cityscape",
+        model="ViT",
+        submod_function=dss_args.submod_function,
+        metric="cossim",
+        kw=dss_args.kw,
+        r2_coefficient=DEFAULT_R2_COEFFICIENT,
+        knn=DEFAULT_KNN,
         seed=42,
-        data_dir="../data",
-        device="cpu",
+        data_dir="data/preprocessing/",
+        device=dss_args.device,
+        config=config,
     )
