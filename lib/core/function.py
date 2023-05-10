@@ -122,8 +122,8 @@ def validate(config, testloader, model, writer_dict):
     )
     with torch.no_grad():
         for idx, batch in tqdm(
-            enumerate(batch),
-            total=len(batch),
+            enumerate(testloader),
+            total=len(testloader),
             desc="Gathering validation metrics",
         ):
             image, label, _, _ = batch
