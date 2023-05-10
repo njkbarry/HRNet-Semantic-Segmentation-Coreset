@@ -393,6 +393,31 @@ def main():
         if not os.path.exists(gc_stochastic_subsets_file_path):
             initialise_stochastic_subsets(dss_args, config)
 
+        #########################################################################
+        # Development Code
+        #########################################################################
+
+        def dev_generate_seg_partitions(train_dataset):
+            """
+            The MILO algorithm implemented for classification task partitions the
+            dataset based on image class, which is singular per image. In a
+            semantic segmentation context that is not the case and so we must
+            partition the dataset in some other way.
+            https://trello.com/c/bDOosO5M/11-investigate-dataset-partitioning
+            """
+            image_stats = {}
+            for data in enumerate(train_dataset):
+                image, label = data
+                _, image_class_counts = unique, counts = np.unique(
+                    label, return_counts=True
+                )
+
+                # Do we get the image name in dataset enumeration
+
+        dev_generate_seg_partitions(train_dataset)
+
+        #########################################################################
+
         if not os.path.exists(global_order_file_path):
             initialise_global_order(dss_args, config)
 
@@ -482,46 +507,46 @@ def main():
                 writer_dict,
             )
 
-        valid_loss, mean_IoU, IoU_array = validate(
-            config, testloader, model, writer_dict
-        )
+        if epoch % config.TRAIN.VAL_SAVE_EVERY == 0:
+            valid_loss, mean_IoU, IoU_array = validate(
+                config, testloader, model, writer_dict
+            )
 
-        if config.TRAIN.CORESET_ALGORITHM is not None:
+            if config.TRAIN.CORESET_ALGORITHM is not None:
+                if args.local_rank <= 0:
+                    logging.info(
+                        "Warning: generting metrics on entire training set can significantly inflate training time"
+                    )
+                ft_valid_loss, ft_mean_IoU, ft_IoU_array = full_train_metric(
+                    config, full_trainloader, model, writer_dict
+                )
+
             if args.local_rank <= 0:
-                logging.info(
-                    "Warning: generting metrics on entire training set can significantly inflate training time"
+                logger.info(
+                    "=> saving checkpoint to {}".format(
+                        final_output_dir + "checkpoint.pth.tar"
+                    )
                 )
-            ft_valid_loss, ft_mean_IoU, ft_IoU_array = full_train_metric(
-                config, full_trainloader, model, writer_dict
-            )
-        # TODO: Not displayed in logging yet
-
-        if args.local_rank <= 0:
-            logger.info(
-                "=> saving checkpoint to {}".format(
-                    final_output_dir + "checkpoint.pth.tar"
-                )
-            )
-            torch.save(
-                {
-                    "epoch": epoch + 1,
-                    "best_mIoU": best_mIoU,
-                    "state_dict": model.module.state_dict(),
-                    "optimizer": optimizer.state_dict(),
-                },
-                os.path.join(final_output_dir, "checkpoint.pth.tar"),
-            )
-            if mean_IoU > best_mIoU:
-                best_mIoU = mean_IoU
                 torch.save(
-                    model.module.state_dict(),
-                    os.path.join(final_output_dir, "best.pth"),
+                    {
+                        "epoch": epoch + 1,
+                        "best_mIoU": best_mIoU,
+                        "state_dict": model.module.state_dict(),
+                        "optimizer": optimizer.state_dict(),
+                    },
+                    os.path.join(final_output_dir, "checkpoint.pth.tar"),
                 )
-            msg = "Loss: {:.3f}, MeanIU: {: 4.4f}, Best_mIoU: {: 4.4f}".format(
-                valid_loss, mean_IoU, best_mIoU
-            )
-            logging.info(msg)
-            logging.info(IoU_array)
+                if mean_IoU > best_mIoU:
+                    best_mIoU = mean_IoU
+                    torch.save(
+                        model.module.state_dict(),
+                        os.path.join(final_output_dir, "best.pth"),
+                    )
+                msg = "Loss: {:.3f}, MeanIU: {: 4.4f}, Best_mIoU: {: 4.4f}".format(
+                    valid_loss, mean_IoU, best_mIoU
+                )
+                logging.info(msg)
+                logging.info(IoU_array)
 
     if args.local_rank <= 0:
 
