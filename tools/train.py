@@ -487,9 +487,10 @@ def main():
         )
 
         if config.TRAIN.CORESET_ALGORITHM is not None:
-            logging.info(
-                "Warning: generting metrics on entire training set can significantly inflate training time"
-            )
+            if args.local_rank <= 0:
+                logging.info(
+                    "Warning: generting metrics on entire training set can significantly inflate training time"
+                )
             ft_valid_loss, ft_mean_IoU, ft_IoU_array = full_train_metric(
                 config, full_trainloader, model, writer_dict
             )
