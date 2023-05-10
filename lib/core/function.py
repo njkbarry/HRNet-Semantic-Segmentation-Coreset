@@ -121,7 +121,11 @@ def validate(config, testloader, model, writer_dict):
         (config.DATASET.NUM_CLASSES, config.DATASET.NUM_CLASSES, nums)
     )
     with torch.no_grad():
-        for idx, batch in enumerate(testloader):
+        for idx, batch in tqdm(
+            enumerate(batch),
+            total=len(batch),
+            desc="Gathering validation metrics",
+        ):
             image, label, _, _ = batch
             size = label.size()
             image = image.cuda()
@@ -145,9 +149,6 @@ def validate(config, testloader, model, writer_dict):
                     config.DATASET.NUM_CLASSES,
                     config.TRAIN.IGNORE_LABEL,
                 )
-
-            if idx % 10 == 0:
-                print(idx)
 
             loss = losses.mean()
             if dist.is_distributed():
@@ -178,7 +179,7 @@ def validate(config, testloader, model, writer_dict):
     return ave_loss.average(), mean_IoU, IoU_array
 
 
-def train_full_ds(config, fulltrainloader, model, writer_dict):
+def full_train_metric(config, fulltrainloader, model, writer_dict):
     """
     A validation run over the full training dataset. In an effort to investigate the degree of stochastic noise in training under a
     regime where each training iteration sees a new subsample of data, and so experiences more variance between epochs of the subset
@@ -191,7 +192,11 @@ def train_full_ds(config, fulltrainloader, model, writer_dict):
         (config.DATASET.NUM_CLASSES, config.DATASET.NUM_CLASSES, nums)
     )
     with torch.no_grad():
-        for idx, batch in enumerate(fulltrainloader):
+        for idx, batch in tqdm(
+            enumerate(fulltrainloader),
+            total=len(fulltrainloader),
+            desc="Gathering metrics on full dataset",
+        ):
             image, label, _, _ = batch
             size = label.size()
             image = image.cuda()
@@ -215,9 +220,6 @@ def train_full_ds(config, fulltrainloader, model, writer_dict):
                     config.DATASET.NUM_CLASSES,
                     config.TRAIN.IGNORE_LABEL,
                 )
-
-            if idx % 10 == 0:
-                print(idx)
 
             loss = losses.mean()
             if dist.is_distributed():

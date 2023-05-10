@@ -16,6 +16,7 @@ import logging
 import time
 import timeit
 from pathlib import Path
+from copy import deepcopy
 
 import torch
 import torch.nn as nn
@@ -29,7 +30,7 @@ import datasets
 from config import config
 from config import update_config
 from core.criterion import CrossEntropy, OhemCrossEntropy
-from core.function import train, validate
+from core.function import train, validate, full_train_metric
 from utils.modelsummary import get_model_summary
 from utils.utils import (
     create_logger,
@@ -100,6 +101,7 @@ def main():
         "writer": SummaryWriter(tb_log_dir),
         "train_global_steps": 0,
         "valid_global_steps": 0,
+        "fulltrain_global_steps": 0,
     }
 
     # cudnn related setting
@@ -165,6 +167,9 @@ def main():
         drop_last=True,
         sampler=train_sampler,
     )
+
+    if config.TRAIN.CORESET_ALGORITHM is not None:
+        full_trainloader = deepcopy(trainloader)
 
     extra_epoch_iters = 0
     if config.DATASET.EXTRA_TRAIN_SET:
@@ -480,6 +485,15 @@ def main():
         valid_loss, mean_IoU, IoU_array = validate(
             config, testloader, model, writer_dict
         )
+
+        if config.TRAIN.CORESET_ALGORITHM is not None:
+            logging.info(
+                "Warning: generting metrics on entire training set can significantly inflate training time"
+            )
+            ft_valid_loss, ft_mean_IoU, ft_IoU_array = full_train_metric(
+                config, full_trainloader, model, writer_dict
+            )
+        # TODO: Not displayed in logging yet
 
         if args.local_rank <= 0:
             logger.info(
