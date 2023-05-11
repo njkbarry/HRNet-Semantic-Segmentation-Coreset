@@ -17,6 +17,7 @@ import time
 import timeit
 from pathlib import Path
 from copy import deepcopy
+import collections
 
 import torch
 import torch.nn as nn
@@ -48,7 +49,11 @@ from cords.utils.data.dataloader.SL.adaptive import (
 )
 from dotmap import DotMap
 import numpy as np
-
+import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
+from tqdm import tqdm
+from matplotlib import pyplot as plt
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Train segmentation network")
@@ -405,14 +410,48 @@ def main():
             partition the dataset in some other way.
             https://trello.com/c/bDOosO5M/11-investigate-dataset-partitioning
             """
-            image_stats = {}
-            for data in enumerate(train_dataset):
-                image, label = data
-                _, image_class_counts = unique, counts = np.unique(
-                    label, return_counts=True
-                )
+            df_path = "/home/njbarry/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/plots/label_counts_df.csv"
+            if not os.path.exists(df_path):
+                image_stats = {}
+                for _, data in tqdm(
+                    enumerate(train_dataset),
+                    total=len(train_dataset),
+                    desc="Gathering dataset pixel-wise label counts",
+                ):
+                    image, label, _, name = data
+                    unique, counts = np.unique(label, return_counts=True)
+                    image_stats[name] = dict(zip(unique, counts))
 
-                # Do we get the image name in dataset enumeration
+                Seg_Class_Counts = pd.DataFrame(image_stats)
+                Seg_Class_Counts = Seg_Class_Counts.fillna(0)
+                Seg_Class_Counts.to_csv(df_path)
+            else:
+                Seg_Class_Counts = pd.read_csv(df_path)
+
+            clustering_model = KMeans(
+                n_clusters=20
+            )  # Number of clusters arbitrarily chosen
+
+            # Fitting Model
+            clustering_model.fit(Seg_Class_Counts.T)
+
+            print(0)
+
+            pca = PCA(n_components=3)
+            X = pca.fit_transform(Seg_Class_Counts.T)
+            fig = plt.figure(1, figsize=(8, 6))
+            plt.clf()
+            ax = fig.add_subplot(111, projection="3d", elev=48, azim=134)
+            ax.set_position([0, 0, 0.95, 1])
+            plt.cla()
+
+            ax.scatter(
+                X[:, 0], X[:, 1], X[:, 2], c=clustering_model.labels_, cmap=plt.cm.nipy_spectral, edgecolor="k"
+            )
+            plot_dir = "/home/njbarry/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/plots/clustering_scatter"
+            plt.savefig(plot_dir)
+
+            # Do we get the image name in dataset enumeration
 
         dev_generate_seg_partitions(train_dataset)
 
