@@ -429,9 +429,8 @@ def main():
                 Seg_Class_Counts = pd.read_csv(df_path)
 
             clustering_model = KMeans(
-                n_clusters=20
-            )  # Number of clusters arbitrarily chosen
-
+                n_clusters=20   # Number of clusters arbitrarily chosen
+            )  
             # Fitting Model
             clustering_model.fit(Seg_Class_Counts.T)
 
@@ -451,7 +450,12 @@ def main():
             plot_dir = "/home/njbarry/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/plots/clustering_scatter"
             plt.savefig(plot_dir)
 
-            # Do we get the image name in dataset enumeration
+            # Assess clustering tendency
+            from pyclustertend import ivat, hopkins
+            from sklearn.preprocessing import scale
+            X = scale(Seg_Class_Counts.T)
+            hopkins(X, 150)
+            ivat(X)
 
         dev_generate_seg_partitions(train_dataset)
 

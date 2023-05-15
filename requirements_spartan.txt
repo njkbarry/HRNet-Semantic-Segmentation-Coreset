@@ -11,3 +11,8 @@ transformers==4.27.4
 sentence-transformers==2.2.2
 h5py==3.8.0
 # comment out load_dataset # pass gen_dataset()
+
+# Analysis and packages used in my implementation
+# Warning changes numpy and pandas versions
+# Conflicts with scipy
+pyclustertend==1.8.2
