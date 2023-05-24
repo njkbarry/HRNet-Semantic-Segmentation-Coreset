@@ -9,7 +9,7 @@
 #SBATCH --nodes=1
 
 # The name of the job:
-#SBATCH --job-name="HRNet-dist-training-0.6-DS"
+#SBATCH --job-name="milo_no_partition_0.1-DS-1"
 
 # The project ID which this job should run under:
 #SBATCH --account="punim1896"
@@ -35,7 +35,7 @@
 #SBATCH --mail-type=END
 
 # The maximum running time of the job in days-hours:mins:sec
-#SBATCH --time=1-22:0:00
+#SBATCH --time=0-8:0:00
 
 # check that the script is launched with sbatch
 if [ "x$SLURM_JOB_ID" == "x" ]; then
@@ -54,7 +54,7 @@ module load tkinter/3.8.6
 
 # The job command(s):
 source venv/bin/activate
-python -m torch.distributed.launch --nproc_per_node=4 tools/train.py --cfg experiments/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484.yaml
+python -m torch.distributed.launch --nproc_per_node=4 tools/train.py --cfg experiments/cityscapes/milo_experiment_no_partition.yaml
 
 ##DO NOT ADD/EDIT BEYOND THIS LINE##
 ##Job monitor command to list the resource usage
