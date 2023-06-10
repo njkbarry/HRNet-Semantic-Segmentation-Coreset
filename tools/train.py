@@ -55,6 +55,7 @@ from sklearn.decomposition import PCA
 from tqdm import tqdm
 from matplotlib import pyplot as plt
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Train segmentation network")
 
@@ -148,7 +149,6 @@ def main():
     # prepare data
     crop_size = (config.TRAIN.IMAGE_SIZE[1], config.TRAIN.IMAGE_SIZE[0])
 
-    # TODO: Add random subset capability
     train_dataset = eval("datasets." + config.DATASET.DATASET)(
         root=config.DATASET.ROOT,
         list_path=config.DATASET.TRAIN_SET,
@@ -295,10 +295,12 @@ def main():
 
     best_mIoU = 0
     last_epoch = 0
+    previous_time = 0
     if config.TRAIN.RESUME:
         model_state_file = os.path.join(final_output_dir, "checkpoint.pth.tar")
         if os.path.isfile(model_state_file):
             checkpoint = torch.load(model_state_file, map_location={"cuda:0": "cpu"})
+            previous_time = checkpoint["time"]
             best_mIoU = checkpoint["best_mIoU"]
             last_epoch = checkpoint["epoch"]
             dct = checkpoint["state_dict"]
@@ -363,7 +365,7 @@ def main():
 
         gc_stochastic_subsets_file_path = os.path.join(
             os.path.abspath("./data/preprocessing"),
-            "cityscape"
+            config['DATASET']['DATASET']
             + "_"
             + "ViT"
             + "_"
@@ -379,7 +381,7 @@ def main():
         )
         global_order_file_path = os.path.join(
             os.path.abspath("./data/preprocessing"),
-            "cityscape"
+            config['DATASET']['DATASET']
             + "_"
             + "ViT"
             + "_"
@@ -429,12 +431,10 @@ def main():
                 Seg_Class_Counts = pd.read_csv(df_path)
 
             clustering_model = KMeans(
-                n_clusters=20   # Number of clusters arbitrarily chosen
-            )  
+                n_clusters=20  # Number of clusters arbitrarily chosen
+            )
             # Fitting Model
             clustering_model.fit(Seg_Class_Counts.T)
-
-            print(0)
 
             pca = PCA(n_components=3)
             X = pca.fit_transform(Seg_Class_Counts.T)
@@ -445,7 +445,12 @@ def main():
             plt.cla()
 
             ax.scatter(
-                X[:, 0], X[:, 1], X[:, 2], c=clustering_model.labels_, cmap=plt.cm.nipy_spectral, edgecolor="k"
+                X[:, 0],
+                X[:, 1],
+                X[:, 2],
+                c=clustering_model.labels_,
+                cmap=plt.cm.nipy_spectral,
+                edgecolor="k",
             )
             plot_dir = "/home/njbarry/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/plots/clustering_scatter"
             plt.savefig(plot_dir)
@@ -453,11 +458,12 @@ def main():
             # Assess clustering tendency
             from pyclustertend import ivat, hopkins
             from sklearn.preprocessing import scale
+
             X = scale(Seg_Class_Counts.T)
             hopkins(X, 150)
             ivat(X)
 
-        dev_generate_seg_partitions(train_dataset)
+        # dev_generate_seg_partitions(train_dataset)
 
         #########################################################################
 
@@ -551,6 +557,7 @@ def main():
             )
 
         if epoch % config.TRAIN.VAL_SAVE_EVERY == 0:
+
             valid_loss, mean_IoU, IoU_array = validate(
                 config, testloader, model, writer_dict
             )
@@ -560,6 +567,7 @@ def main():
                     logging.info(
                         "Warning: generting metrics on entire training set can significantly inflate training time"
                     )
+
                 ft_valid_loss, ft_mean_IoU, ft_IoU_array = full_train_metric(
                     config, full_trainloader, model, writer_dict
                 )
@@ -576,6 +584,8 @@ def main():
                         "best_mIoU": best_mIoU,
                         "state_dict": model.module.state_dict(),
                         "optimizer": optimizer.state_dict(),
+                        "time": (timeit.default_timer() - start) * len(gpus)
+                        + previous_time,
                     },
                     os.path.join(final_output_dir, "checkpoint.pth.tar"),
                 )
@@ -601,6 +611,7 @@ def main():
 
     # Log wall-times of each gpu
     end = timeit.default_timer()
+    total_time = (end - start) + previous_time
     logger.info(
         "GPU: {} - Hours: {}, Minutes: {}, Total seconds: {}".format(
             args.local_rank,

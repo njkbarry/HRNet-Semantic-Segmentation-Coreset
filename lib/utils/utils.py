@@ -158,7 +158,7 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
     DEFAULT_N_SUBSETS = 300
 
     stochastic_subsets = generate_image_stochastic_subsets(
-        dataset="cityscape",
+        dataset=config['DATASET']['DATASET'],
         model="ViT",
         submod_function=dss_args.submod_function,
         metric="cossim",
@@ -179,7 +179,7 @@ def initialise_global_order(dss_args: DotMap, config):
     DEFAULT_KNN = 25  # No of nearest neighbors for KNN variant
 
     global_order, global_knn, global_r2, cluster_idxs = generate_image_global_order(
-        dataset="cityscape",
+        dataset=config['DATASET']['DATASET'],
         model="ViT",
         submod_function=dss_args.submod_function,
         metric="cossim",
