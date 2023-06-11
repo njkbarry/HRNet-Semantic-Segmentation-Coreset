@@ -322,7 +322,7 @@ def main():
     num_iters = config.TRAIN.END_EPOCH * epoch_iters
     extra_iters = config.TRAIN.EXTRA_EPOCH * extra_epoch_iters
 
-    if config.TRAIN.CORESET_ALGORITHM == "MILO":
+    if config.TRAIN.CORESET_ALGORITHM.lower() == "milo":
         """
         ############################## MILO Dataloader Additional Arguments ##############################
         """
@@ -482,7 +482,7 @@ def main():
 
         epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
 
-    elif config.TRAIN.CORESET_ALGORITHM == "AdaptiveRandom":
+    elif config.TRAIN.CORESET_ALGORITHM.lower() == "adaptiverandom":
         """
         ############################## AdaptiveRandom Dataloader Additional Arguments ##############################
         """
