@@ -142,9 +142,11 @@ def main():
         # shutil.copytree(os.path.join(this_dir, '../lib/models'), models_dst_dir)
 
     if distributed:
-        batch_size = config.TRAIN.BATCH_SIZE_PER_GPU
+        train_batch_size = config.TRAIN.BATCH_SIZE_PER_GPU
+        test_batch_size  = config.TEST.BATCH_SIZE_PER_GPU
     else:
-        batch_size = config.TRAIN.BATCH_SIZE_PER_GPU * len(gpus)
+        train_batch_size = config.TRAIN.BATCH_SIZE_PER_GPU * len(gpus)
+        test_batch_size  = config.TEST.BATCH_SIZE_PER_GPU * len(gpus)
 
     # prepare data
     crop_size = (config.TRAIN.IMAGE_SIZE[1], config.TRAIN.IMAGE_SIZE[0])
@@ -165,7 +167,7 @@ def main():
     train_sampler = get_sampler(train_dataset)
     trainloader = torch.utils.data.DataLoader(
         train_dataset,
-        batch_size=batch_size,
+        batch_size=train_batch_size,
         shuffle=config.TRAIN.SHUFFLE and train_sampler is None,
         num_workers=config.WORKERS,
         pin_memory=True,
@@ -194,7 +196,7 @@ def main():
         extra_train_sampler = get_sampler(extra_train_dataset)
         extra_trainloader = torch.utils.data.DataLoader(
             extra_train_dataset,
-            batch_size=batch_size,
+            batch_size=train_batch_size,
             shuffle=config.TRAIN.SHUFFLE and extra_train_sampler is None,
             num_workers=config.WORKERS,
             pin_memory=True,
@@ -222,7 +224,7 @@ def main():
     test_sampler = get_sampler(test_dataset)
     testloader = torch.utils.data.DataLoader(
         test_dataset,
-        batch_size=batch_size,
+        batch_size=test_batch_size,
         shuffle=False,
         num_workers=config.WORKERS,
         pin_memory=True,
@@ -252,7 +254,10 @@ def main():
             output_device=args.local_rank,
         )
     else:
-        model = nn.DataParallel(model, device_ids=gpus).cuda()
+        # FIXME:
+        # Dev code
+        # model = nn.DataParallel(model, device_ids=gpus).cuda()
+        model = model.cuda()
 
     # optimizer
     if config.TRAIN.OPTIMIZER == "sgd":
@@ -474,7 +479,7 @@ def main():
             train_loader=trainloader,
             dss_args=dss_args,
             logger=logger,
-            batch_size=batch_size,
+            batch_size=train_batch_size,
             shuffle=config.TRAIN.SHUFFLE and train_sampler is None,
             pin_memory=True,
             collate_fn=dss_args.collate_fn,
@@ -508,7 +513,7 @@ def main():
             train_loader=trainloader,
             dss_args=dss_args,
             logger=logger,
-            batch_size=batch_size,
+            batch_size=train_batch_size,
             shuffle=config.TRAIN.SHUFFLE and train_sampler is None,
             pin_memory=True,
             collate_fn=dss_args.collate_fn,
@@ -555,6 +560,10 @@ def main():
                 model,
                 writer_dict,
             )
+        
+        # FIXME:
+        # Dev code
+        torch.cuda.empty_cache()
 
         if epoch % config.TRAIN.VAL_SAVE_EVERY == 0:
 

@@ -8,6 +8,7 @@
 
 import os
 
+from pathlib import Path
 import cv2
 import numpy as np
 from PIL import Image
@@ -76,6 +77,10 @@ class PASCALContext(BaseDataset):
         else:
             self.masks = self._preprocess(mask_file)
 
+        # FIXME: dev
+        #   - Load index of image-wise class labels for MILO partitioning
+        self.imagewise_labels = self._init_imagewise_label()
+
     def _class_to_index(self, mask):
         # assert the values
         values = np.unique(mask)
@@ -134,3 +139,32 @@ class PASCALContext(BaseDataset):
         else:
             label = np.array(label).astype('int32')
         return label
+
+    def get_imagewise_label(self, name: str):
+        v = name.replace(".jpg", "")
+        imagewise_label = [k for k in self.class_lists_dict.keys() if v in self.class_lists_dict[k]]
+        assert len(imagewise_label) != 0, 'Image does not appear to have image-wise labels'
+        if len(imagewise_label) > 1:
+            # Return the least frequent class
+            label_freqs = [len(self.class_lists_dict[k]) for k in imagewise_label]
+            imagewise_label = [imagewise_label[np.argmin(np.asarray(label_freqs))]]
+        return imagewise_label[0]
+
+    def _init_imagewise_label(self,):
+        print('wait')
+        class_lists_dir = os.path.join(self.root, 'ImageSets/Main/')
+        class_list_paths = [Path(class_lists_dir + '/' + p) for p in os.listdir(class_lists_dir) if self.split + '.txt' in p and p != self.split + '.txt']
+        class_lists_dict = {}
+        for class_list_path in class_list_paths:
+            class_file = open(class_list_path, "r")
+            class_list = class_file.read().split("\n")
+            class_list = [l.replace("  1","") for l in class_list if " 1" in l]
+            class_name = class_list_path.stem.replace("_" + self.split, "")
+            class_lists_dict[class_name] = class_list
+            class_file.close()
+        self.class_lists_dict = class_lists_dict
+
+
+
+
+
