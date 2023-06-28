@@ -1,0 +1,726 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) slurm/latest
+/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/distributed/launch.py:178: FutureWarning: The module torch.distributed.launch is deprecated
+and will be removed in future. Use torch.distributed.run.
+Note that --use_env is set by default in torch.distributed.run.
+If your script expects `--local_rank` argument to be set, please
+change it to read from `os.environ['LOCAL_RANK']` instead. See 
+https://pytorch.org/docs/stable/distributed.html#launch-utility for 
+further instructions
+
+  warnings.warn(
+WARNING:torch.distributed.run:*****************************************
+Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+*****************************************
+Seeding with 304
+Seeding withSeeding with  304304
+
+Seeding with 304
+=> creating output/AdaRan2/0.1/pascal_ctx/adaptive_random_baseline=> creating output/AdaRan2/0.1/pascal_ctx/adaptive_random_baseline=> creating output/AdaRan2/0.1/pascal_ctx/adaptive_random_baseline=> creating output/AdaRan2/0.1/pascal_ctx/adaptive_random_baseline
+
+
+
+=> creating log/AdaRan2/0.1/pascal_ctx/seg_hrnet_ocr/adaptive_random_baseline_2023-06-04-07-58=> creating log/AdaRan2/0.1/pascal_ctx/seg_hrnet_ocr/adaptive_random_baseline_2023-06-04-07-58=> creating log/AdaRan2/0.1/pascal_ctx/seg_hrnet_ocr/adaptive_random_baseline_2023-06-04-07-58
+=> creating log/AdaRan2/0.1/pascal_ctx/seg_hrnet_ocr/adaptive_random_baseline_2023-06-04-07-58
+
+
+Namespace(cfg='experiments/pascal_ctx/adaptive_random_baseline.yaml', local_rank=3, opts=[], seed=304)
+Namespace(cfg='experiments/pascal_ctx/adaptive_random_baseline.yaml', local_rank=1, opts=[], seed=304)
+Namespace(cfg='experiments/pascal_ctx/adaptive_random_baseline.yaml', local_rank=0, opts=[], seed=304)
+Namespace(cfg='experiments/pascal_ctx/adaptive_random_baseline.yaml', local_rank=2, opts=[], seed=304)
+AUTO_RESUME: False
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+DATASET:
+  DATASET: pascal_ctx
+  EXTRA_TRAIN_SET: 
+  NUM_CLASSES: 60
+  ROOT: data/
+  TEST_SET: val
+  TRAIN_SET: train
+DEBUG:
+  DEBUG: False
+  SAVE_BATCH_IMAGES_GT: False
+  SAVE_BATCH_IMAGES_PRED: False
+  SAVE_HEATMAPS_GT: False
+  SAVE_HEATMAPS_PRED: False
+GPUS: (0, 1)
+LOG_DIR: log/AdaRan2/0.1/
+LOSS:
+  BALANCE_WEIGHTS: [0.4, 1]
+  CLASS_BALANCE: False
+  OHEMKEEP: 131072
+  OHEMTHRES: 0.9
+  USE_OHEM: False
+MODEL:
+  ALIGN_CORNERS: True
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+    STAGE1:
+      BLOCK: BOTTLENECK
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4]
+      NUM_CHANNELS: [64]
+      NUM_MODULES: 1
+      NUM_RANCHES: 1
+    STAGE2:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4]
+      NUM_BRANCHES: 2
+      NUM_CHANNELS: [48, 96]
+      NUM_MODULES: 1
+    STAGE3:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4]
+      NUM_BRANCHES: 3
+      NUM_CHANNELS: [48, 96, 192]
+      NUM_MODULES: 4
+    STAGE4:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4, 4]
+      NUM_BRANCHES: 4
+      NUM_CHANNELS: [48, 96, 192, 384]
+      NUM_MODULES: 3
+  NAME: seg_hrnet_ocr
+  NUM_OUTPUTS: 2
+  OCR:
+    DROPOUT: 0.05
+    KEY_CHANNELS: 256
+    MID_CHANNELS: 512
+    SCALE: 1
+  PRETRAINED: pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+OUTPUT_DIR: output/AdaRan2/0.1/
+PIN_MEMORY: True
+PRINT_FREQ: 10
+RANK: 0
+TEST:
+  BASE_SIZE: 520
+  BATCH_SIZE_PER_GPU: 34
+  FLIP_TEST: False
+  IMAGE_SIZE: [520, 520]
+  MODEL_FILE: 
+  MULTI_SCALE: False
+  NUM_SAMPLES: 0
+  OUTPUT_INDEX: -1
+  SCALE_LIST: [1]
+TRAIN:
+  BASE_SIZE: 520
+  BATCH_SIZE_PER_GPU: 34
+  BEGIN_EPOCH: 0
+  CORESET_ALGORITHM: AdaptiveRandom
+  DOWNSAMPLERATE: 1
+  END_EPOCH: 200
+  EXTRA_EPOCH: 0
+  EXTRA_LR: 0.001
+  FLIP: True
+  FREEZE_EPOCHS: -1
+  FREEZE_LAYERS: 
+  IGNORE_LABEL: -1
+  IMAGE_SIZE: [520, 520]
+  LR: 0.001
+  LR_FACTOR: 0.1
+  LR_STEP: [90, 110]
+  MOMENTUM: 0.9
+  MULTI_SCALE: True
+  NESTEROV: False
+  NONBACKBONE_KEYWORDS: ['cls', 'aux', 'ocr']
+  NONBACKBONE_MULT: 10
+  NUM_SAMPLES: 0
+  OPTIMIZER: sgd
+  RANDOM_BRIGHTNESS: False
+  RANDOM_BRIGHTNESS_SHIFT_VALUE: 10
+  RANDOM_SUBSET: 0.1
+  RESUME: True
+  SCALE_FACTOR: 16
+  SHUFFLE: True
+  VAL_SAVE_EVERY: 5
+  WD: 0.0001
+WORKERS: 4
+AUTO_RESUME: False
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+DATASET:
+  DATASET: pascal_ctx
+  EXTRA_TRAIN_SET: 
+  NUM_CLASSES: 60
+  ROOT: data/
+  TEST_SET: val
+  TRAIN_SET: train
+DEBUG:
+  DEBUG: False
+  SAVE_BATCH_IMAGES_GT: False
+  SAVE_BATCH_IMAGES_PRED: False
+  SAVE_HEATMAPS_GT: False
+  SAVE_HEATMAPS_PRED: False
+GPUS: (0, 1)
+LOG_DIR: log/AdaRan2/0.1/
+LOSS:
+  BALANCE_WEIGHTS: [0.4, 1]
+  CLASS_BALANCE: False
+  OHEMKEEP: 131072
+  OHEMTHRES: 0.9
+  USE_OHEM: False
+MODEL:
+  ALIGN_CORNERS: True
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+    STAGE1:
+      BLOCK: BOTTLENECK
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4]
+      NUM_CHANNELS: [64]
+      NUM_MODULES: 1
+      NUM_RANCHES: 1
+    STAGE2:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4]
+      NUM_BRANCHES: 2
+      NUM_CHANNELS: [48, 96]
+      NUM_MODULES: 1
+    STAGE3:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4]
+      NUM_BRANCHES: 3
+      NUM_CHANNELS: [48, 96, 192]
+      NUM_MODULES: 4
+    STAGE4:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4, 4]
+      NUM_BRANCHES: 4
+      NUM_CHANNELS: [48, 96, 192, 384]
+      NUM_MODULES: 3
+  NAME: seg_hrnet_ocr
+  NUM_OUTPUTS: 2
+  OCR:
+    DROPOUT: 0.05
+    KEY_CHANNELS: 256
+    MID_CHANNELS: 512
+    SCALE: 1
+  PRETRAINED: pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+OUTPUT_DIR: output/AdaRan2/0.1/
+PIN_MEMORY: True
+PRINT_FREQ: 10
+RANK: 0
+TEST:
+  BASE_SIZE: 520
+  BATCH_SIZE_PER_GPU: 34
+  FLIP_TEST: False
+  IMAGE_SIZE: [520, 520]
+  MODEL_FILE: 
+  MULTI_SCALE: False
+  NUM_SAMPLES: 0
+  OUTPUT_INDEX: -1
+  SCALE_LIST: [1]
+TRAIN:
+  BASE_SIZE: 520
+  BATCH_SIZE_PER_GPU: 34
+  BEGIN_EPOCH: 0
+  CORESET_ALGORITHM: AdaptiveRandom
+  DOWNSAMPLERATE: 1
+  END_EPOCH: 200
+  EXTRA_EPOCH: 0
+  EXTRA_LR: 0.001
+  FLIP: True
+  FREEZE_EPOCHS: -1
+  FREEZE_LAYERS: 
+  IGNORE_LABEL: -1
+  IMAGE_SIZE: [520, 520]
+  LR: 0.001
+  LR_FACTOR: 0.1
+  LR_STEP: [90, 110]
+  MOMENTUM: 0.9
+  MULTI_SCALE: True
+  NESTEROV: False
+  NONBACKBONE_KEYWORDS: ['cls', 'aux', 'ocr']
+  NONBACKBONE_MULT: 10
+  NUM_SAMPLES: 0
+  OPTIMIZER: sgd
+  RANDOM_BRIGHTNESS: False
+  RANDOM_BRIGHTNESS_SHIFT_VALUE: 10
+  RANDOM_SUBSET: 0.1
+  RESUME: True
+  SCALE_FACTOR: 16
+  SHUFFLE: True
+  VAL_SAVE_EVERY: 5
+  WD: 0.0001
+WORKERS: 4
+AUTO_RESUME: False
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+DATASET:
+  DATASET: pascal_ctx
+  EXTRA_TRAIN_SET: 
+  NUM_CLASSES: 60
+  ROOT: data/
+  TEST_SET: val
+  TRAIN_SET: train
+DEBUG:
+  DEBUG: False
+  SAVE_BATCH_IMAGES_GT: False
+  SAVE_BATCH_IMAGES_PRED: False
+  SAVE_HEATMAPS_GT: False
+  SAVE_HEATMAPS_PRED: False
+GPUS: (0, 1)
+LOG_DIR: log/AdaRan2/0.1/
+LOSS:
+  BALANCE_WEIGHTS: [0.4, 1]
+  CLASS_BALANCE: False
+  OHEMKEEP: 131072
+  OHEMTHRES: 0.9
+  USE_OHEM: False
+MODEL:
+  ALIGN_CORNERS: True
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+    STAGE1:
+      BLOCK: BOTTLENECK
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4]
+      NUM_CHANNELS: [64]
+      NUM_MODULES: 1
+      NUM_RANCHES: 1
+    STAGE2:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4]
+      NUM_BRANCHES: 2
+      NUM_CHANNELS: [48, 96]
+      NUM_MODULES: 1
+    STAGE3:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4]
+      NUM_BRANCHES: 3
+      NUM_CHANNELS: [48, 96, 192]
+      NUM_MODULES: 4
+    STAGE4:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4, 4]
+      NUM_BRANCHES: 4
+      NUM_CHANNELS: [48, 96, 192, 384]
+      NUM_MODULES: 3
+  NAME: seg_hrnet_ocr
+  NUM_OUTPUTS: 2
+  OCR:
+    DROPOUT: 0.05
+    KEY_CHANNELS: 256
+    MID_CHANNELS: 512
+    SCALE: 1
+  PRETRAINED: pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+OUTPUT_DIR: output/AdaRan2/0.1/
+PIN_MEMORY: True
+PRINT_FREQ: 10
+RANK: 0
+TEST:
+  BASE_SIZE: 520
+  BATCH_SIZE_PER_GPU: 34
+  FLIP_TEST: False
+  IMAGE_SIZE: [520, 520]
+  MODEL_FILE: 
+  MULTI_SCALE: False
+  NUM_SAMPLES: 0
+  OUTPUT_INDEX: -1
+  SCALE_LIST: [1]
+TRAIN:
+  BASE_SIZE: 520
+  BATCH_SIZE_PER_GPU: 34
+  BEGIN_EPOCH: 0
+  CORESET_ALGORITHM: AdaptiveRandom
+  DOWNSAMPLERATE: 1
+  END_EPOCH: 200
+  EXTRA_EPOCH: 0
+  EXTRA_LR: 0.001
+  FLIP: True
+  FREEZE_EPOCHS: -1
+  FREEZE_LAYERS: 
+  IGNORE_LABEL: -1
+  IMAGE_SIZE: [520, 520]
+  LR: 0.001
+  LR_FACTOR: 0.1
+  LR_STEP: [90, 110]
+  MOMENTUM: 0.9
+  MULTI_SCALE: True
+  NESTEROV: False
+  NONBACKBONE_KEYWORDS: ['cls', 'aux', 'ocr']
+  NONBACKBONE_MULT: 10
+  NUM_SAMPLES: 0
+  OPTIMIZER: sgd
+  RANDOM_BRIGHTNESS: False
+  RANDOM_BRIGHTNESS_SHIFT_VALUE: 10
+  RANDOM_SUBSET: 0.1
+  RESUME: True
+  SCALE_FACTOR: 16
+  SHUFFLE: True
+  VAL_SAVE_EVERY: 5
+  WD: 0.0001
+WORKERS: 4
+AUTO_RESUME: False
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+DATASET:
+  DATASET: pascal_ctx
+  EXTRA_TRAIN_SET: 
+  NUM_CLASSES: 60
+  ROOT: data/
+  TEST_SET: val
+  TRAIN_SET: train
+DEBUG:
+  DEBUG: False
+  SAVE_BATCH_IMAGES_GT: False
+  SAVE_BATCH_IMAGES_PRED: False
+  SAVE_HEATMAPS_GT: False
+  SAVE_HEATMAPS_PRED: False
+GPUS: (0, 1)
+LOG_DIR: log/AdaRan2/0.1/
+LOSS:
+  BALANCE_WEIGHTS: [0.4, 1]
+  CLASS_BALANCE: False
+  OHEMKEEP: 131072
+  OHEMTHRES: 0.9
+  USE_OHEM: False
+MODEL:
+  ALIGN_CORNERS: True
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+    STAGE1:
+      BLOCK: BOTTLENECK
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4]
+      NUM_CHANNELS: [64]
+      NUM_MODULES: 1
+      NUM_RANCHES: 1
+    STAGE2:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4]
+      NUM_BRANCHES: 2
+      NUM_CHANNELS: [48, 96]
+      NUM_MODULES: 1
+    STAGE3:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4]
+      NUM_BRANCHES: 3
+      NUM_CHANNELS: [48, 96, 192]
+      NUM_MODULES: 4
+    STAGE4:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4, 4]
+      NUM_BRANCHES: 4
+      NUM_CHANNELS: [48, 96, 192, 384]
+      NUM_MODULES: 3
+  NAME: seg_hrnet_ocr
+  NUM_OUTPUTS: 2
+  OCR:
+    DROPOUT: 0.05
+    KEY_CHANNELS: 256
+    MID_CHANNELS: 512
+    SCALE: 1
+  PRETRAINED: pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+OUTPUT_DIR: output/AdaRan2/0.1/
+PIN_MEMORY: True
+PRINT_FREQ: 10
+RANK: 0
+TEST:
+  BASE_SIZE: 520
+  BATCH_SIZE_PER_GPU: 34
+  FLIP_TEST: False
+  IMAGE_SIZE: [520, 520]
+  MODEL_FILE: 
+  MULTI_SCALE: False
+  NUM_SAMPLES: 0
+  OUTPUT_INDEX: -1
+  SCALE_LIST: [1]
+TRAIN:
+  BASE_SIZE: 520
+  BATCH_SIZE_PER_GPU: 34
+  BEGIN_EPOCH: 0
+  CORESET_ALGORITHM: AdaptiveRandom
+  DOWNSAMPLERATE: 1
+  END_EPOCH: 200
+  EXTRA_EPOCH: 0
+  EXTRA_LR: 0.001
+  FLIP: True
+  FREEZE_EPOCHS: -1
+  FREEZE_LAYERS: 
+  IGNORE_LABEL: -1
+  IMAGE_SIZE: [520, 520]
+  LR: 0.001
+  LR_FACTOR: 0.1
+  LR_STEP: [90, 110]
+  MOMENTUM: 0.9
+  MULTI_SCALE: True
+  NESTEROV: False
+  NONBACKBONE_KEYWORDS: ['cls', 'aux', 'ocr']
+  NONBACKBONE_MULT: 10
+  NUM_SAMPLES: 0
+  OPTIMIZER: sgd
+  RANDOM_BRIGHTNESS: False
+  RANDOM_BRIGHTNESS_SHIFT_VALUE: 10
+  RANDOM_SUBSET: 0.1
+  RESUME: True
+  SCALE_FACTOR: 16
+  SHUFFLE: True
+  VAL_SAVE_EVERY: 5
+  WD: 0.0001
+WORKERS: 4
+args.local_rank:  3
+args.local_rank:  2
+args.local_rank: args.local_rank:  1 
+0
+Added key: store_based_barrier_key:1 to store for rank: 1
+Added key: store_based_barrier_key:1 to store for rank: 0
+Added key: store_based_barrier_key:1 to store for rank: 2
+Added key: store_based_barrier_key:1 to store for rank: 3
+Rank 3: Completed store-based barrier for 4 nodes.
+Rank 0: Completed store-based barrier for 4 nodes.
+Rank 1: Completed store-based barrier for 4 nodes.
+Rank 2: Completed store-based barrier for 4 nodes.
+=> init weights from normal distribution
+=> init weights from normal distribution
+=> init weights from normal distribution
+=> init weights from normal distribution
+=> loading pretrained model pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+=> loading pretrained model pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+=> loading pretrained model pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+=> loading pretrained model pretrained_models/hrnetv2_w48_imagenet_pretrained.pth
+{'ocr_distri_head.object_context_block.f_object.3.0.bias', 'ocr_distri_head.object_context_block.f_object.1.0.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'ocr_distri_head.object_context_block.f_object.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_var', 'ocr_distri_head.object_context_block.f_object.1.0.num_batches_tracked', 'conv3x3_ocr.1.running_mean', 'ocr_distri_head.object_context_block.f_up.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'ocr_distri_head.conv_bn_dropout.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.1.0.bias', 'conv3x3_ocr.1.bias', 'aux_head.1.running_mean', 'conv3x3_ocr.1.running_var', 'ocr_distri_head.conv_bn_dropout.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_mean', 'ocr_distri_head.object_context_block.f_object.1.0.running_var', 'aux_head.1.running_var', 'ocr_distri_head.conv_bn_dropout.1.0.running_mean', 'cls_head.bias', 'ocr_distri_head.object_context_block.f_down.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.3.0.running_mean', 'aux_head.3.bias', 'aux_head.1.weight', 'ocr_distri_head.conv_bn_dropout.1.0.bias', 'ocr_distri_head.object_context_block.f_up.0.weight', 'aux_head.0.weight', 'aux_head.1.bias', 'conv3x3_ocr.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_mean', 'ocr_distri_head.object_context_block.f_down.1.0.bias', 'ocr_distri_head.object_context_block.f_pixel.3.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_up.1.0.bias', 'conv3x3_ocr.0.bias', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_var', 'conv3x3_ocr.1.weight', 'aux_head.0.bias', 'ocr_distri_head.object_context_block.f_pixel.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.running_mean', 'ocr_distri_head.conv_bn_dropout.0.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'cls_head.weight', 'ocr_distri_head.object_context_block.f_object.1.0.running_mean', 'ocr_distri_head.object_context_block.f_object.3.0.running_var', 'ocr_distri_head.conv_bn_dropout.1.0.weight', 'ocr_distri_head.object_context_block.f_down.0.weight', 'aux_head.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_down.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.2.weight', 'ocr_distri_head.object_context_block.f_object.3.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_up.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_down.1.0.weight', 'ocr_distri_head.object_context_block.f_up.1.0.running_mean', 'ocr_distri_head.object_context_block.f_up.1.0.weight', 'conv3x3_ocr.0.weight', 'aux_head.3.weight', 'ocr_distri_head.object_context_block.f_object.2.weight', 'ocr_distri_head.object_context_block.f_pixel.3.0.weight'}
+{'ocr_distri_head.object_context_block.f_up.1.0.running_mean', 'aux_head.1.running_mean', 'aux_head.1.weight', 'ocr_distri_head.object_context_block.f_object.3.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_down.0.weight', 'ocr_distri_head.conv_bn_dropout.1.0.running_var', 'ocr_distri_head.object_context_block.f_object.3.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.3.0.num_batches_tracked', 'conv3x3_ocr.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.0.weight', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_mean', 'ocr_distri_head.object_context_block.f_up.1.0.running_var', 'ocr_distri_head.object_context_block.f_up.0.weight', 'ocr_distri_head.object_context_block.f_object.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.2.weight', 'ocr_distri_head.object_context_block.f_object.1.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.1.0.num_batches_tracked', 'ocr_distri_head.conv_bn_dropout.0.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'aux_head.3.bias', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_var', 'ocr_distri_head.object_context_block.f_object.3.0.bias', 'ocr_distri_head.conv_bn_dropout.1.0.running_mean', 'ocr_distri_head.conv_bn_dropout.1.0.bias', 'aux_head.1.running_var', 'conv3x3_ocr.0.weight', 'conv3x3_ocr.1.weight', 'ocr_distri_head.object_context_block.f_down.1.0.weight', 'conv3x3_ocr.1.running_var', 'conv3x3_ocr.1.running_mean', 'ocr_distri_head.object_context_block.f_pixel.3.0.weight', 'aux_head.1.bias', 'ocr_distri_head.object_context_block.f_down.1.0.running_mean', 'aux_head.0.bias', 'ocr_distri_head.object_context_block.f_up.1.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.running_var', 'ocr_distri_head.object_context_block.f_object.2.weight', 'conv3x3_ocr.0.bias', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'ocr_distri_head.conv_bn_dropout.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_down.1.0.num_batches_tracked', 'cls_head.weight', 'aux_head.1.num_batches_tracked', 'ocr_distri_head.conv_bn_dropout.1.0.weight', 'ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'conv3x3_ocr.1.bias', 'aux_head.0.weight', 'ocr_distri_head.object_context_block.f_object.1.0.weight', 'aux_head.3.weight', 'ocr_distri_head.object_context_block.f_up.1.0.bias', 'ocr_distri_head.object_context_block.f_object.3.0.running_mean', 'ocr_distri_head.object_context_block.f_down.1.0.bias', 'ocr_distri_head.object_context_block.f_object.1.0.bias', 'ocr_distri_head.object_context_block.f_object.1.0.running_var', 'cls_head.bias', 'ocr_distri_head.object_context_block.f_up.1.0.num_batches_tracked'}
+{'ocr_distri_head.object_context_block.f_down.1.0.weight', 'ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'ocr_distri_head.object_context_block.f_up.1.0.num_batches_tracked', 'ocr_distri_head.conv_bn_dropout.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.0.weight', 'aux_head.1.bias', 'aux_head.1.running_var', 'cls_head.weight', 'aux_head.1.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'ocr_distri_head.object_context_block.f_object.1.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.3.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.num_batches_tracked', 'cls_head.bias', 'ocr_distri_head.object_context_block.f_pixel.3.0.num_batches_tracked', 'conv3x3_ocr.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.1.0.bias', 'ocr_distri_head.object_context_block.f_up.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.num_batches_tracked', 'ocr_distri_head.conv_bn_dropout.1.0.running_mean', 'ocr_distri_head.object_context_block.f_up.1.0.weight', 'ocr_distri_head.conv_bn_dropout.1.0.num_batches_tracked', 'ocr_distri_head.conv_bn_dropout.1.0.weight', 'ocr_distri_head.object_context_block.f_pixel.2.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'ocr_distri_head.conv_bn_dropout.1.0.bias', 'ocr_distri_head.object_context_block.f_object.3.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.running_mean', 'ocr_distri_head.object_context_block.f_object.3.0.running_mean', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_var', 'conv3x3_ocr.0.bias', 'ocr_distri_head.object_context_block.f_object.1.0.running_var', 'ocr_distri_head.object_context_block.f_object.1.0.weight', 'conv3x3_ocr.1.bias', 'aux_head.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.3.0.running_var', 'ocr_distri_head.object_context_block.f_down.1.0.running_var', 'ocr_distri_head.object_context_block.f_up.1.0.bias', 'aux_head.3.bias', 'ocr_distri_head.conv_bn_dropout.0.weight', 'aux_head.0.weight', 'ocr_distri_head.object_context_block.f_up.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_var', 'conv3x3_ocr.1.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_mean', 'aux_head.1.running_mean', 'ocr_distri_head.object_context_block.f_up.1.0.running_mean', 'ocr_distri_head.object_context_block.f_down.0.weight', 'conv3x3_ocr.1.running_var', 'aux_head.0.bias', 'ocr_distri_head.object_context_block.f_object.2.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.num_batches_tracked', 'aux_head.3.weight', 'ocr_distri_head.object_context_block.f_object.3.0.bias', 'ocr_distri_head.object_context_block.f_object.1.0.num_batches_tracked', 'conv3x3_ocr.1.running_mean', 'conv3x3_ocr.0.weight', 'ocr_distri_head.object_context_block.f_object.0.weight', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_mean', 'ocr_distri_head.object_context_block.f_down.1.0.bias'}
+{'ocr_distri_head.conv_bn_dropout.1.0.running_var', 'ocr_distri_head.object_context_block.f_down.1.0.num_batches_tracked', 'ocr_distri_head.conv_bn_dropout.1.0.running_mean', 'ocr_distri_head.object_context_block.f_object.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.bias', 'cls_head.bias', 'ocr_distri_head.object_context_block.f_object.3.0.running_mean', 'ocr_distri_head.object_context_block.f_down.0.weight', 'ocr_distri_head.object_context_block.f_object.3.0.weight', 'aux_head.1.running_mean', 'conv3x3_ocr.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'conv3x3_ocr.1.running_mean', 'ocr_distri_head.object_context_block.f_pixel.3.0.weight', 'ocr_distri_head.object_context_block.f_object.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.0.weight', 'cls_head.weight', 'ocr_distri_head.object_context_block.f_up.1.0.running_mean', 'ocr_distri_head.object_context_block.f_object.1.0.running_mean', 'conv3x3_ocr.1.weight', 'ocr_distri_head.object_context_block.f_down.1.0.running_var', 'ocr_distri_head.object_context_block.f_object.1.0.bias', 'aux_head.1.bias', 'ocr_distri_head.object_context_block.f_down.1.0.bias', 'ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'ocr_distri_head.object_context_block.f_object.3.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_var', 'ocr_distri_head.object_context_block.f_up.1.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.2.weight', 'ocr_distri_head.conv_bn_dropout.1.0.num_batches_tracked', 'aux_head.0.weight', 'ocr_distri_head.object_context_block.f_pixel.2.weight', 'conv3x3_ocr.0.weight', 'ocr_distri_head.conv_bn_dropout.1.0.weight', 'aux_head.0.bias', 'aux_head.3.weight', 'ocr_distri_head.object_context_block.f_down.1.0.weight', 'ocr_distri_head.object_context_block.f_up.0.weight', 'ocr_distri_head.object_context_block.f_up.1.0.bias', 'conv3x3_ocr.1.bias', 'ocr_distri_head.object_context_block.f_up.1.0.weight', 'ocr_distri_head.object_context_block.f_object.1.0.running_var', 'ocr_distri_head.conv_bn_dropout.1.0.bias', 'ocr_distri_head.object_context_block.f_pixel.1.0.num_batches_tracked', 'ocr_distri_head.conv_bn_dropout.0.weight', 'ocr_distri_head.object_context_block.f_pixel.3.0.num_batches_tracked', 'ocr_distri_head.object_context_block.f_object.1.0.weight', 'ocr_distri_head.object_context_block.f_down.1.0.running_mean', 'conv3x3_ocr.1.running_var', 'ocr_distri_head.object_context_block.f_object.3.0.running_var', 'aux_head.1.running_var', 'aux_head.3.bias', 'aux_head.1.num_batches_tracked', 'ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'conv3x3_ocr.0.bias', 'ocr_distri_head.object_context_block.f_pixel.3.0.running_mean', 'aux_head.1.weight', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_mean', 'ocr_distri_head.object_context_block.f_up.1.0.running_var', 'ocr_distri_head.object_context_block.f_pixel.1.0.running_var'}
+{'downsamp_modules.2.1.running_mean', 'downsamp_modules.1.1.weight', 'downsamp_modules.1.1.bias', 'incre_modules.1.0.bn2.running_var', 'incre_modules.2.0.bn1.weight', 'incre_modules.3.0.conv3.weight', 'incre_modules.0.0.bn1.bias', 'incre_modules.3.0.bn1.num_batches_tracked', 'downsamp_modules.1.1.running_mean', 'incre_modules.1.0.bn1.weight', 'downsamp_modules.0.1.running_mean', 'downsamp_modules.2.1.running_var', 'incre_modules.1.0.downsample.1.num_batches_tracked', 'incre_modules.3.0.downsample.1.bias', 'final_layer.0.bias', 'incre_modules.3.0.bn1.running_mean', 'downsamp_modules.1.0.bias', 'downsamp_modules.0.1.weight', 'incre_modules.1.0.conv1.weight', 'incre_modules.2.0.bn3.running_mean', 'incre_modules.1.0.bn1.running_mean', 'incre_modules.3.0.bn3.num_batches_tracked', 'incre_modules.0.0.bn1.running_mean', 'downsamp_modules.0.0.bias', 'incre_modules.3.0.conv2.weight', 'incre_modules.0.0.downsample.1.running_mean', 'incre_modules.1.0.downsample.1.weight', 'incre_modules.2.0.bn2.num_batches_tracked', 'final_layer.1.bias', 'incre_modules.0.0.downsample.1.num_batches_tracked', 'incre_modules.1.0.bn2.weight', 'incre_modules.2.0.bn1.num_batches_tracked', 'incre_modules.0.0.bn3.weight', 'incre_modules.1.0.bn3.running_var', 'incre_modules.2.0.bn3.weight', 'incre_modules.0.0.downsample.1.running_var', 'incre_modules.3.0.bn2.running_mean', 'downsamp_modules.0.1.bias', 'incre_modules.3.0.bn2.weight', 'downsamp_modules.0.1.running_var', 'incre_modules.0.0.bn1.running_var', 'incre_modules.1.0.downsample.1.bias', 'incre_modules.1.0.bn1.num_batches_tracked', 'incre_modules.3.0.bn1.running_var', 'classifier.weight', 'downsamp_modules.2.0.weight', 'downsamp_modules.2.1.num_batches_tracked', 'incre_modules.0.0.downsample.0.weight', 'incre_modules.2.0.conv1.weight', 'incre_modules.2.0.bn2.bias', 'final_layer.1.running_mean', 'incre_modules.0.0.bn1.num_batches_tracked', 'incre_modules.1.0.downsample.0.weight', 'downsamp_modules.0.1.num_batches_tracked', 'incre_modules.1.0.conv3.weight', 'incre_modules.2.0.bn1.bias', 'incre_modules.2.0.bn2.running_var', 'final_layer.1.num_batches_tracked', 'incre_modules.1.0.bn2.running_mean', 'incre_modules.0.0.conv2.weight', 'incre_modules.3.0.bn2.running_var', 'incre_modules.0.0.bn2.weight', 'incre_modules.0.0.conv3.weight', 'incre_modules.1.0.bn1.running_var', 'incre_modules.3.0.bn2.bias', 'incre_modules.1.0.downsample.1.running_var', 'incre_modules.2.0.downsample.0.weight', 'incre_modules.1.0.downsample.1.running_mean', 'incre_modules.1.0.bn2.num_batches_tracked', 'incre_modules.1.0.bn1.bias', 'incre_modules.3.0.downsample.1.weight', 'incre_modules.0.0.bn3.running_mean', 'incre_modules.3.0.bn3.weight', 'incre_modules.2.0.bn2.running_mean', 'incre_modules.2.0.downsample.1.num_batches_tracked', 'incre_modules.3.0.conv1.weight', 'incre_modules.2.0.downsample.1.bias', 'incre_modules.0.0.conv1.weight', 'incre_modules.3.0.downsample.1.running_mean', 'incre_modules.3.0.downsample.0.weight', 'incre_modules.2.0.bn2.weight', 'incre_modules.2.0.downsample.1.running_mean', 'incre_modules.3.0.bn3.bias', 'downsamp_modules.2.1.bias', 'incre_modules.2.0.downsample.1.weight', 'incre_modules.0.0.downsample.1.bias', 'incre_modules.0.0.bn2.bias', 'incre_modules.0.0.bn2.running_var', 'incre_modules.1.0.conv2.weight', 'downsamp_modules.1.1.num_batches_tracked', 'classifier.bias', 'incre_modules.2.0.bn1.running_mean', 'incre_modules.3.0.bn1.bias', 'incre_modules.2.0.bn1.running_var', 'incre_modules.2.0.bn3.bias', 'incre_modules.3.0.bn3.running_var', 'downsamp_modules.1.1.running_var', 'incre_modules.0.0.bn2.num_batches_tracked', 'incre_modules.3.0.downsample.1.num_batches_tracked', 'downsamp_modules.2.1.weight', 'final_layer.0.weight', 'incre_modules.2.0.bn3.running_var', 'final_layer.1.weight', 'incre_modules.1.0.bn3.weight', 'incre_modules.0.0.bn3.running_var', 'final_layer.1.running_var', 'incre_modules.1.0.bn3.running_mean', 'downsamp_modules.2.0.bias', 'incre_modules.1.0.bn2.bias', 'incre_modules.0.0.bn1.weight', 'incre_modules.2.0.bn3.num_batches_tracked', 'incre_modules.0.0.bn2.running_mean', 'downsamp_modules.0.0.weight', 'incre_modules.3.0.bn1.weight', 'incre_modules.3.0.downsample.1.running_var', 'downsamp_modules.1.0.weight', 'incre_modules.2.0.downsample.1.running_var', 'incre_modules.0.0.bn3.num_batches_tracked', 'incre_modules.3.0.bn3.running_mean', 'incre_modules.3.0.bn2.num_batches_tracked', 'incre_modules.2.0.conv3.weight', 'incre_modules.1.0.bn3.num_batches_tracked', 'incre_modules.0.0.bn3.bias', 'incre_modules.2.0.conv2.weight', 'incre_modules.0.0.downsample.1.weight', 'incre_modules.1.0.bn3.bias'}
+{'downsamp_modules.2.1.running_mean', 'incre_modules.2.0.bn2.weight', 'final_layer.1.bias', 'incre_modules.2.0.downsample.1.weight', 'incre_modules.3.0.bn3.bias', 'incre_modules.1.0.conv1.weight', 'final_layer.1.num_batches_tracked', 'incre_modules.3.0.bn1.weight', 'incre_modules.2.0.bn1.num_batches_tracked', 'incre_modules.0.0.bn1.weight', 'downsamp_modules.1.1.bias', 'incre_modules.3.0.bn3.running_var', 'incre_modules.1.0.bn3.running_mean', 'incre_modules.1.0.downsample.0.weight', 'incre_modules.2.0.bn2.num_batches_tracked', 'incre_modules.1.0.bn1.num_batches_tracked', 'incre_modules.0.0.bn2.running_mean', 'incre_modules.0.0.bn1.running_mean', 'incre_modules.2.0.conv3.weight', 'incre_modules.3.0.bn2.num_batches_tracked', 'incre_modules.3.0.bn2.bias', 'incre_modules.1.0.bn2.num_batches_tracked', 'incre_modules.3.0.bn3.num_batches_tracked', 'downsamp_modules.0.0.weight', 'incre_modules.3.0.bn2.running_mean', 'incre_modules.1.0.bn1.bias', 'incre_modules.0.0.bn2.running_var', 'downsamp_modules.2.1.bias', 'downsamp_modules.0.1.num_batches_tracked', 'incre_modules.2.0.downsample.1.num_batches_tracked', 'incre_modules.0.0.bn2.num_batches_tracked', 'incre_modules.2.0.bn3.running_var', 'downsamp_modules.0.1.running_mean', 'incre_modules.3.0.bn1.running_var', 'incre_modules.3.0.downsample.1.weight', 'downsamp_modules.1.1.running_var', 'final_layer.1.running_mean', 'incre_modules.3.0.downsample.0.weight', 'final_layer.0.weight', 'incre_modules.0.0.downsample.1.running_mean', 'downsamp_modules.1.1.num_batches_tracked', 'incre_modules.1.0.bn2.running_mean', 'downsamp_modules.0.1.bias', 'incre_modules.3.0.bn1.bias', 'incre_modules.1.0.downsample.1.num_batches_tracked', 'incre_modules.1.0.bn3.bias', 'downsamp_modules.1.0.weight', 'final_layer.1.weight', 'incre_modules.1.0.conv2.weight', 'incre_modules.1.0.downsample.1.running_mean', 'incre_modules.2.0.bn3.weight', 'incre_modules.0.0.bn1.num_batches_tracked', 'incre_modules.2.0.conv2.weight', 'incre_modules.2.0.bn2.running_mean', 'incre_modules.1.0.bn3.num_batches_tracked', 'incre_modules.0.0.bn2.weight', 'incre_modules.3.0.bn2.weight', 'classifier.bias', 'downsamp_modules.1.0.bias', 'incre_modules.3.0.downsample.1.running_mean', 'downsamp_modules.2.0.weight', 'incre_modules.1.0.bn1.weight', 'downsamp_modules.0.0.bias', 'incre_modules.2.0.bn3.num_batches_tracked', 'incre_modules.3.0.bn3.running_mean', 'downsamp_modules.1.1.running_mean', 'incre_modules.0.0.bn3.weight', 'incre_modules.0.0.downsample.1.weight', 'incre_modules.2.0.bn1.running_var', 'incre_modules.2.0.bn1.weight', 'incre_modules.2.0.bn1.running_mean', 'incre_modules.3.0.downsample.1.bias', 'downsamp_modules.0.1.weight', 'incre_modules.1.0.bn1.running_var', 'incre_modules.1.0.downsample.1.running_var', 'incre_modules.2.0.bn2.bias', 'incre_modules.3.0.conv1.weight', 'incre_modules.0.0.bn1.running_var', 'incre_modules.0.0.bn3.running_var', 'incre_modules.1.0.bn2.running_var', 'incre_modules.1.0.bn3.weight', 'incre_modules.0.0.downsample.0.weight', 'incre_modules.3.0.downsample.1.running_var', 'incre_modules.0.0.bn1.bias', 'incre_modules.3.0.bn1.running_mean', 'incre_modules.2.0.downsample.1.running_mean', 'incre_modules.2.0.downsample.1.running_var', 'incre_modules.1.0.bn2.weight', 'incre_modules.0.0.bn2.bias', 'incre_modules.2.0.bn3.bias', 'incre_modules.2.0.bn3.running_mean', 'incre_modules.3.0.conv2.weight', 'incre_modules.0.0.bn3.running_mean', 'incre_modules.1.0.conv3.weight', 'incre_modules.0.0.conv3.weight', 'downsamp_modules.0.1.running_var', 'incre_modules.2.0.conv1.weight', 'incre_modules.1.0.bn3.running_var', 'incre_modules.3.0.downsample.1.num_batches_tracked', 'incre_modules.0.0.downsample.1.num_batches_tracked', 'downsamp_modules.2.1.weight', 'downsamp_modules.2.1.num_batches_tracked', 'incre_modules.3.0.bn2.running_var', 'downsamp_modules.2.0.bias', 'incre_modules.1.0.downsample.1.weight', 'incre_modules.0.0.conv1.weight', 'final_layer.0.bias', 'incre_modules.0.0.downsample.1.running_var', 'incre_modules.3.0.conv3.weight', 'final_layer.1.running_var', 'incre_modules.2.0.bn1.bias', 'incre_modules.2.0.bn2.running_var', 'incre_modules.2.0.downsample.1.bias', 'incre_modules.3.0.bn3.weight', 'incre_modules.3.0.bn1.num_batches_tracked', 'incre_modules.2.0.downsample.0.weight', 'incre_modules.0.0.bn3.num_batches_tracked', 'incre_modules.1.0.downsample.1.bias', 'incre_modules.1.0.bn1.running_mean', 'incre_modules.0.0.bn3.bias', 'classifier.weight', 'incre_modules.0.0.conv2.weight', 'incre_modules.0.0.downsample.1.bias', 'downsamp_modules.2.1.running_var', 'downsamp_modules.1.1.weight', 'incre_modules.1.0.bn2.bias'}
+{'incre_modules.1.0.bn1.running_mean', 'downsamp_modules.1.1.num_batches_tracked', 'incre_modules.0.0.conv1.weight', 'incre_modules.3.0.conv1.weight', 'incre_modules.3.0.downsample.1.bias', 'incre_modules.1.0.bn2.running_var', 'incre_modules.2.0.bn3.running_var', 'incre_modules.1.0.downsample.1.bias', 'incre_modules.0.0.bn3.running_var', 'downsamp_modules.1.1.weight', 'incre_modules.0.0.downsample.1.bias', 'incre_modules.1.0.conv2.weight', 'downsamp_modules.1.1.running_mean', 'incre_modules.0.0.conv3.weight', 'incre_modules.1.0.conv3.weight', 'downsamp_modules.2.1.running_mean', 'incre_modules.2.0.downsample.1.running_var', 'final_layer.0.bias', 'incre_modules.1.0.bn1.num_batches_tracked', 'final_layer.1.running_mean', 'incre_modules.1.0.bn1.bias', 'incre_modules.3.0.downsample.1.running_mean', 'final_layer.0.weight', 'incre_modules.1.0.bn2.weight', 'incre_modules.2.0.bn1.bias', 'incre_modules.1.0.bn2.bias', 'classifier.weight', 'incre_modules.3.0.conv2.weight', 'incre_modules.3.0.downsample.1.num_batches_tracked', 'downsamp_modules.0.1.num_batches_tracked', 'incre_modules.1.0.bn1.running_var', 'incre_modules.2.0.bn1.num_batches_tracked', 'incre_modules.2.0.bn1.running_mean', 'incre_modules.1.0.bn2.num_batches_tracked', 'incre_modules.3.0.bn3.bias', 'incre_modules.1.0.conv1.weight', 'incre_modules.0.0.bn1.num_batches_tracked', 'incre_modules.0.0.bn2.weight', 'final_layer.1.bias', 'incre_modules.1.0.downsample.1.running_mean', 'incre_modules.2.0.bn3.weight', 'incre_modules.3.0.bn2.num_batches_tracked', 'incre_modules.2.0.downsample.1.running_mean', 'incre_modules.1.0.bn3.num_batches_tracked', 'incre_modules.3.0.bn1.bias', 'incre_modules.2.0.bn3.running_mean', 'incre_modules.2.0.bn1.running_var', 'incre_modules.2.0.bn2.bias', 'downsamp_modules.2.1.num_batches_tracked', 'incre_modules.2.0.downsample.1.num_batches_tracked', 'incre_modules.3.0.bn1.num_batches_tracked', 'downsamp_modules.0.1.running_mean', 'incre_modules.2.0.bn2.weight', 'final_layer.1.weight', 'incre_modules.3.0.bn1.weight', 'incre_modules.0.0.bn2.running_var', 'incre_modules.0.0.conv2.weight', 'incre_modules.0.0.bn1.bias', 'incre_modules.0.0.bn3.num_batches_tracked', 'incre_modules.2.0.conv3.weight', 'downsamp_modules.0.0.bias', 'incre_modules.3.0.downsample.1.weight', 'incre_modules.1.0.bn3.running_mean', 'incre_modules.2.0.bn3.num_batches_tracked', 'downsamp_modules.2.1.running_var', 'incre_modules.0.0.bn3.bias', 'downsamp_modules.0.1.weight', 'incre_modules.2.0.bn1.weight', 'incre_modules.2.0.bn3.bias', 'downsamp_modules.1.1.bias', 'incre_modules.0.0.bn3.running_mean', 'final_layer.1.num_batches_tracked', 'downsamp_modules.2.1.bias', 'incre_modules.1.0.bn1.weight', 'incre_modules.0.0.bn1.weight', 'incre_modules.1.0.downsample.1.running_var', 'incre_modules.0.0.downsample.1.weight', 'incre_modules.0.0.downsample.0.weight', 'incre_modules.0.0.bn2.bias', 'incre_modules.0.0.bn2.num_batches_tracked', 'incre_modules.2.0.conv2.weight', 'incre_modules.2.0.downsample.1.bias', 'incre_modules.3.0.bn2.running_mean', 'incre_modules.1.0.bn2.running_mean', 'downsamp_modules.0.1.bias', 'incre_modules.2.0.bn2.num_batches_tracked', 'incre_modules.2.0.downsample.1.weight', 'incre_modules.2.0.bn2.running_mean', 'incre_modules.0.0.bn3.weight', 'incre_modules.3.0.bn3.num_batches_tracked', 'incre_modules.3.0.conv3.weight', 'downsamp_modules.0.1.running_var', 'incre_modules.3.0.bn1.running_var', 'incre_modules.3.0.bn2.bias', 'downsamp_modules.2.1.weight', 'incre_modules.1.0.bn3.running_var', 'downsamp_modules.1.1.running_var', 'incre_modules.2.0.downsample.0.weight', 'downsamp_modules.2.0.bias', 'incre_modules.3.0.bn2.running_var', 'incre_modules.3.0.bn3.running_var', 'incre_modules.3.0.bn2.weight', 'incre_modules.3.0.downsample.0.weight', 'downsamp_modules.0.0.weight', 'incre_modules.0.0.bn1.running_var', 'incre_modules.3.0.downsample.1.running_var', 'incre_modules.0.0.downsample.1.running_mean', 'incre_modules.0.0.downsample.1.num_batches_tracked', 'incre_modules.1.0.downsample.0.weight', 'incre_modules.1.0.bn3.weight', 'downsamp_modules.1.0.bias', 'incre_modules.3.0.bn1.running_mean', 'final_layer.1.running_var', 'downsamp_modules.2.0.weight', 'incre_modules.0.0.downsample.1.running_var', 'incre_modules.1.0.downsample.1.weight', 'incre_modules.0.0.bn1.running_mean', 'incre_modules.2.0.bn2.running_var', 'incre_modules.3.0.bn3.weight', 'incre_modules.2.0.conv1.weight', 'incre_modules.3.0.bn3.running_mean', 'downsamp_modules.1.0.weight', 'classifier.bias', 'incre_modules.0.0.bn2.running_mean', 'incre_modules.1.0.bn3.bias', 'incre_modules.1.0.downsample.1.num_batches_tracked'}
+{'incre_modules.3.0.bn2.bias', 'incre_modules.0.0.bn3.bias', 'incre_modules.0.0.downsample.1.running_mean', 'downsamp_modules.2.0.bias', 'incre_modules.1.0.bn3.weight', 'incre_modules.0.0.conv3.weight', 'downsamp_modules.0.1.running_mean', 'incre_modules.2.0.downsample.1.running_var', 'incre_modules.3.0.bn3.bias', 'incre_modules.2.0.conv3.weight', 'downsamp_modules.2.1.num_batches_tracked', 'incre_modules.3.0.bn1.running_var', 'incre_modules.2.0.bn1.running_var', 'incre_modules.2.0.bn2.bias', 'downsamp_modules.0.0.weight', 'incre_modules.3.0.bn2.num_batches_tracked', 'incre_modules.1.0.bn3.running_mean', 'incre_modules.0.0.bn2.bias', 'incre_modules.1.0.bn2.running_var', 'incre_modules.1.0.downsample.1.running_mean', 'downsamp_modules.1.1.running_var', 'incre_modules.1.0.conv3.weight', 'incre_modules.1.0.bn1.weight', 'incre_modules.2.0.bn3.running_var', 'incre_modules.3.0.bn1.running_mean', 'incre_modules.3.0.conv2.weight', 'incre_modules.1.0.bn3.running_var', 'incre_modules.3.0.bn3.running_var', 'incre_modules.3.0.conv1.weight', 'incre_modules.0.0.conv2.weight', 'incre_modules.2.0.bn2.num_batches_tracked', 'incre_modules.1.0.bn2.num_batches_tracked', 'incre_modules.0.0.bn1.bias', 'incre_modules.0.0.bn1.running_var', 'incre_modules.1.0.bn1.running_mean', 'incre_modules.0.0.downsample.1.running_var', 'incre_modules.2.0.downsample.0.weight', 'incre_modules.2.0.bn3.bias', 'incre_modules.1.0.bn3.num_batches_tracked', 'incre_modules.3.0.bn2.weight', 'incre_modules.0.0.bn3.weight', 'incre_modules.1.0.bn1.running_var', 'incre_modules.1.0.downsample.1.num_batches_tracked', 'incre_modules.1.0.downsample.1.running_var', 'incre_modules.0.0.bn2.num_batches_tracked', 'incre_modules.2.0.bn2.running_mean', 'incre_modules.0.0.bn1.running_mean', 'downsamp_modules.0.1.running_var', 'incre_modules.1.0.bn2.weight', 'incre_modules.3.0.downsample.0.weight', 'final_layer.0.weight', 'incre_modules.1.0.downsample.1.weight', 'incre_modules.3.0.downsample.1.running_var', 'incre_modules.3.0.bn1.num_batches_tracked', 'classifier.bias', 'incre_modules.2.0.bn1.bias', 'incre_modules.2.0.downsample.1.num_batches_tracked', 'incre_modules.3.0.bn2.running_var', 'incre_modules.2.0.bn2.running_var', 'incre_modules.2.0.bn3.num_batches_tracked', 'final_layer.1.num_batches_tracked', 'incre_modules.1.0.downsample.1.bias', 'incre_modules.1.0.conv1.weight', 'incre_modules.1.0.bn1.bias', 'downsamp_modules.2.1.weight', 'incre_modules.1.0.bn2.running_mean', 'incre_modules.2.0.conv1.weight', 'incre_modules.1.0.conv2.weight', 'incre_modules.2.0.bn3.weight', 'incre_modules.2.0.bn3.running_mean', 'incre_modules.0.0.bn3.running_mean', 'incre_modules.3.0.downsample.1.running_mean', 'classifier.weight', 'incre_modules.3.0.conv3.weight', 'incre_modules.0.0.downsample.0.weight', 'incre_modules.2.0.bn1.running_mean', 'incre_modules.0.0.bn2.weight', 'downsamp_modules.2.1.running_mean', 'incre_modules.3.0.bn2.running_mean', 'incre_modules.0.0.downsample.1.num_batches_tracked', 'downsamp_modules.0.1.num_batches_tracked', 'incre_modules.1.0.bn2.bias', 'downsamp_modules.1.0.bias', 'incre_modules.2.0.bn1.num_batches_tracked', 'final_layer.1.bias', 'incre_modules.1.0.downsample.0.weight', 'incre_modules.0.0.bn3.running_var', 'downsamp_modules.1.1.num_batches_tracked', 'downsamp_modules.0.1.bias', 'final_layer.1.weight', 'incre_modules.2.0.bn1.weight', 'incre_modules.0.0.downsample.1.weight', 'incre_modules.2.0.downsample.1.bias', 'incre_modules.2.0.conv2.weight', 'incre_modules.3.0.downsample.1.bias', 'downsamp_modules.2.1.running_var', 'incre_modules.3.0.bn1.bias', 'final_layer.0.bias', 'downsamp_modules.1.1.weight', 'incre_modules.3.0.downsample.1.num_batches_tracked', 'downsamp_modules.2.1.bias', 'incre_modules.0.0.bn2.running_mean', 'downsamp_modules.1.0.weight', 'incre_modules.0.0.bn1.num_batches_tracked', 'incre_modules.2.0.downsample.1.weight', 'incre_modules.3.0.bn1.weight', 'incre_modules.2.0.downsample.1.running_mean', 'final_layer.1.running_var', 'incre_modules.3.0.downsample.1.weight', 'downsamp_modules.0.1.weight', 'incre_modules.3.0.bn3.running_mean', 'downsamp_modules.0.0.bias', 'downsamp_modules.1.1.bias', 'downsamp_modules.1.1.running_mean', 'incre_modules.0.0.bn1.weight', 'incre_modules.0.0.bn3.num_batches_tracked', 'incre_modules.3.0.bn3.weight', 'incre_modules.1.0.bn1.num_batches_tracked', 'incre_modules.3.0.bn3.num_batches_tracked', 'incre_modules.0.0.bn2.running_var', 'incre_modules.2.0.bn2.weight', 'downsamp_modules.2.0.weight', 'incre_modules.0.0.conv1.weight', 'final_layer.1.running_mean', 'incre_modules.1.0.bn3.bias', 'incre_modules.0.0.downsample.1.bias'}
+loading annotations into memory...loading annotations into memory...
+
+loading annotations into memory...loading annotations into memory...
+
+JSON root keys:dict_keys(['info', 'images', 'annos_segmentation', 'annos_occlusion', 'annos_boundary', 'categories', 'parts'])
+Done (t=4.75s)
+creating index...
+JSON root keys:dict_keys(['info', 'images', 'annos_segmentation', 'annos_occlusion', 'annos_boundary', 'categories', 'parts'])
+Done (t=4.75s)
+creating index...
+JSON root keys:dict_keys(['info', 'images', 'annos_segmentation', 'annos_occlusion', 'annos_boundary', 'categories', 'parts'])
+Done (t=4.76s)
+creating index...
+JSON root keys:dict_keys(['info', 'images', 'annos_segmentation', 'annos_occlusion', 'annos_boundary', 'categories', 'parts'])
+Done (t=4.79s)
+creating index...
+index created! (t=4.15s)
+index created! (t=4.16s)
+index created! (t=4.16s)
+index created! (t=4.17s)
+mask_file: data/pascal_ctx/VOCdevkit/VOC2010/train.pth
+mask_file: data/pascal_ctx/VOCdevkit/VOC2010/train.pth
+mask_file: data/pascal_ctx/VOCdevkit/VOC2010/train.pth
+mask_file: data/pascal_ctx/VOCdevkit/VOC2010/train.pth
+loading annotations into memory...
+loading annotations into memory...
+loading annotations into memory...
+loading annotations into memory...
+JSON root keys:dict_keys(['info', 'images', 'annos_segmentation', 'annos_occlusion', 'annos_boundary', 'categories', 'parts'])
+Done (t=4.50s)
+creating index...
+JSON root keys:dict_keys(['info', 'images', 'annos_segmentation', 'annos_occlusion', 'annos_boundary', 'categories', 'parts'])
+Done (t=4.54s)
+creating index...
+JSON root keys:dict_keys(['info', 'images', 'annos_segmentation', 'annos_occlusion', 'annos_boundary', 'categories', 'parts'])
+Done (t=4.54s)
+creating index...
+JSON root keys:dict_keys(['info', 'images', 'annos_segmentation', 'annos_occlusion', 'annos_boundary', 'categories', 'parts'])
+Done (t=4.53s)
+creating index...
+index created! (t=4.27s)
+index created! (t=4.27s)
+index created! (t=4.27s)
+index created! (t=4.28s)
+mask_file: data/pascal_ctx/VOCdevkit/VOC2010/val.pth
+mask_file: data/pascal_ctx/VOCdevkit/VOC2010/val.pth
+mask_file: data/pascal_ctx/VOCdevkit/VOC2010/val.pth
+mask_file: data/pascal_ctx/VOCdevkit/VOC2010/val.pth
+{'module.model.ocr_distri_head.object_context_block.f_object.2.weight', 'module.model.ocr_distri_head.object_context_block.f_down.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.0.weight', 'module.model.aux_head.3.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'module.model.ocr_distri_head.object_context_block.f_down.1.0.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.2.weight', 'module.model.ocr_distri_head.object_context_block.f_object.3.0.bias', 'module.model.ocr_distri_head.object_context_block.f_up.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_object.3.0.weight', 'module.model.ocr_distri_head.conv_bn_dropout.1.0.bias', 'module.model.conv3x3_ocr.1.weight', 'module.model.ocr_distri_head.object_context_block.f_object.1.0.weight', 'module.model.conv3x3_ocr.1.bias', 'module.model.ocr_distri_head.conv_bn_dropout.0.weight', 'module.model.aux_head.0.bias', 'module.model.ocr_distri_head.object_context_block.f_object.0.weight', 'module.model.ocr_distri_head.conv_bn_dropout.1.0.weight', 'module.model.cls_head.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'module.model.ocr_distri_head.object_context_block.f_up.0.weight', 'module.model.conv3x3_ocr.0.bias', 'module.model.aux_head.3.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'module.model.aux_head.0.weight', 'module.model.cls_head.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.3.0.weight', 'module.model.ocr_distri_head.object_context_block.f_down.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.1.0.bias', 'module.model.aux_head.1.bias', 'module.model.ocr_distri_head.object_context_block.f_up.1.0.weight', 'module.model.conv3x3_ocr.0.weight', 'module.model.aux_head.1.weight'}
+{'module.model.ocr_distri_head.object_context_block.f_pixel.0.weight', 'module.model.aux_head.0.weight', 'module.model.ocr_distri_head.object_context_block.f_up.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_object.0.weight', 'module.model.aux_head.1.bias', 'module.model.ocr_distri_head.object_context_block.f_object.3.0.bias', 'module.model.aux_head.3.weight', 'module.model.aux_head.1.weight', 'module.model.ocr_distri_head.object_context_block.f_up.1.0.weight', 'module.model.cls_head.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.3.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.3.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.1.0.weight', 'module.model.ocr_distri_head.conv_bn_dropout.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_down.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.2.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'module.model.conv3x3_ocr.0.weight', 'module.model.ocr_distri_head.conv_bn_dropout.1.0.weight', 'module.model.aux_head.0.bias', 'module.model.conv3x3_ocr.1.weight', 'module.model.conv3x3_ocr.1.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'module.model.conv3x3_ocr.0.bias', 'module.model.ocr_distri_head.object_context_block.f_down.0.weight', 'module.model.ocr_distri_head.conv_bn_dropout.0.weight', 'module.model.cls_head.weight', 'module.model.ocr_distri_head.object_context_block.f_object.2.weight', 'module.model.aux_head.3.bias', 'module.model.ocr_distri_head.object_context_block.f_up.0.weight', 'module.model.ocr_distri_head.object_context_block.f_down.1.0.weight'}
+{'module.model.ocr_distri_head.object_context_block.f_up.1.0.weight', 'module.model.ocr_distri_head.conv_bn_dropout.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.2.weight', 'module.model.aux_head.3.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.0.weight', 'module.model.ocr_distri_head.object_context_block.f_up.0.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_up.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_down.1.0.weight', 'module.model.aux_head.3.bias', 'module.model.conv3x3_ocr.1.weight', 'module.model.ocr_distri_head.conv_bn_dropout.1.0.weight', 'module.model.cls_head.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.0.weight', 'module.model.ocr_distri_head.object_context_block.f_down.1.0.bias', 'module.model.cls_head.weight', 'module.model.ocr_distri_head.conv_bn_dropout.0.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.3.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_object.2.weight', 'module.model.aux_head.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.3.0.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'module.model.ocr_distri_head.object_context_block.f_down.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.3.0.bias', 'module.model.ocr_distri_head.object_context_block.f_object.1.0.weight', 'module.model.aux_head.1.bias', 'module.model.conv3x3_ocr.1.bias', 'module.model.aux_head.1.weight', 'module.model.conv3x3_ocr.0.bias', 'module.model.aux_head.0.bias', 'module.model.conv3x3_ocr.0.weight'}
+{'module.model.ocr_distri_head.object_context_block.f_object.3.0.weight', 'module.model.ocr_distri_head.conv_bn_dropout.1.0.weight', 'module.model.ocr_distri_head.object_context_block.f_down.1.0.bias', 'module.model.aux_head.0.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.3.0.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.1.0.bias', 'module.model.aux_head.3.weight', 'module.model.ocr_distri_head.object_context_block.f_down.0.weight', 'module.model.cls_head.weight', 'module.model.ocr_distri_head.conv_bn_dropout.1.0.bias', 'module.model.aux_head.1.weight', 'module.model.conv3x3_ocr.0.bias', 'module.model.ocr_distri_head.object_context_block.f_up.1.0.bias', 'module.model.conv3x3_ocr.1.weight', 'module.model.ocr_distri_head.object_context_block.f_object.3.0.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.1.0.weight', 'module.model.ocr_distri_head.conv_bn_dropout.0.weight', 'module.model.aux_head.3.bias', 'module.model.aux_head.1.bias', 'module.model.ocr_distri_head.object_context_block.f_object.1.0.weight', 'module.model.conv3x3_ocr.1.bias', 'module.model.cls_head.bias', 'module.model.aux_head.0.bias', 'module.model.ocr_distri_head.object_context_block.f_down.1.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.1.0.bias', 'module.model.ocr_distri_head.object_context_block.f_pixel.0.weight', 'module.model.ocr_distri_head.object_context_block.f_up.0.weight', 'module.model.conv3x3_ocr.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.0.weight', 'module.model.ocr_distri_head.object_context_block.f_object.2.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.2.weight', 'module.model.ocr_distri_head.object_context_block.f_up.1.0.weight', 'module.model.ocr_distri_head.object_context_block.f_pixel.3.0.weight'}
+=> loaded checkpoint (epoch 156)
+=> loaded checkpoint (epoch 156)
+=> loaded checkpoint (epoch 156)
+=> loaded checkpoint (epoch 156)
+Distributed dataloaderDistributed dataloaderDistributed dataloaderDistributed dataloader
+
+
+
+[W reducer.cpp:1158] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+[W reducer.cpp:1158] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+[W reducer.cpp:1158] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+[W reducer.cpp:1158] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+Epoch: [156/200] Iter:[0/7], Time: 11.11, lr: [0.0009324260033656453, 0.009324260033656454], Loss: 0.788510
+Epoch: [157/200] Iter:[0/7], Time: 4.66, lr: [0.0009319911176641216, 0.009319911176641216], Loss: 0.780554
+Traceback (most recent call last):
+  File "tools/train.py", line 620, in <module>
+    main()
+  File "tools/train.py", line 540, in main
+    train(
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/tools/../lib/core/function.py", line 79, in train
+    loss.backward()
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/_tensor.py", line 255, in backward
+Traceback (most recent call last):
+  File "tools/train.py", line 620, in <module>
+    main()
+  File "tools/train.py", line 540, in main
+    train(
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/tools/../lib/core/function.py", line 79, in train
+    loss.backward()
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/_tensor.py", line 255, in backward
+    torch.autograd.backward(self, gradient, retain_graph, create_graph, inputs=inputs)    
+torch.autograd.backward(self, gradient, retain_graph, create_graph, inputs=inputs)
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/autograd/__init__.py", line 147, in backward
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/autograd/__init__.py", line 147, in backward
+        Variable._execution_engine.run_backward(Variable._execution_engine.run_backward(
+
+RuntimeErrorRuntimeError: : CUDA out of memory. Tried to allocate 2.06 GiB (GPU 2; 79.15 GiB total capacity; 66.32 GiB already allocated; 1.62 GiB free; 75.65 GiB reserved in total by PyTorch)CUDA out of memory. Tried to allocate 2.06 GiB (GPU 1; 79.15 GiB total capacity; 66.32 GiB already allocated; 1.62 GiB free; 75.65 GiB reserved in total by PyTorch)
+
+Traceback (most recent call last):
+  File "tools/train.py", line 620, in <module>
+Traceback (most recent call last):
+  File "tools/train.py", line 620, in <module>
+    main()
+  File "tools/train.py", line 540, in main
+    main()
+  File "tools/train.py", line 540, in main
+    train(
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/tools/../lib/core/function.py", line 79, in train
+    loss.backward()
+      File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/_tensor.py", line 255, in backward
+train(
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/tools/../lib/core/function.py", line 79, in train
+    loss.backward()
+      File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/_tensor.py", line 255, in backward
+torch.autograd.backward(self, gradient, retain_graph, create_graph, inputs=inputs)
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/autograd/__init__.py", line 147, in backward
+        torch.autograd.backward(self, gradient, retain_graph, create_graph, inputs=inputs)Variable._execution_engine.run_backward(
+
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/autograd/__init__.py", line 147, in backward
+RuntimeError: CUDA out of memory. Tried to allocate 2.06 GiB (GPU 3; 79.15 GiB total capacity; 66.32 GiB already allocated; 1.62 GiB free; 75.65 GiB reserved in total by PyTorch)
+    Variable._execution_engine.run_backward(
+RuntimeError: CUDA out of memory. Tried to allocate 2.06 GiB (GPU 0; 79.15 GiB total capacity; 66.32 GiB already allocated; 1.62 GiB free; 75.65 GiB reserved in total by PyTorch)
+ERROR:torch.distributed.elastic.multiprocessing.api:failed (exitcode: 1) local_rank: 0 (pid: 212952) of binary: /data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/bin/python
+Traceback (most recent call last):
+  File "/usr/local/easybuild-2019/easybuild/software/compiler/gcccore/10.2.0/python/3.8.6/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/local/easybuild-2019/easybuild/software/compiler/gcccore/10.2.0/python/3.8.6/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/distributed/launch.py", line 193, in <module>
+    main()
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/distributed/launch.py", line 189, in main
+    launch(args)
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/distributed/launch.py", line 174, in launch
+    run(args)
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/distributed/run.py", line 689, in run
+    elastic_launch(
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 116, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/data/gpfs/projects/punim1896/coresets/repositories/HRNet-Semantic-Segmentation-Coreset/venv/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 244, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+***************************************
+         tools/train.py FAILED         
+=======================================
+Root Cause:
+[0]:
+  time: 2023-06-04_08:00:08
+  rank: 0 (local_rank: 0)
+  exitcode: 1 (pid: 212952)
+  error_file: <N/A>
+  msg: "Process failed with exitcode 1"
+=======================================
+Other Failures:
+[1]:
+  time: 2023-06-04_08:00:08
+  rank: 1 (local_rank: 1)
+  exitcode: 1 (pid: 212953)
+  error_file: <N/A>
+  msg: "Process failed with exitcode 1"
+[2]:
+  time: 2023-06-04_08:00:08
+  rank: 2 (local_rank: 2)
+  exitcode: 1 (pid: 212954)
+  error_file: <N/A>
+  msg: "Process failed with exitcode 1"
+[3]:
+  time: 2023-06-04_08:00:08
+  rank: 3 (local_rank: 3)
+  exitcode: 1 (pid: 212956)
+  error_file: <N/A>
+  msg: "Process failed with exitcode 1"
+***************************************
+
+Job ID           : 47754626
+Cluster          : spartan
+User/Project     : njbarry/punim1896
+Nodes            : 1
+Wall-clock time  : 00:02:22 / 05:30:00
+
+Displaying overall resources usage from 2023-06-04 07:57:47 to 2023-06-04 08:00:09:
+
+NODE            CPU#        TOT%   ( USR   / SYS   / WIO   / IDLE  ) 
+
+spartan-gpgpu105 : 
+                CPU# 1    : 65.3   (  56.5 /   8.8 /   0.0 /  34.7 ) 
+                CPU# 2    : 22.0   (  19.6 /   2.5 /   0.0 /  77.9 ) 
+                CPU# 3    : 19.6   (  17.8 /   1.8 /   0.0 /  80.4 ) 
+                CPU# 4    : 61.1   (  52.6 /   8.6 /   0.0 /  38.9 ) 
+                CPU# 5    : 20.9   (  18.6 /   2.4 /   0.0 /  79.1 ) 
+                CPU# 6    : 23.6   (  20.7 /   2.9 /   0.2 /  76.2 ) 
+                CPU# 7    : 21.4   (  19.7 /   1.7 /   0.2 /  78.4 ) 
+                CPU# 8    : 25.3   (  21.9 /   3.3 /   0.2 /  74.6 ) 
+                CPU# 9    : 62.4   (  54.7 /   7.7 /   0.0 /  37.6 ) 
+                CPU# 10   : 19.7   (  17.5 /   2.1 /   0.0 /  80.3 ) 
+                CPU# 11   : 24.5   (  20.7 /   3.8 /   0.0 /  75.4 ) 
+                CPU# 12   : 21.5   (  19.0 /   2.6 /   0.0 /  78.5 ) 
+                CPU# 13   : 21.0   (  18.8 /   2.2 /   0.0 /  78.9 ) 
+                CPU# 14   : 18.5   (  17.0 /   1.5 /   0.0 /  81.5 ) 
+                CPU# 15   : 23.3   (  20.0 /   3.3 /   0.0 /  76.7 ) 
+                CPU# 16   : 61.7   (  54.8 /   6.9 /   0.2 /  38.1 ) 
+
+                GPU# 1    : 29.3  
+                GPU# 2    : 29.4  
+                GPU# 3    : 29.6  
+                GPU# 4    : 29.4  
+
+
+Allocated CPUs            : 16   
+  CPUs with usage <25%    : 11   
+  CPUs with usage <50%    : 1    
+  CPUs with usage >50%    : 4    
+
+
+Allocated GPUs            : 4    
+  GPUs with usage <25%    : 0    
+  GPUs with usage <50%    : 4    
+  GPUs with usage >50%    : 0    
+
+Memory used (RAM)         : 17.5%  [43062MB of 245760MB]
+
+--------------------------------------------
+
