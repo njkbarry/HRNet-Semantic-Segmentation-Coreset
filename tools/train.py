@@ -143,10 +143,10 @@ def main():
 
     if distributed:
         train_batch_size = config.TRAIN.BATCH_SIZE_PER_GPU
-        test_batch_size  = config.TEST.BATCH_SIZE_PER_GPU
+        test_batch_size = config.TEST.BATCH_SIZE_PER_GPU
     else:
         train_batch_size = config.TRAIN.BATCH_SIZE_PER_GPU * len(gpus)
-        test_batch_size  = config.TEST.BATCH_SIZE_PER_GPU * len(gpus)
+        test_batch_size = config.TEST.BATCH_SIZE_PER_GPU * len(gpus)
 
     # prepare data
     crop_size = (config.TRAIN.IMAGE_SIZE[1], config.TRAIN.IMAGE_SIZE[0])
@@ -261,7 +261,6 @@ def main():
 
     # optimizer
     if config.TRAIN.OPTIMIZER == "sgd":
-
         params_dict = dict(model.named_parameters())
         if config.TRAIN.NONBACKBONE_KEYWORDS:
             bb_lr = []
@@ -370,7 +369,7 @@ def main():
 
         gc_stochastic_subsets_file_path = os.path.join(
             os.path.abspath("./data/preprocessing"),
-            config['DATASET']['DATASET']
+            config["DATASET"]["DATASET"]
             + "_"
             + "ViT"
             + "_"
@@ -386,7 +385,7 @@ def main():
         )
         global_order_file_path = os.path.join(
             os.path.abspath("./data/preprocessing"),
-            config['DATASET']['DATASET']
+            config["DATASET"]["DATASET"]
             + "_"
             + "ViT"
             + "_"
@@ -522,7 +521,6 @@ def main():
         epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
 
     for epoch in range(last_epoch, end_epoch):
-
         current_trainloader = (
             extra_trainloader if epoch >= config.TRAIN.END_EPOCH else trainloader
         )
@@ -560,13 +558,13 @@ def main():
                 model,
                 writer_dict,
             )
-        
+
         # FIXME:
         # Dev code
+
         torch.cuda.empty_cache()
 
         if epoch % config.TRAIN.VAL_SAVE_EVERY == 0:
-
             valid_loss, mean_IoU, IoU_array = validate(
                 config, testloader, model, writer_dict
             )
@@ -611,7 +609,6 @@ def main():
                 logging.info(IoU_array)
 
     if args.local_rank <= 0:
-
         torch.save(
             model.module.state_dict(), os.path.join(final_output_dir, "final_state.pth")
         )
