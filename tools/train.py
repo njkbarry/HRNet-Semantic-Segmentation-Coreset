@@ -4,13 +4,17 @@
 # Written by Ke Sun (sunk@mail.ustc.edu.cn)
 # ------------------------------------------------------------------------------
 
-# Test change
 
 import argparse
 import os
 import pprint
 import shutil
 import sys
+
+# Add directory roots to path for this repo and cords submodule
+# FIXME: Is there a better way to do this
+sys.path.insert(0, os.getcwd())
+sys.path.insert(0, os.getcwd() + "/cords")
 
 import logging
 import time
