@@ -150,7 +150,6 @@ def adjust_learning_rate(
 
 
 def initialise_stochastic_subsets(dss_args: DotMap, config):
-
     # Generate stochastic subsets
     POSSIBLE_METRICS = ["rbf_kernel", "dot", "cossim"]  # Best choice described in paper
 
@@ -158,7 +157,7 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
     DEFAULT_N_SUBSETS = 300
 
     stochastic_subsets = generate_image_stochastic_subsets(
-        dataset=config['DATASET']['DATASET'],
+        dataset=config["DATASET"]["DATASET"],
         model="ViT",
         submod_function=dss_args.submod_function,
         metric="cossim",
@@ -173,13 +172,12 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
 
 
 def initialise_global_order(dss_args: DotMap, config):
-
     # taken from /cords/configs/SL/config_milofixed_cifar100.py
     DEFAULT_R2_COEFFICIENT = 3  # Multiplier for R2 Variant
     DEFAULT_KNN = 25  # No of nearest neighbors for KNN variant
 
     global_order, global_knn, global_r2, cluster_idxs = generate_image_global_order(
-        dataset=config['DATASET']['DATASET'],
+        dataset=config["DATASET"]["DATASET"],
         model="ViT",
         submod_function=dss_args.submod_function,
         metric="cossim",
