@@ -10,6 +10,7 @@ import os
 import pprint
 import shutil
 import sys
+import math
 
 # Add directory roots to path for this repo and cords submodule
 # FIXME: Is there a better way to do this
@@ -336,21 +337,15 @@ def main():
         """
         num_epochs = end_epoch - last_epoch
 
-        # TODO: Abastract and implement initialisation
-        #   - Save pickled stochastic_subsets and global_order
-        #   - Fix pathing
-        #   - Fix args
-
-        # gc_stochastic_subsets_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_0.1_stochastic_subsets.pkl')
-        # global_order_file_path = os.path.join(os.path.abspath(args.data_dir), args.dataset + '_' + args.model + '_' + args.submod_function + '_' + str(args.kw) + '_global_order.pkl')
-
         dss_args = DotMap(
             dict(
                 type="MILO",
                 fraction=config.TRAIN.RANDOM_SUBSET,
                 kw=0.1,
-                gc_ratio=1 / 6,
-                submod_function="fl",
+                gc_ratio=config.MILO.GC_RATIO,
+                # submod_function="fl",
+                sge_submod_function=config.MILO.SGE_SUBMOD_FUNCTION,
+                wre_submod_function=config.MILO.WRE_SUBMOD_FUNCTION,
                 select_every=1,
                 kappa=0,
                 per_class=True,
@@ -359,17 +354,18 @@ def main():
                 device=device,
                 num_epochs=num_epochs,
                 num_gpus=len(gpus),
+                partition_mode = config.MILO.PARTITION_MODE
             )
         )
-        subset_selection_name = (
-            dss_args.type
-            + "_"
-            + dss_args.submod_function
-            + "_"
-            + str(dss_args.gc_ratio)
-            + "_"
-            + str(dss_args.kw)
-        )
+        # subset_selection_name = (
+        #     dss_args.type
+        #     + "_"
+        #     + dss_args.submod_function
+        #     + "_"
+        #     + str(dss_args.gc_ratio)
+        #     + "_"
+        #     + str(dss_args.kw)
+        # )
 
         gc_stochastic_subsets_file_path = os.path.join(
             os.path.abspath("./data/preprocessing"),
@@ -379,7 +375,7 @@ def main():
             + "_"
             + "cossim"
             + "_"
-            + str(dss_args.submod_function)
+            + str(dss_args.sge_submod_function)
             + "_"
             + str(dss_args.kw)
             + "_"
@@ -395,13 +391,15 @@ def main():
             + "_"
             + "cossim"
             + "_"
-            + str(dss_args.submod_function)
+            + str(dss_args.wre_submod_function)
             + "_"
             + str(dss_args.kw)
             + "_global_order.pkl",
         )
 
-        dss_args["subset_selection_name"] = subset_selection_name
+        # FIXME: May be redundant
+        # dss_args["subset_selection_name"] = subset_selection_name
+
         dss_args["global_order_file"] = global_order_file_path
         dss_args["gc_stochastic_subsets_file"] = gc_stochastic_subsets_file_path
 
@@ -494,8 +492,6 @@ def main():
         """
         ############################## AdaptiveRandom Dataloader Additional Arguments ##############################
         """
-        # device = None
-        # Fix Me: This may need a +1 adjustment and assurance to be >0
         num_epochs = end_epoch - last_epoch
 
         # ala https://github.com/decile-team/cords/blob/main/configs/SL/config_adaptiverandom_mnist.py
@@ -525,13 +521,23 @@ def main():
         epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
 
     for epoch in range(last_epoch, end_epoch):
-        current_trainloader = (
-            extra_trainloader if epoch >= config.TRAIN.END_EPOCH else trainloader
-        )
-        if current_trainloader.sampler is not None and hasattr(
-            current_trainloader.sampler, "set_epoch"
-        ):
-            current_trainloader.sampler.set_epoch(epoch)
+
+        explotation_experiment = True
+        # Now using WRE, stop training
+        if explotation_experiment and not trainloader.cur_epoch < math.ceil(trainloader.gc_ratio * trainloader.num_epochs):
+            break
+
+
+        # FIXME: Remove
+        #   - Redundant logic from HRNET
+
+        # current_trainloader = (
+        #     extra_trainloader if epoch >= config.TRAIN.END_EPOCH else trainloader
+        # )
+        # if current_trainloader.sampler is not None and hasattr(
+        #     current_trainloader.sampler, "set_epoch"
+        # ):
+        #     current_trainloader.sampler.set_epoch(epoch)
 
         # valid_loss, mean_IoU, IoU_array = validate(config,
         #             testloader, model, writer_dict)
@@ -564,9 +570,8 @@ def main():
             )
 
         # FIXME:
-        # Dev code
-
-        torch.cuda.empty_cache()
+        # Remove dev code
+        # torch.cuda.empty_cache()
 
         if epoch % config.TRAIN.VAL_SAVE_EVERY == 0:
             valid_loss, mean_IoU, IoU_array = validate(

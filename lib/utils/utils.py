@@ -159,7 +159,8 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
     stochastic_subsets = generate_image_stochastic_subsets(
         dataset=config["DATASET"]["DATASET"],
         model="ViT",
-        submod_function=dss_args.submod_function,
+        # submod_function=dss_args.submod_function,
+        submod_function = dss_args.sge_submod_function,
         metric="cossim",
         kw=dss_args.kw,
         fraction=dss_args.fraction,
@@ -168,6 +169,7 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
         data_dir="data/preprocessing/",
         device=dss_args.device,
         config=config,
+        partition_mode=dss_args.partition_mode
     )
 
 
@@ -179,6 +181,7 @@ def initialise_global_order(dss_args: DotMap, config):
     global_order, global_knn, global_r2, cluster_idxs = generate_image_global_order(
         dataset=config["DATASET"]["DATASET"],
         model="ViT",
+        # submod_function=dss_args.submod_function,
         submod_function=dss_args.submod_function,
         metric="cossim",
         kw=dss_args.kw,
@@ -188,4 +191,5 @@ def initialise_global_order(dss_args: DotMap, config):
         data_dir="data/preprocessing/",
         device=dss_args.device,
         config=config,
+        partition_mode = dss_args.partition_mode
     )
