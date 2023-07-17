@@ -107,6 +107,17 @@ _C.TRAIN.CORESET_ALGORITHM = None
 # Number of epochs between val logging and model saving
 _C.TRAIN.VAL_SAVE_EVERY = 3
 
+# MILO
+_C.MILO = CN()
+# Partition method in MILO algorithm for multiclass datasets
+_C.MILO.PARTITION_MODE = 'native'
+# Submodular function used by SGE in MILO
+_C.MILO.SGE_SUBMOD_FUNCTION = 'fl'
+# Submodular function used by WRE in MILO
+_C.MILO.WRE_SUBMOD_FUNCTION = 'fl'
+# Portion of training using SGE as opposed to WRE in MILO
+_C.MILO.GC_RATIO = 1/6
+
 # testing
 _C.TEST = CN()
 
