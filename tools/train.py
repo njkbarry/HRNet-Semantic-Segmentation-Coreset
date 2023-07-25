@@ -251,6 +251,8 @@ def main():
 
     model = FullModel(model, criterion)
     if distributed:
+        # Multi-processing per gpu
+        # https://pytorch.org/docs/stable/notes/cuda.html#cuda-nn-ddp-instead
         model = model.to(device)
         model = torch.nn.parallel.DistributedDataParallel(
             model,
@@ -259,10 +261,12 @@ def main():
             output_device=args.local_rank,
         )
     else:
-        # FIXME:
-        # Dev code
-        # model = nn.DataParallel(model, device_ids=gpus).cuda()
-        model = model.cuda()
+        # Multi-threading
+        # https://pytorch.org/docs/stable/notes/cuda.html#cuda-nn-ddp-instead
+        os.environ['MASTER_ADDR'] = 'localhost'
+        os.environ['MASTER_PORT'] = '12355'
+        torch.distributed.init_process_group("gloo", rank=0, world_size=1)
+        model = nn.DataParallel(model, device_ids=gpus).cuda()
 
     # optimizer
     if config.TRAIN.OPTIMIZER == "sgd":
@@ -519,29 +523,21 @@ def main():
         )
 
         epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
+    
+    elif config.TRAIN.CORESET_ALGORITHM.lower() == "none":
+        pass
+    else:
+        raise NotImplementedError
 
     for epoch in range(last_epoch, end_epoch):
 
-        explotation_experiment = True
-        # Now using WRE, stop training
-        if explotation_experiment and not trainloader.cur_epoch < math.ceil(trainloader.gc_ratio * trainloader.num_epochs):
-            break
-
-
-        # FIXME: Remove
-        #   - Redundant logic from HRNET
-
-        # current_trainloader = (
-        #     extra_trainloader if epoch >= config.TRAIN.END_EPOCH else trainloader
-        # )
-        # if current_trainloader.sampler is not None and hasattr(
-        #     current_trainloader.sampler, "set_epoch"
-        # ):
-        #     current_trainloader.sampler.set_epoch(epoch)
-
-        # valid_loss, mean_IoU, IoU_array = validate(config,
-        #             testloader, model, writer_dict)
-
+        # exploitation_experiment = True
+        # # Now using WRE, stop training
+        # if config.TRAIN.CORESET_ALGORITHM.lower() == "milo" and exploitation_experiment and not trainloader.cur_epoch < math.ceil(trainloader.gc_ratio * trainloader.num_epochs):
+        #     break
+        # elif config.TRAIN.CORESET_ALGORITHM.lower() == "adaptiverandom" and exploitation_experiment and not epoch < math.ceil(config.MILO.GC_RATIO * end_epoch):
+        #     break
+        
         if epoch >= config.TRAIN.END_EPOCH:
             train(
                 config,
