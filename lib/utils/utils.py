@@ -182,7 +182,7 @@ def initialise_global_order(dss_args: DotMap, config):
         dataset=config["DATASET"]["DATASET"],
         model="ViT",
         # submod_function=dss_args.submod_function,
-        submod_function=dss_args.submod_function,
+        submod_function=dss_args.wre_submod_function,
         metric="cossim",
         kw=dss_args.kw,
         r2_coefficient=DEFAULT_R2_COEFFICIENT,
@@ -191,5 +191,5 @@ def initialise_global_order(dss_args: DotMap, config):
         data_dir="data/preprocessing/",
         device=dss_args.device,
         config=config,
-        partition_mode = dss_args.partition_mode
+        partition_mode = dss_args.partition_mode,
     )
