@@ -158,7 +158,7 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
 
     stochastic_subsets = generate_image_stochastic_subsets(
         dataset=config["DATASET"]["DATASET"],
-        model="ViT",
+        model=str(dss_args.feature_embdedder),
         # submod_function=dss_args.submod_function,
         submod_function = dss_args.sge_submod_function,
         metric="cossim",
@@ -180,7 +180,7 @@ def initialise_global_order(dss_args: DotMap, config):
 
     global_order, global_knn, global_r2, cluster_idxs = generate_image_global_order(
         dataset=config["DATASET"]["DATASET"],
-        model="ViT",
+        model=str(dss_args.feature_embdedder),
         # submod_function=dss_args.submod_function,
         submod_function=dss_args.wre_submod_function,
         metric="cossim",

@@ -358,7 +358,8 @@ def main():
                 device=device,
                 num_epochs=num_epochs,
                 num_gpus=len(gpus),
-                partition_mode = config.MILO.PARTITION_MODE
+                partition_mode = config.MILO.PARTITION_MODE,
+                feature_embdedder = config.MILO.FEATURE_EMBEDDER
             )
         )
         # subset_selection_name = (
@@ -375,7 +376,7 @@ def main():
             os.path.abspath("./data/preprocessing"),
             config["DATASET"]["DATASET"]
             + "_"
-            + "ViT"
+            + str(dss_args.feature_embdedder)
             + "_"
             + "cossim"
             + "_"
@@ -391,7 +392,7 @@ def main():
             os.path.abspath("./data/preprocessing"),
             config["DATASET"]["DATASET"]
             + "_"
-            + "ViT"
+            + str(dss_args.feature_embdedder)
             + "_"
             + "cossim"
             + "_"

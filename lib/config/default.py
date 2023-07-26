@@ -117,6 +117,7 @@ _C.MILO.SGE_SUBMOD_FUNCTION = 'fl'
 _C.MILO.WRE_SUBMOD_FUNCTION = 'fl'
 # Portion of training using SGE as opposed to WRE in MILO
 _C.MILO.GC_RATIO = 1/6
+_C.MILO.FEATURE_EMBEDDER = 'ViT'
 
 # testing
 _C.TEST = CN()
