@@ -136,7 +136,17 @@ if __name__ == "__main__":
     submod_function = "gc"
 
     models = ["ViT", "oracle_spat"]
-    models = ["ViT", "oracle_spat", "oracle_context", "clip", "segformer", "sam"]
+    models = [
+        "ViT",
+        "ViT_cls",
+        "oracle_spat",
+        "oracle_context",
+        "clip",
+        "segformer",
+        "sam",
+        "dino",
+        "dino_cls",
+    ]
 
     images, _ = get_rank_corr_dataset(dataset=dataset, training=train_set)
 
