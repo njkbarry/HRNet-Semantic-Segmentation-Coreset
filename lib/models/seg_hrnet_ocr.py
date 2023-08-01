@@ -619,6 +619,10 @@ class HighResolutionNet(nn.Module):
                 x_list.append(y_list[i])
         x = self.stage4(x_list)
 
+        # NOTE:
+        # THIS COULD BE A FEAUTRE EMBEDDING EXTRACTION POINT
+        # FIXME:
+
         # Upsampling
         x0_h, x0_w = x[0].size(2), x[0].size(3)
         x1 = F.interpolate(x[1], size=(x0_h, x0_w),
@@ -646,6 +650,126 @@ class HighResolutionNet(nn.Module):
         out_aux_seg.append(out)
 
         return out_aux_seg
+    
+    def spatial_embed_input(self, x):
+        """
+        Embedds by taking the interim result x[3] of dim [n, 384, 17, 17] for pascal_ctx
+
+        Note:
+            - Interested to take alternative approachwith `context` vector whose dimension is related
+                to the number of classes!
+        """
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.conv2(x)
+        x = self.bn2(x)
+        x = self.relu(x)
+        x = self.layer1(x)
+
+        x_list = []
+        for i in range(self.stage2_cfg['NUM_BRANCHES']):
+            if self.transition1[i] is not None:
+                x_list.append(self.transition1[i](x))
+            else:
+                x_list.append(x)
+        y_list = self.stage2(x_list)
+
+        x_list = []
+        for i in range(self.stage3_cfg['NUM_BRANCHES']):
+            if self.transition2[i] is not None:
+                if i < self.stage2_cfg['NUM_BRANCHES']:
+                    x_list.append(self.transition2[i](y_list[i]))
+                else:
+                    x_list.append(self.transition2[i](y_list[-1]))
+            else:
+                x_list.append(y_list[i])
+        y_list = self.stage3(x_list)
+
+        x_list = []
+        for i in range(self.stage4_cfg['NUM_BRANCHES']):
+            if self.transition3[i] is not None:
+                if i < self.stage3_cfg['NUM_BRANCHES']:
+                    x_list.append(self.transition3[i](y_list[i]))
+                else:
+                    x_list.append(self.transition3[i](y_list[-1]))
+            else:
+                x_list.append(y_list[i])
+        x = self.stage4(x_list)
+
+        return x[3]
+    
+    def context_embed_input(self, x):
+        """
+        Embedds by taking the interim result x[3] of dim [n, 384, 17, 17] for pascal_ctx
+
+        Note:
+            - Interested to take alternative approachwith `context` vector whose dimension is related
+                to the number of classes!
+        """
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.conv2(x)
+        x = self.bn2(x)
+        x = self.relu(x)
+        x = self.layer1(x)
+
+        x_list = []
+        for i in range(self.stage2_cfg['NUM_BRANCHES']):
+            if self.transition1[i] is not None:
+                x_list.append(self.transition1[i](x))
+            else:
+                x_list.append(x)
+        y_list = self.stage2(x_list)
+
+        x_list = []
+        for i in range(self.stage3_cfg['NUM_BRANCHES']):
+            if self.transition2[i] is not None:
+                if i < self.stage2_cfg['NUM_BRANCHES']:
+                    x_list.append(self.transition2[i](y_list[i]))
+                else:
+                    x_list.append(self.transition2[i](y_list[-1]))
+            else:
+                x_list.append(y_list[i])
+        y_list = self.stage3(x_list)
+
+        x_list = []
+        for i in range(self.stage4_cfg['NUM_BRANCHES']):
+            if self.transition3[i] is not None:
+                if i < self.stage3_cfg['NUM_BRANCHES']:
+                    x_list.append(self.transition3[i](y_list[i]))
+                else:
+                    x_list.append(self.transition3[i](y_list[-1]))
+            else:
+                x_list.append(y_list[i])
+        x = self.stage4(x_list)
+
+        # NOTE:
+        # THIS COULD BE A FEAUTRE EMBEDDING EXTRACTION POINT
+        # FIXME:
+
+        # Upsampling
+        x0_h, x0_w = x[0].size(2), x[0].size(3)
+        x1 = F.interpolate(x[1], size=(x0_h, x0_w),
+                        mode='bilinear', align_corners=ALIGN_CORNERS)
+        x2 = F.interpolate(x[2], size=(x0_h, x0_w),
+                        mode='bilinear', align_corners=ALIGN_CORNERS)
+        x3 = F.interpolate(x[3], size=(x0_h, x0_w),
+                        mode='bilinear', align_corners=ALIGN_CORNERS)
+
+        feats = torch.cat([x[0], x1, x2, x3], 1)
+
+        out_aux_seg = []
+
+        # ocr
+        out_aux = self.aux_head(feats)
+        # compute contrast feature
+        feats = self.conv3x3_ocr(feats)
+
+        context = self.ocr_gather_head(feats, out_aux)
+        
+        return context
 
     def init_weights(self, pretrained='',):
         logger.info('=> init weights from normal distribution')
