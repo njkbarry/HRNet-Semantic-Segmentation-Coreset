@@ -24,6 +24,11 @@ from cords.utils.data.data_utils.generate_global_order import (
 )
 from dotmap import DotMap
 
+# taken from /cords/configs/SL/config_milofixed_cifar100.py
+DEFAULT_R2_COEFFICIENT = 3  # Multiplier for R2 Variant
+DEFAULT_KNN_COEFFICIENT = 25  # No of nearest neighbors for KNN variant
+DEFAULT_KW_COEFFICIENT = 0.1
+
 
 class FullModel(nn.Module):
     """
@@ -160,7 +165,7 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
         dataset=config["DATASET"]["DATASET"],
         model=str(dss_args.feature_embdedder),
         # submod_function=dss_args.submod_function,
-        submod_function = dss_args.sge_submod_function,
+        submod_function=dss_args.sge_submod_function,
         metric="cossim",
         kw=dss_args.kw,
         fraction=dss_args.fraction,
@@ -169,15 +174,11 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
         data_dir="data/preprocessing/",
         device=dss_args.device,
         config=config,
-        partition_mode=dss_args.partition_mode
+        partition_mode=dss_args.partition_mode,
     )
 
 
 def initialise_global_order(dss_args: DotMap, config):
-    # taken from /cords/configs/SL/config_milofixed_cifar100.py
-    DEFAULT_R2_COEFFICIENT = 3  # Multiplier for R2 Variant
-    DEFAULT_KNN = 25  # No of nearest neighbors for KNN variant
-
     global_order, global_knn, global_r2, cluster_idxs = generate_image_global_order(
         dataset=config["DATASET"]["DATASET"],
         model=str(dss_args.feature_embdedder),
@@ -186,10 +187,10 @@ def initialise_global_order(dss_args: DotMap, config):
         metric="cossim",
         kw=dss_args.kw,
         r2_coefficient=DEFAULT_R2_COEFFICIENT,
-        knn=DEFAULT_KNN,
+        knn=DEFAULT_KNN_COEFFICIENT,
         seed=42,
         data_dir="data/preprocessing/",
         device=dss_args.device,
         config=config,
-        partition_mode = dss_args.partition_mode,
+        partition_mode=dss_args.partition_mode,
     )
