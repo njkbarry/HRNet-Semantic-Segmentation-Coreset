@@ -101,9 +101,9 @@ TRAIN:
 MILO:
   PARTITION_MODE: 'pascal_image_label'
   SGE_SUBMOD_FUNCTION: 'gc'
-  WRE_SUBMOD_FUNCTION: 'dis_min'
+  WRE_SUBMOD_FUNCTION: 'disp_min'
   GC_RATIO: 0.3
-  FEATURE_EMBEDDER: 'segformer'
+  FEATURE_EMBEDDER: 'oracle_context'
 TEST:
   IMAGE_SIZE:
   - 520
