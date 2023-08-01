@@ -1,152 +1,160 @@
 from transformers import ViTFeatureExtractor, ViTModel
-from cords.cords.utils.data.data_utils.generate_global_order import (
-    compute_image_embeddings, compute_vit_image_embeddings,
-    compute_vit_cls_image_embeddings, compute_dino_image_embeddings, 
-    compute_dino_cls_image_embeddings, get_rbf_kernel, get_cdist, get_dot_product
-)
-import submodlib
-from scipy.spatial.distance import cdist
+import sys
+import os
+from pathlib import Path
+
+# Add directory roots to path for this repo and cords submodule
+# FIXME: Is there a better way to do this
+sys.path.insert(0, os.getcwd())
+sys.path.insert(0, os.getcwd() + "/cords")
+sys.path.insert(0, os.getcwd() + "/lib")
+
+import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from PIL import Image
-from lib.utils import DEFAULT_R2_COEFFICIENT
+from lib.datasets import pascal_ctx
+from analysis.rank_correlation.utils import (
+    get_rank_corr_dataset,
+    get_embeddings,
+    get_sim_kernel,
+    SubModularFunction,
+)
+from scipy.stats import spearmanr
+import itertools
+from collections import defaultdict
+from typing import List
+import argparse
 
 
-if __name__ == '__main__':
+def get_submod_rank(model, images, device, metric, submod_function, dataset, training):
+    embeddings = get_embeddings(
+        model=model, dataset=dataset, device=device, images=images
+    )
+    sim_kernel = get_sim_kernel(
+        metric=metric, submod_function=submod_function, embeddings=embeddings
+    )
+    function = SubModularFunction(
+        function_type=submod_function,
+        n=embeddings.shape[0],
+        sim_kernel=sim_kernel,
+        dataset=dataset,
+        data_subset="train" if training else "val",
+        metric=metric,
+    )
+    rank = function.get_order(embeddings=embeddings)
+    return rank
+
+
+def submod_rank_corr_run(
+    model_x, model_y, images, device, training, metric, submod_function
+):
     """
-    Determine rank of dataset
+    NOTE:
+        - Currently experiment only varies model for feature space and keeps all other variables constant.
+        - This may change but is computationally exponential in the number of variables
+    """
+    rank_x = get_submod_rank(
+        model=model_x,
+        images=images,
+        device=device,
+        metric=metric,
+        submod_function=submod_function,
+        dataset=dataset,
+        training=training,
+    )
+    rank_y = get_submod_rank(
+        model=model_y,
+        images=images,
+        device=device,
+        metric=metric,
+        submod_function=submod_function,
+        dataset=dataset,
+        training=training,
+    )
+    corr = spearmanr(rank_x, rank_y)
+    return corr
+
+
+if __name__ == "__main__":
+    """
+    Determine Spearman's Rank Correlation Coefficients for the orderings of each
+    feature embedding model for a given submodular funciton and similarity kernel.
+    Saves results as a .txt file
     """
 
-    # Load dataset
-    dataset = 'pascal_ctx'
-    model = 'ViT'
-    device = 'cpu'
+    parser = argparse.ArgumentParser(description="Rank Correlation Experiment")
 
-    if dataset is 'pascal_ctx':
-        train_dataset = eval("datasets." + dataset)(
-            root='data/',
-            list_path='train',
-            num_samples=None,
-            num_classes=60,
-            multi_scale=True,
-            flip=True,
-            ignore_label=-1,
-            base_size=520,
-            crop_size=(520, 520),
-            downsample_rate=1,
-            scale_factor=16,
+    parser.add_argument(
+        "--dataset",
+        help="dataset name",
+        required=True,
+        type=str,
+    )
+    parser.add_argument(
+        "--device",
+        type=str,
+        default="cpu",
+    )
+    parser.add_argument(
+        "--train_set",
+        helper="whether to use the training set, else the validation",
+        type=bool,
+        default=True,
+        set_true=True,
+    )
+    parser.add_argument(
+        "--metric",
+        type=str,
+        help="Similarity metric to generate kernel",
+        required=True,
+    )
+    parser.add_argument(
+        "--submod_function",
+        type=str,
+        help="Submodular function to generate rankings",
+        required=True,
+    )
+    parser.add_argument(
+        "--models",
+        type=List[str],
+        help="Models used as feature embedders to run experiment over all combinations of.",
+        required=True,
+    )
+
+    args = parser.parse_args()
+
+    """
+    # TOOD:
+        - Replace with args
+    """
+
+    dataset = "pascal_ctx"
+    device = "cpu"
+    train_set = True
+    metric = "cossim"
+    submod_function = "gc"
+
+    models = ["ViT", "oracle_spat"]
+    models = ["ViT", "oracle_spat", "oracle_context", "clip", "segformer", "sam"]
+
+    images, _ = get_rank_corr_dataset(dataset=dataset, training=train_set)
+
+    experiment_results = defaultdict()
+
+    for model_x, model_y in itertools.combinations(models, 2):
+        corr, p_val = submod_rank_corr_run(
+            model_x, model_y, images, device, train_set, metric, submod_function
         )
-    else:
-        raise NotImplementedError
+        experiment_results["model_x"].append(model_x)
+        experiment_results["model_y"].append(model_y)
+        experiment_results["corr"].append(corr)
+        experiment_results["p_val"].append(p_val)
 
-    train_images = []
-    train_labels = []
-    for x in tqdm(
-        train_dataset,
-        total=len(train_dataset),
-        desc=f"loading {dataset} dataset for global ordering generation",
-    ):
-        train_images.append(
-            Image.fromarray(np.transpose(x[0], (1, 2, 0)), mode="RGB")
-        )
-        train_labels.append(x[1])
-
-    # Geenerate feature embeddings
-    if model.lower() is 'oracle':
-        # TODO: Add method to load oracle
-        pass
-    elif model.lower() is 'clip':
-        # TODO: Unsure how to parameterise for image input
-        # features = compute_image_embeddings()
-        pass
-    elif model.lower() is 'vit':
-        embeddings = compute_vit_image_embeddings(images=train_images, device=device)
-    elif model.lower() is 'dino':
-        embeddings = compute_dino_image_embeddings(images=train_images, device=device)
-    else:
-        # TODO: Add other methods
-        raise NotImplementedError
-    
-    # TODO: Add method to generate uncertainty measures
-    metric = 'cossim'
-    submod_function = 'gc'
-    r2_coefficient = DEFAULT_R2_COEFFICIENT   # Define properly
-
-
-    # Load submodular function
-    if submod_function not in [
-        "supfl",
-        "gc_pc",
-        "logdet_pc",
-        "disp_min_pc",
-        "disp_sum_pc",
-    ]:
-        data_dist = get_cdist(embeddings)
-        if metric == "rbf_kernel":
-            data_sijs = get_rbf_kernel(data_dist, kw)
-        elif metric == "dot":
-            data_sijs = get_dot_product(embeddings)
-            if submod_function in ["disp_min", "disp_sum"]:
-                data_sijs = (data_sijs - np.min(data_sijs)) / (
-                    np.max(data_sijs) - np.min(data_sijs)
-                )
-            else:
-                if np.min(data_sijs) < 0:
-                    data_sijs = data_sijs - np.min(data_sijs)
-        elif metric == "cossim":
-            normalized_embeddings = embeddings / np.linalg.norm(
-                embeddings, axis=1, keepdims=True
-            )
-            data_sijs = get_dot_product(normalized_embeddings)
-            if submod_function in ["disp_min", "disp_sum"]:
-                data_sijs = (data_sijs - np.min(data_sijs)) / (
-                    np.max(data_sijs) - np.min(data_sijs)
-                )
-            else:
-                data_sijs = (data_sijs + 1) / 2
-        else:
-            raise ValueError("Please enter a valid metric")
-
-        data_knn = np.argsort(data_dist, axis=1)[:, :knn].tolist()
-        data_r2 = np.nonzero(
-            data_dist <= max(1e-5, data_dist.mean() - r2_coefficient * data_dist.std())
-        )
-        data_r2 = zip(data_r2[0].tolist(), data_r2[1].tolist())
-        data_r2_dict = {}
-        for x in data_r2:
-            if x[0] in data_r2_dict.keys():
-                data_r2_dict[x[0]].append(x[1])
-            else:
-                data_r2_dict[x[0]] = [x[1]]
-
-    if submod_function == "fl":
-        obj = submodlib.FacilityLocationFunction(
-            n=embeddings.shape[0], separate_rep=False, mode="dense", sijs=data_sijs
-        )
-
-    elif submod_function == "logdet":
-        obj = submodlib.LogDeterminantFunction(
-            n=embeddings.shape[0], mode="dense", lambdaVal=1, sijs=data_sijs
-        )
-
-    elif submod_function == "gc":
-        obj = submodlib.GraphCutFunction(
-            n=embeddings.shape[0],
-            mode="dense",
-            lambdaVal=1,
-            separate_rep=False,
-            ggsijs=data_sijs,
-        )
-
-    elif submod_function == "disp_min":
-        obj = submodlib.DisparityMinFunction(
-            n=embeddings.shape[0], mode="dense", sijs=data_sijs
-        )
-
-    elif submod_function == "disp_sum":
-        obj = submodlib.DisparitySumFunction(
-            n=embeddings.shape[0], mode="dense", sijs=data_sijs
-        )
-
-    ranks = obj.get_order()
-        
+    df = pd.DataFrame(data=experiment_results)
+    experimental_results_path = (
+        dataset + "training"
+        if train_set is True
+        else "val" + metric + submod_function + ".csv"
+    )
+    df.to_csv(experimental_results_path)
