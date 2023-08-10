@@ -3,9 +3,9 @@ CUDNN:
   DETERMINISTIC: false
   ENABLED: true
 GPUS: (0,)
-OUTPUT_DIR: 'output/small'
-LOG_DIR: 'log/small'
-WORKERS: 4
+OUTPUT_DIR: 'output/proxy_experiment/segformer/0.1/'
+LOG_DIR: 'log/proxy_experiment/segformer/0.1/'
+WORKERS: 8
 PRINT_FREQ: 10
 
 DATASET:
@@ -13,11 +13,10 @@ DATASET:
   ROOT: 'data/'
   TEST_SET: 'val'
   TRAIN_SET: 'train'
-  NUM_CLASSES: 59
+  NUM_CLASSES: 60
 MODEL:
-  NAME: seg_hrnet
-  ALIGN_CORNERS: False
-  NUM_OUTPUTS: 1
+  NAME: seg_hrnet_ocr
+  NUM_OUTPUTS: 2
   PRETRAINED: 'pretrained_models/hrnetv2_w48_imagenet_pretrained.pth'
   EXTRA:
     FINAL_CONV_KERNEL: 1
@@ -73,18 +72,19 @@ LOSS:
   USE_OHEM: false
   OHEMTHRES: 0.9
   OHEMKEEP: 131072
+  BALANCE_WEIGHTS: [0.4, 1]
 TRAIN:
   IMAGE_SIZE:
   - 520
   - 520
   BASE_SIZE: 520
   BATCH_SIZE_PER_GPU: 4
-  NONBACKBONE_KEYWORDS: ['last_layer']
+  NONBACKBONE_KEYWORDS: ['cls', 'aux', 'ocr']
   NONBACKBONE_MULT: 10  
   SHUFFLE: true
   BEGIN_EPOCH: 0
-  END_EPOCH: 200
-  RESUME: true
+  END_EPOCH: 60
+  RESUME: false
   OPTIMIZER: sgd
   LR: 0.001
   WD: 0.0001
@@ -95,12 +95,20 @@ TRAIN:
   DOWNSAMPLERATE: 1
   IGNORE_LABEL: -1
   SCALE_FACTOR: 16
-  CORESET_ALGORITHM: none
+  CORESET_ALGORITHM: milo
+  RANDOM_SUBSET: 0.5
+  VAL_SAVE_EVERY: 5
+MILO:
+  PARTITION_MODE: 'pascal_image_label'
+  SGE_SUBMOD_FUNCTION: 'gc'
+  WRE_SUBMOD_FUNCTION: 'disp_min'
+  GC_RATIO: 0.3
+  FEATURE_EMBEDDER: 'oracle_spat'
 TEST:
   IMAGE_SIZE:
   - 520
   - 520
   BASE_SIZE: 520
-  BATCH_SIZE_PER_GPU: 16
+  BATCH_SIZE_PER_GPU: 4
   FLIP_TEST: false
   MULTI_SCALE: false
