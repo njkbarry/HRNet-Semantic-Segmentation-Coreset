@@ -891,7 +891,7 @@ class HighResolutionNet(nn.Module):
 
         return context
 
-    def feature_embed_input(self, x):
+    def feature_embed_input(self, x, flat=True):
         """
         Embedds by taking the feature result from the OCR module of dim [n, 512, 130, 130] for pascal_ctx
 
