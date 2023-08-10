@@ -263,8 +263,8 @@ def main():
     else:
         # Multi-threading
         # https://pytorch.org/docs/stable/notes/cuda.html#cuda-nn-ddp-instead
-        os.environ['MASTER_ADDR'] = 'localhost'
-        os.environ['MASTER_PORT'] = '12355'
+        os.environ["MASTER_ADDR"] = "localhost"
+        os.environ["MASTER_PORT"] = "12355"
         torch.distributed.init_process_group("gloo", rank=0, world_size=1)
         model = nn.DataParallel(model, device_ids=gpus).cuda()
 
@@ -347,7 +347,6 @@ def main():
                 fraction=config.TRAIN.RANDOM_SUBSET,
                 kw=0.1,
                 gc_ratio=config.MILO.GC_RATIO,
-                # submod_function="fl",
                 sge_submod_function=config.MILO.SGE_SUBMOD_FUNCTION,
                 wre_submod_function=config.MILO.WRE_SUBMOD_FUNCTION,
                 select_every=1,
@@ -358,8 +357,9 @@ def main():
                 device=device,
                 num_epochs=num_epochs,
                 num_gpus=len(gpus),
-                partition_mode = config.MILO.PARTITION_MODE,
-                feature_embdedder = config.MILO.FEATURE_EMBEDDER
+                partition_mode=config.MILO.PARTITION_MODE,
+                feature_embdedder=config.MILO.FEATURE_EMBEDDER,
+                metric=config.MILO.METRIC,
             )
         )
         # subset_selection_name = (
@@ -378,7 +378,7 @@ def main():
             + "_"
             + str(dss_args.feature_embdedder)
             + "_"
-            + "cossim"
+            + str(dss_args.metric)
             + "_"
             + str(dss_args.sge_submod_function)
             + "_"
@@ -394,7 +394,7 @@ def main():
             + "_"
             + str(dss_args.feature_embdedder)
             + "_"
-            + "cossim"
+            + str(dss_args.metric)
             + "_"
             + str(dss_args.wre_submod_function)
             + "_"
@@ -407,7 +407,7 @@ def main():
 
         dss_args["global_order_file"] = global_order_file_path
         dss_args["gc_stochastic_subsets_file"] = gc_stochastic_subsets_file_path
-        
+
         if not os.path.exists(gc_stochastic_subsets_file_path):
             initialise_stochastic_subsets(dss_args, config)
 
@@ -524,21 +524,20 @@ def main():
         )
 
         epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
-    
+
     elif config.TRAIN.CORESET_ALGORITHM.lower() == "none":
         pass
     else:
         raise NotImplementedError
 
     for epoch in range(last_epoch, end_epoch):
-
         # exploitation_experiment = True
         # # Now using WRE, stop training
         # if config.TRAIN.CORESET_ALGORITHM.lower() == "milo" and exploitation_experiment and not trainloader.cur_epoch < math.ceil(trainloader.gc_ratio * trainloader.num_epochs):
         #     break
         # elif config.TRAIN.CORESET_ALGORITHM.lower() == "adaptiverandom" and exploitation_experiment and not epoch < math.ceil(config.MILO.GC_RATIO * end_epoch):
         #     break
-        
+
         if epoch >= config.TRAIN.END_EPOCH:
             train(
                 config,
@@ -570,7 +569,7 @@ def main():
         # Remove dev code
         # torch.cuda.empty_cache()
 
-        if epoch % config.TRAIN.VAL_SAVE_EVERY == 0:
+        if (epoch + 1) % config.TRAIN.VAL_SAVE_EVERY == 0:
             valid_loss, mean_IoU, IoU_array = validate(
                 config, testloader, model, writer_dict
             )
