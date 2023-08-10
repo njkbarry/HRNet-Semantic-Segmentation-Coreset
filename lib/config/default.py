@@ -110,14 +110,16 @@ _C.TRAIN.VAL_SAVE_EVERY = 3
 # MILO
 _C.MILO = CN()
 # Partition method in MILO algorithm for multiclass datasets
-_C.MILO.PARTITION_MODE = 'native'
+_C.MILO.PARTITION_MODE = "native"
 # Submodular function used by SGE in MILO
-_C.MILO.SGE_SUBMOD_FUNCTION = 'fl'
+_C.MILO.SGE_SUBMOD_FUNCTION = "fl"
 # Submodular function used by WRE in MILO
-_C.MILO.WRE_SUBMOD_FUNCTION = 'fl'
+_C.MILO.WRE_SUBMOD_FUNCTION = "fl"
 # Portion of training using SGE as opposed to WRE in MILO
-_C.MILO.GC_RATIO = 1/6
-_C.MILO.FEATURE_EMBEDDER = 'ViT'
+_C.MILO.GC_RATIO = 1 / 6
+_C.MILO.FEATURE_EMBEDDER = "ViT"
+# Distance metric to generate similarity kernel
+_C.MILO.METRIC = "cossim"
 
 # testing
 _C.TEST = CN()
