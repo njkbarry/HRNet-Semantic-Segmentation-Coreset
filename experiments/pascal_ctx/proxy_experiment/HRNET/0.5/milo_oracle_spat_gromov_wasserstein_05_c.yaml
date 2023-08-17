@@ -103,7 +103,8 @@ MILO:
   SGE_SUBMOD_FUNCTION: 'gc'
   WRE_SUBMOD_FUNCTION: 'disp_min'
   GC_RATIO: 0.3
-  FEATURE_EMBEDDER: 'oracle_context'
+  FEATURE_EMBEDDER: 'oracle_spat'
+  METRIC: 'gromov_wasserstein'
 TEST:
   IMAGE_SIZE:
   - 520

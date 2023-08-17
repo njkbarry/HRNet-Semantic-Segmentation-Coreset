@@ -104,7 +104,7 @@ MILO:
   WRE_SUBMOD_FUNCTION: 'disp_min'
   GC_RATIO: 0.3
   FEATURE_EMBEDDER: 'oracle_spat'
-  METRIC: 'wasserstein'
+  METRIC: 'gromov_wasserstein'
 TEST:
   IMAGE_SIZE:
   - 520
