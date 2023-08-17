@@ -47,7 +47,7 @@ def get_submod_rank(model, images, device, metric, submod_function, dataset, tra
 
 
 def submod_rank_corr_run(
-    model_x, model_y, images, device, training, metric, submod_function
+    model_x, model_y, images, device, training, ma, submod_function
 ):
     """
     NOTE:
@@ -83,12 +83,16 @@ if __name__ == "__main__":
     Saves results as a .txt file
     """
 
+    # Define a custom argument type for a list of strings
+    def list_of_strings(arg):
+        return arg.split(",")
+
     parser = argparse.ArgumentParser(description="Rank Correlation Experiment")
 
     parser.add_argument(
         "--dataset",
         help="dataset name",
-        required=True,
+        default="pascal_ctx",
         type=str,
     )
     parser.add_argument(
@@ -98,10 +102,9 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--train_set",
-        helper="whether to use the training set, else the validation",
+        help="whether to use the training set, else the validation",
         type=bool,
         default=True,
-        set_true=True,
     )
     parser.add_argument(
         "--metric",
@@ -117,7 +120,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--models",
-        type=List[str],
+        type=list_of_strings,
         help="Models used as feature embedders to run experiment over all combinations of.",
         required=True,
     )
@@ -129,32 +132,38 @@ if __name__ == "__main__":
         - Replace with args
     """
 
-    dataset = "pascal_ctx"
-    device = "cpu"
-    train_set = True
-    metric = "cossim"
-    submod_function = "gc"
+    # dataset = "pascal_ctx"
+    # device = "cpu"
+    # train_set = True
+    # metric = "cossim"
+    # submod_function = "gc"
 
-    models = ["ViT", "oracle_spat"]
-    models = [
-        "ViT",
-        "ViT_cls",
-        "oracle_spat",
-        "oracle_context",
-        "clip",
-        "segformer",
-        "sam",
-        "dino",
-        "dino_cls",
-    ]
+    # models = ["ViT", "oracle_spat"]
+    # models = [
+    #     "ViT",
+    #     "ViT_cls",
+    #     "oracle_spat",
+    #     "oracle_context",
+    #     "clip",
+    #     "segformer",
+    #     "sam",
+    #     "dino",
+    #     "dino_cls",
+    # ]
 
-    images, _ = get_rank_corr_dataset(dataset=dataset, training=train_set)
+    images, _ = get_rank_corr_dataset(dataset=args.dataset, training=args.train_set)
 
     experiment_results = defaultdict()
 
-    for model_x, model_y in itertools.combinations(models, 2):
+    for model_x, model_y in itertools.combinations(args.models, 2):
         corr, p_val = submod_rank_corr_run(
-            model_x, model_y, images, device, train_set, metric, submod_function
+            model_x,
+            model_y,
+            images,
+            args.device,
+            args.train_set,
+            args.metric,
+            args.submod_function,
         )
         experiment_results["model_x"].append(model_x)
         experiment_results["model_y"].append(model_y)
@@ -163,8 +172,8 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(data=experiment_results)
     experimental_results_path = (
-        dataset + "training"
-        if train_set is True
-        else "val" + metric + submod_function + ".csv"
+        args.dataset + "training"
+        if args.train_set is True
+        else "val" + args.metric + args.submod_function + ".csv"
     )
     df.to_csv(experimental_results_path)
