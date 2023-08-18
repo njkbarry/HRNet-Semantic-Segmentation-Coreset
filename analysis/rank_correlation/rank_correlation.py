@@ -41,20 +41,21 @@ def get_submod_rank(model, images, device, metric, submod_function, dataset, tra
         dataset=dataset,
         data_subset="train" if training else "val",
         metric=metric,
+        model=model,
     )
-    rank = function.get_order(embeddings=embeddings)
-    return rank
+    rank = function.get_order()
+    return rank, embeddings, sim_kernel
 
 
 def submod_rank_corr_run(
-    model_x, model_y, images, device, training, ma, submod_function
+    model_x, model_y, images, device, training, metric, submod_function, dataset
 ):
     """
     NOTE:
         - Currently experiment only varies model for feature space and keeps all other variables constant.
         - This may change but is computationally exponential in the number of variables
     """
-    rank_x = get_submod_rank(
+    rank_x, emb_x, sim_kernel_x = get_submod_rank(
         model=model_x,
         images=images,
         device=device,
@@ -63,7 +64,7 @@ def submod_rank_corr_run(
         dataset=dataset,
         training=training,
     )
-    rank_y = get_submod_rank(
+    rank_y, emb_y, sim_kernel_y = get_submod_rank(
         model=model_y,
         images=images,
         device=device,
@@ -73,6 +74,7 @@ def submod_rank_corr_run(
         training=training,
     )
     corr = spearmanr(rank_x, rank_y)
+    # spearmanr(rank_x[:115], rank_y[:115]) seems to deliver a reasonable p-value
     return corr
 
 
@@ -153,17 +155,18 @@ if __name__ == "__main__":
 
     images, _ = get_rank_corr_dataset(dataset=args.dataset, training=args.train_set)
 
-    experiment_results = defaultdict()
+    experiment_results = defaultdict(list)
 
     for model_x, model_y in itertools.combinations(args.models, 2):
         corr, p_val = submod_rank_corr_run(
-            model_x,
-            model_y,
-            images,
-            args.device,
-            args.train_set,
-            args.metric,
-            args.submod_function,
+            model_x=model_x,
+            model_y=model_y,
+            images=images,
+            device=args.device,
+            training=args.train_set,
+            metric=args.metric,
+            submod_function=args.submod_function,
+            dataset=args.dataset,
         )
         experiment_results["model_x"].append(model_x)
         experiment_results["model_y"].append(model_y)

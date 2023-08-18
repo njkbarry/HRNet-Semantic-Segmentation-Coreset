@@ -145,43 +145,55 @@ def get_sim_kernel(
     ]:
     """
 
-    data_dist = get_cdist(embeddings)
-    if metric == "rbf_kernel":
-        data_sijs = get_rbf_kernel(data_dist, kw)
-    elif metric == "dot":
-        data_sijs = get_dot_product(embeddings)
-        if submod_function in ["disp_min", "disp_sum"]:
-            data_sijs = (data_sijs - np.min(data_sijs)) / (
-                np.max(data_sijs) - np.min(data_sijs)
+    if metric in ["rbf_kernel", "dot", "cossim"]:  # 1D embedding vector
+        if len(embeddings.shape) == 3:
+            embeddings = embeddings.reshape(
+                [embeddings.shape[0], embeddings.shape[1] * embeddings.shape[2]]
             )
-        else:
-            if np.min(data_sijs) < 0:
-                data_sijs = data_sijs - np.min(data_sijs)
-    elif metric == "cossim":
-        normalized_embeddings = embeddings / np.linalg.norm(
-            embeddings, axis=1, keepdims=True
-        )
-        data_sijs = get_dot_product(normalized_embeddings)
-        if submod_function in ["disp_min", "disp_sum"]:
-            data_sijs = (data_sijs - np.min(data_sijs)) / (
-                np.max(data_sijs) - np.min(data_sijs)
+
+        data_dist = get_cdist(embeddings)
+
+        if metric == "rbf_kernel":
+            data_sijs = get_rbf_kernel(data_dist, kw)
+        elif metric == "dot":
+            data_sijs = get_dot_product(embeddings)
+            if submod_function in ["disp_min", "disp_sum"]:
+                data_sijs = (data_sijs - np.min(data_sijs)) / (
+                    np.max(data_sijs) - np.min(data_sijs)
+                )
+            else:
+                if np.min(data_sijs) < 0:
+                    data_sijs = data_sijs - np.min(data_sijs)
+        elif metric == "cossim":
+            normalized_embeddings = embeddings / np.linalg.norm(
+                embeddings, axis=1, keepdims=True
             )
-        else:
-            data_sijs = (data_sijs + 1) / 2
+            data_sijs = get_dot_product(normalized_embeddings)
+            if submod_function in ["disp_min", "disp_sum"]:
+                data_sijs = (data_sijs - np.min(data_sijs)) / (
+                    np.max(data_sijs) - np.min(data_sijs)
+                )
+            else:
+                data_sijs = (data_sijs + 1) / 2
+    elif metric in [
+        "sliced_wasserstein",
+        "gromov_wasserstein",
+        "mmd",
+        "chi",
+        "fronerbius",
+    ]:
+        data_dist = get_cdist_2D(embeddings)
+
+        if metric in ["sliced_wasserstein", "gromov_wasserstein"]:
+            data_sijs = get_wasserstein(embeddings, method=metric)
+        elif metric == "fronerbius":
+            data_sijs = get_fronerbius(embeddings)
+        elif metric == "mmd":
+            data_sijs = get_mmd(embeddings)
+        elif metric == "chi":
+            raise NotImplementedError
     else:
         raise ValueError("Please enter a valid metric")
-
-    # data_knn = np.argsort(data_dist, axis=1)[:, :knn].tolist()
-    # data_r2 = np.nonzero(
-    #     data_dist <= max(1e-5, data_dist.mean() - r2_coefficient * data_dist.std())
-    # )
-    # data_r2 = zip(data_r2[0].tolist(), data_r2[1].tolist())
-    # data_r2_dict = {}
-    # for x in data_r2:
-    #     if x[0] in data_r2_dict.keys():
-    #         data_r2_dict[x[0]].append(x[1])
-    #     else:
-    #         data_r2_dict[x[0]] = [x[1]]
 
     return data_sijs
 
@@ -195,6 +207,7 @@ class SubModularFunction(ABC):
         dataset: str,
         metric: str,
         data_subset: str,
+        model: str,
         mode: str = "dense",
         pre_processing_dir: str = EMBEDDINGS_PATH,
     ) -> None:
@@ -206,13 +219,18 @@ class SubModularFunction(ABC):
         self.dataset = dataset
         self.data_subset = data_subset
         self.metric = metric
+        self.model = model
 
         self.rankings_path = os.path.join(
             os.path.abspath(self.pre_processing_dir),
             self.dataset
             + "_"
+            + self.model
+            + "_"
             + self.function_type
+            + "_"
             + self.metric
+            + "_"
             + self.data_subset
             + "_rankings.pkl",
         )
@@ -264,22 +282,23 @@ class SubModularFunction(ABC):
             stored_rankings = stored_data["rankings"]
         return stored_rankings
 
-    def get_order(self, embeddings: np.array) -> List[int]:
+    def get_order(self) -> List[int]:
         if not os.path.exists(self.rankings_path):
             # Calculate rankings
             max_set = self.function.maximize(
-                budget=embeddings.shape[0] - 1,
+                budget=self.sim_kernel.shape[0] - 1,
                 optimizer="NaiveGreedy",
                 stopIfZeroGain=False,
                 stopIfNegativeGain=False,
                 verbose=False,
             )
 
+            # TODO: Max set returns a list of tuples. CHeck source code to ensure it is the order
             order = [x[0] for x in max_set]
 
             self.store_rankings(self.rankings_path, order)
         else:
             # Load the rankings from disc
-            train_embeddings = self.load_rankings(self.rankings_path)
+            order = self.load_rankings(self.rankings_path)
 
         return order
