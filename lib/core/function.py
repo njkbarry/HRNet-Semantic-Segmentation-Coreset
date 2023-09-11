@@ -59,15 +59,29 @@ def train(
     writer = writer_dict["writer"]
     global_steps = writer_dict["train_global_steps"]
 
+    epoch_indexes = []
+
     for i_iter, batch in enumerate(trainloader, 0):
         if "cords" in str(type(trainloader)):
             images, labels, _, _, _ = batch
+            epoch_indexes.append(batch[3])
         else:
             images, labels, _, _ = batch
         images = images.cuda()
         labels = labels.long().cuda()
 
         losses, _ = model(images, labels)
+
+        """
+        Don't need pixel maps can just weight in Cross Enropy Loss criterion.
+        To delete:
+
+        # if config.TRAIN.CORESET_ALGORITHM.lower() == "pixelmapweightedadaptiverandom":
+        #     losses = losses.squeeze(0)
+        #     pixel_map_weights = trainloader.get_pixel_map_weights(labels)
+        #     losses = losses * pixel_map_weights
+        """
+
         loss = losses.mean()
 
         if dist.is_distributed():
@@ -95,31 +109,27 @@ def train(
         lr = adjust_learning_rate(optimizer, base_lr, num_iters, i_iter + cur_iters)
 
         if i_iter % config.PRINT_FREQ == 0 and dist.get_rank() == 0:
-            msg = (
-                "Epoch: [{}/{}] Iter:[{}/{}], Time: {:.2f}, "
-                "lr: {}, Loss: {:.6f}".format(
-                    epoch,
-                    num_epoch,
-                    i_iter,
-                    epoch_iters,
-                    batch_time.average(),
-                    [x["lr"] for x in optimizer.param_groups],
-                    ave_loss.average(),
-                )
+            msg = "Epoch: [{}/{}] Iter:[{}/{}], Time: {:.2f}, " "lr: {}, Loss: {:.6f}".format(
+                epoch,
+                num_epoch,
+                i_iter,
+                epoch_iters,
+                batch_time.average(),
+                [x["lr"] for x in optimizer.param_groups],
+                ave_loss.average(),
             )
             logging.info(msg)
 
+    writer.add_text(tag="subset_epoch_indexes", text_string=str(epoch_indexes), global_step=epoch)  # FIXME: May not log list as text natively
     writer.add_scalar("train_loss", ave_loss.average(), global_steps)
     writer_dict["train_global_steps"] = global_steps + 1
 
 
-def validate(config, testloader, model, writer_dict):
+def validate(config, testloader, model, writer_dict, log_per_class_metrics=False):
     model.eval()
     ave_loss = AverageMeter()
     nums = config.MODEL.NUM_OUTPUTS
-    confusion_matrix = np.zeros(
-        (config.DATASET.NUM_CLASSES, config.DATASET.NUM_CLASSES, nums)
-    )
+    confusion_matrix = np.zeros((config.DATASET.NUM_CLASSES, config.DATASET.NUM_CLASSES, nums))
     with torch.no_grad():
         for idx, batch in tqdm(
             enumerate(testloader),
@@ -176,6 +186,10 @@ def validate(config, testloader, model, writer_dict):
     writer.add_scalar("valid_loss", ave_loss.average(), global_steps)
     writer.add_scalar("valid_mIoU", mean_IoU, global_steps)
     writer_dict["valid_global_steps"] = global_steps + 1
+    if log_per_class_metrics:
+        for i in range(IoU_array.shape[0]):
+            writer.add_scalar(f"valid_mIoU_class_{i}", IoU_array[i], global_steps)
+
     return ave_loss.average(), mean_IoU, IoU_array
 
 
@@ -188,9 +202,7 @@ def full_train_metric(config, fulltrainloader, model, writer_dict):
     model.eval()
     ave_loss = AverageMeter()
     nums = config.MODEL.NUM_OUTPUTS
-    confusion_matrix = np.zeros(
-        (config.DATASET.NUM_CLASSES, config.DATASET.NUM_CLASSES, nums)
-    )
+    confusion_matrix = np.zeros((config.DATASET.NUM_CLASSES, config.DATASET.NUM_CLASSES, nums))
     with torch.no_grad():
         for idx, batch in tqdm(
             enumerate(fulltrainloader),
@@ -252,9 +264,7 @@ def full_train_metric(config, fulltrainloader, model, writer_dict):
 
 def testval(config, test_dataset, testloader, model, sv_dir="", sv_pred=False):
     model.eval()
-    confusion_matrix = np.zeros(
-        (config.DATASET.NUM_CLASSES, config.DATASET.NUM_CLASSES)
-    )
+    confusion_matrix = np.zeros((config.DATASET.NUM_CLASSES, config.DATASET.NUM_CLASSES))
     with torch.no_grad():
         for index, batch in enumerate(tqdm(testloader)):
             image, label, _, name, *border_padding = batch
@@ -284,9 +294,7 @@ def testval(config, test_dataset, testloader, model, sv_dir="", sv_pred=False):
                     align_corners=config.MODEL.ALIGN_CORNERS,
                 )
 
-            confusion_matrix += get_confusion_matrix(
-                label, pred, size, config.DATASET.NUM_CLASSES, config.TRAIN.IGNORE_LABEL
-            )
+            confusion_matrix += get_confusion_matrix(label, pred, size, config.DATASET.NUM_CLASSES, config.TRAIN.IGNORE_LABEL)
 
             if sv_pred:
                 sv_path = os.path.join(sv_dir, "test_results")

@@ -501,6 +501,10 @@ class HighResolutionNet(nn.Module):
         x = self.last_layer(x)
 
         return x
+    
+    def get_embedding_dim(self):
+        """Not needed without linear layer"""
+        return None
 
 
 def _hrnet(arch, pretrained, progress, **kwargs):

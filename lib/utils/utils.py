@@ -43,8 +43,12 @@ class FullModel(nn.Module):
         self.model = model
         self.loss = loss
 
-    def forward(self, inputs, labels, *args, **kwargs):
-        outputs = self.model(inputs, *args, **kwargs)
+    def forward(self, inputs, labels, freeze=False, last=False, *args, **kwargs):
+        if not last:
+            outputs = self.model(inputs, freeze=freeze, last=last, *args, **kwargs)
+        else:
+            outputs, last_layer = self.model(inputs, freeze=freeze, last=last, *args, **kwargs)
+            return outputs, last_layer
         loss = self.loss(outputs, labels)
         return torch.unsqueeze(loss, 0), outputs
 
@@ -111,9 +115,7 @@ def create_logger(cfg, cfg_name, phase="train"):
     console = logging.StreamHandler()
     logging.getLogger("").addHandler(console)
 
-    tensorboard_log_dir = (
-        Path(cfg.LOG_DIR) / dataset / model / (cfg_name + "_" + time_str)
-    )
+    tensorboard_log_dir = Path(cfg.LOG_DIR) / dataset / model / (cfg_name + "_" + time_str)
     print("=> creating {}".format(tensorboard_log_dir))
     tensorboard_log_dir.mkdir(parents=True, exist_ok=True)
 
@@ -144,9 +146,7 @@ def get_confusion_matrix(label, pred, size, num_class, ignore=-1):
     return confusion_matrix
 
 
-def adjust_learning_rate(
-    optimizer, base_lr, max_iters, cur_iters, power=0.9, nbb_mult=10
-):
+def adjust_learning_rate(optimizer, base_lr, max_iters, cur_iters, power=0.9, nbb_mult=10):
     lr = base_lr * ((1 - float(cur_iters) / max_iters) ** (power))
     optimizer.param_groups[0]["lr"] = lr
     if len(optimizer.param_groups) == 2:
@@ -164,7 +164,6 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
     stochastic_subsets = generate_image_stochastic_subsets(
         dataset=config["DATASET"]["DATASET"],
         model=str(dss_args.feature_embdedder),
-        # submod_function=dss_args.submod_function,
         submod_function=dss_args.sge_submod_function,
         metric=str(dss_args.metric),
         kw=dss_args.kw,
@@ -175,6 +174,8 @@ def initialise_stochastic_subsets(dss_args: DotMap, config):
         device=dss_args.device,
         config=config,
         partition_mode=dss_args.partition_mode,
+        epsilon=dss_args.epsilon,
+        stochastic_subsets_file=dss_args.stochastic_subsets_file,
     )
 
 

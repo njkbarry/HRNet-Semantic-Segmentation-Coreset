@@ -23,6 +23,7 @@ _C.PRINT_FREQ = 20
 _C.AUTO_RESUME = False
 _C.PIN_MEMORY = True
 _C.RANK = 0
+_C.EXPERIMENT_NAME = "No_Experiment"
 
 # Cudnn related params
 _C.CUDNN = CN()
@@ -106,6 +107,10 @@ _C.TRAIN.RANDOM_SUBSET = 1.0
 _C.TRAIN.CORESET_ALGORITHM = None
 # Number of epochs between val logging and model saving
 _C.TRAIN.VAL_SAVE_EVERY = 3
+# Epochs for val logging and model saving
+_C.TRAIN.VAL_SAVE_ON = []
+# Whether to log full train metric
+_C.TRAIN.FULL_TRAIN_METRIC = True
 
 # MILO
 _C.MILO = CN()
@@ -120,6 +125,32 @@ _C.MILO.GC_RATIO = 1 / 6
 _C.MILO.FEATURE_EMBEDDER = "ViT"
 # Distance metric to generate similarity kernel
 _C.MILO.METRIC = "cossim"
+# Epsilon for stochastic submodular strategies
+_C.MILO.EPSILON = 0.001
+
+# Adaptive Random Exploration
+_C.AR_EXPLORATION = CN()
+# Epoch to transition to adaptive random
+_C.AR_EXPLORATION.TRANSITION_EPOCH = 10
+
+# Adaptive Random Sampling
+_C.AR_SAMPLING = CN()
+_C.AR_SAMPLING.FREQUENCY = 1
+
+# CRAIG
+_C.CRAIG = CN()
+_C.CRAIG.SELECT_EVERY = 3
+_C.CRAIG.SELECTION_TYPE = "Supervised"
+
+# Class Weighted Random Sampling
+_C.CW_RANDOM = CN()
+_C.CW_RANDOM.ORACLE = False
+
+# Pixel Map Weighted Random Sampling
+_C.PMW_RANDOM = CN()
+_C.PMW_RANDOM.FREQUENCY = 1
+_C.PMW_RANDOM.ORACLE = False
+_C.PMW_RANDOM.BASE_SET_THRESHOLD = None
 
 # testing
 _C.TEST = CN()
@@ -137,6 +168,8 @@ _C.TEST.MULTI_SCALE = False
 _C.TEST.SCALE_LIST = [1]
 
 _C.TEST.OUTPUT_INDEX = -1
+# Whether to log metrics for each class
+_C.TEST.LOG_PER_CLASS_METRICS = False
 
 # debug
 _C.DEBUG = CN()
