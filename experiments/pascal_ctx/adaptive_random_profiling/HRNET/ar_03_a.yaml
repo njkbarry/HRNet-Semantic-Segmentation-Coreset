@@ -3,10 +3,11 @@ CUDNN:
   DETERMINISTIC: false
   ENABLED: true
 GPUS: (0,)
-OUTPUT_DIR: 'output/proxy_experiment'
-LOG_DIR: 'log/proxy_experiment'
+OUTPUT_DIR: 'output/adaptive_random_profiling'
+LOG_DIR: 'log/adaptive_random_profiling'
 WORKERS: 4
 PRINT_FREQ: 10
+EXPERIMENT_NAME: 'adaptive_random_profiling'
 
 DATASET:
   DATASET: pascal_ctx
@@ -95,15 +96,16 @@ TRAIN:
   DOWNSAMPLERATE: 1
   IGNORE_LABEL: -1
   SCALE_FACTOR: 16
-  CORESET_ALGORITHM: milo
-  RANDOM_SUBSET: 0.5
-  VAL_SAVE_EVERY: 15
+  CORESET_ALGORITHM: adaptiverandom
+  RANDOM_SUBSET: 0.3
+  VAL_SAVE_EVERY: 3
+  FULL_TRAIN_METRIC: false
 MILO:
-  PARTITION_MODE: 'pascal_image_label'
-  SGE_SUBMOD_FUNCTION: 'gc'
-  WRE_SUBMOD_FUNCTION: 'disp_min'
+  PARTITION_MODE: ''
+  SGE_SUBMOD_FUNCTION: ''
+  WRE_SUBMOD_FUNCTION: ''
   GC_RATIO: 0.3
-  FEATURE_EMBEDDER: 'segformer'
+  FEATURE_EMBEDDER: ''
 TEST:
   IMAGE_SIZE:
   - 520

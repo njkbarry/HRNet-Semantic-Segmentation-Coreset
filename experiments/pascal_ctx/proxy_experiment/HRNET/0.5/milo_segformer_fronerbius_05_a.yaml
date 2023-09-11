@@ -84,7 +84,7 @@ TRAIN:
   SHUFFLE: true
   BEGIN_EPOCH: 0
   END_EPOCH: 60
-  RESUME: false
+  RESUME: true
   OPTIMIZER: sgd
   LR: 0.001
   WD: 0.0001
@@ -104,6 +104,7 @@ MILO:
   WRE_SUBMOD_FUNCTION: 'disp_min'
   GC_RATIO: 0.3
   FEATURE_EMBEDDER: 'segformer'
+  METRIC: 'fronerbius'
 TEST:
   IMAGE_SIZE:
   - 520

@@ -5,7 +5,7 @@ CUDNN:
 GPUS: (0,)
 OUTPUT_DIR: 'output/proxy_experiment'
 LOG_DIR: 'log/proxy_experiment'
-WORKERS: 4
+WORKERS: 1
 PRINT_FREQ: 10
 
 DATASET:
@@ -84,7 +84,7 @@ TRAIN:
   SHUFFLE: true
   BEGIN_EPOCH: 0
   END_EPOCH: 60
-  RESUME: false
+  RESUME: true
   OPTIMIZER: sgd
   LR: 0.001
   WD: 0.0001
@@ -95,9 +95,10 @@ TRAIN:
   DOWNSAMPLERATE: 1
   IGNORE_LABEL: -1
   SCALE_FACTOR: 16
-  CORESET_ALGORITHM: milo
+  CORESET_ALGORITHM: leastconfidenceuncertainty
   RANDOM_SUBSET: 0.5
-  VAL_SAVE_EVERY: 15
+  VAL_SAVE_EVERY: 3
+  FULL_TRAIN_METRIC: false
 MILO:
   PARTITION_MODE: 'pascal_image_label'
   SGE_SUBMOD_FUNCTION: 'gc'
