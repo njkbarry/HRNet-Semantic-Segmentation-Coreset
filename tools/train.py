@@ -51,7 +51,10 @@ from cords.utils.data.dataloader.SL.adaptive import (
     RandomDataLoader,
     WeightedRandomDataLoader,
     MILODataLoader,
+    ClassWeightedRandomDataLoader,
+    PMWAdaptiveRandomDataLoader,
 )
+from cords.utils.data.dataloader.SL.nonadaptive import LeastConfidenceUncertainty, CRAIGDataLoader
 from dotmap import DotMap
 import numpy as np
 import pandas as pd
@@ -64,9 +67,7 @@ from matplotlib import pyplot as plt
 def parse_args():
     parser = argparse.ArgumentParser(description="Train segmentation network")
 
-    parser.add_argument(
-        "--cfg", help="experiment configure file name", required=True, type=str
-    )
+    parser.add_argument("--cfg", help="experiment configure file name", required=True, type=str)
     parser.add_argument("--seed", type=int, default=304)
     parser.add_argument("--local_rank", type=int, default=-1)
     parser.add_argument(
@@ -115,6 +116,24 @@ def main():
         "fulltrain_global_steps": 0,
     }
 
+    # Log config file
+    log_dict = {
+        **dict(config.MODEL),
+        **dict(config.LOSS),
+        **dict(config.DATASET),
+        **dict(config.TRAIN),
+        **dict(config.MILO),
+        **dict(config.TEST),
+        **dict(config.AR_EXPLORATION),
+        **dict(config.AR_SAMPLING),
+        **dict(config.CRAIG),
+        "EXPERIMENT_NAME": config.EXPERIMENT_NAME,
+        "LOG_DIR": config.LOG_DIR,
+        "OUTPUT_DIR": config.OUTPUT_DIR,
+    }
+    for k in log_dict.keys():
+        writer_dict["writer"].add_text(tag=k, text_string=str(log_dict[k]))
+
     # cudnn related setting
     cudnn.benchmark = config.CUDNN.BENCHMARK
     cudnn.deterministic = config.CUDNN.DETERMINISTIC
@@ -140,8 +159,8 @@ def main():
 
     # copy model file
     if distributed and args.local_rank == 0:
-        this_dir = os.path.dirname(__file__)
-        models_dst_dir = os.path.join(final_output_dir, "models")
+        os.path.dirname(__file__)
+        os.path.join(final_output_dir, "models")
         # if os.path.exists(models_dst_dir):
         #     shutil.rmtree(models_dst_dir)
         # shutil.copytree(os.path.join(this_dir, '../lib/models'), models_dst_dir)
@@ -208,9 +227,7 @@ def main():
             drop_last=True,
             sampler=extra_train_sampler,
         )
-        extra_epoch_iters = np.int(
-            extra_train_dataset.__len__() / config.TRAIN.BATCH_SIZE_PER_GPU / len(gpus)
-        )
+        extra_epoch_iters = np.int(extra_train_dataset.__len__() / config.TRAIN.BATCH_SIZE_PER_GPU / len(gpus))
 
     test_size = (config.TEST.IMAGE_SIZE[1], config.TEST.IMAGE_SIZE[0])
     test_dataset = eval("datasets." + config.DATASET.DATASET)(
@@ -237,17 +254,109 @@ def main():
     )
 
     # criterion
-    if config.LOSS.USE_OHEM:
-        criterion = OhemCrossEntropy(
+    if config.TRAIN.CORESET_ALGORITHM.lower() == "pixelmapweightedadaptiverandom":
+        if config.PMW_RANDOM.ORACLE:
+            # Oracle experiment defines class proportions according to the inverse of validation performance.
+            pmw_random_weights = [
+                0.77,
+                0.13,
+                0.08,
+                0.24,
+                0.02,
+                0.7,
+                0.75,
+                0.57,
+                0.35,
+                0.7,
+                0.5,
+                0.8,
+                0.27,
+                0.78,
+                0.79,
+                0.46,
+                0.35,
+                0.11,
+                0.21,
+                0.55,
+                0.29,
+                0.35,
+                0.75,
+                0.11,
+                0.3,
+                0.58,
+                0.14,
+                0.22,
+                0.73,
+                0.44,
+                0.65,
+                0.61,
+                0.37,
+                0.73,
+                0.42,
+                0.15,
+                0.8,
+                0.15,
+                0.34,
+                0.39,
+                0.41,
+                0.25,
+                0.61,
+                0.19,
+                0.13,
+                0.26,
+                0.91,
+                0.44,
+                0.32,
+                0.47,
+                0.58,
+                0.75,
+                0.73,
+                0.2,
+                0.7,
+                0.58,
+                0.7,
+                0.29,
+                0.13,
+            ]
+            pmw_random_weights = [sum(pmw_random_weights) / p for p in pmw_random_weights]  # Inverse for weighting
+        else:
+            uniques = []
+            counts = []
+            indexes = []
+            for batch_idx, batch in tqdm(enumerate(trainloader), total=len(trainloader), desc="Calculating class proportions"):
+                inputs, labels, size, names = batch
+                for i in range(len(names)):
+                    unique, count = np.unique(labels[i], return_counts=True)
+                    uniques.append(unique)
+                    counts.append(count)
+                    index = trainloader.dataset.get_img_index(names[i])
+                    indexes.append(index)
+                    assert names[i] == trainloader.dataset.__getitem__(index)[3], "Wrong index"
+            pixel_df = pd.DataFrame({"class": np.concatenate(uniques), "count": np.concatenate(counts)})
+            pixel_df = pixel_df.groupby("class").sum()
+            pixel_df = pixel_df.drop(index=-1)
+            pixel_df = pixel_df / pixel_df.sum()
+            class_proportions = (pixel_df / pixel_df.sum())["count"].to_dict()
+            # self.index_proportions = dict(zip(indexes, [u for u in zip(uniques, counts)]))
+            # self.indexes = indexes
+            pmw_random_weights = [1 / class_proportions[i] for i in range(len(class_proportions))]  # Invert proportion for weight
+        criterion = CrossEntropy(
             ignore_label=config.TRAIN.IGNORE_LABEL,
-            thres=config.LOSS.OHEMTHRES,
-            min_kept=config.LOSS.OHEMKEEP,
-            weight=train_dataset.class_weights,
+            weight=torch.Tensor(pmw_random_weights),
         )
     else:
-        criterion = CrossEntropy(
-            ignore_label=config.TRAIN.IGNORE_LABEL, weight=train_dataset.class_weights
-        )
+        if config.LOSS.USE_OHEM:
+            criterion = OhemCrossEntropy(
+                ignore_label=config.TRAIN.IGNORE_LABEL,
+                thres=config.LOSS.OHEMTHRES,
+                min_kept=config.LOSS.OHEMKEEP,
+                weight=train_dataset.class_weights,
+            )
+        else:
+            criterion = CrossEntropy(
+                ignore_label=config.TRAIN.IGNORE_LABEL,
+                weight=train_dataset.class_weights,
+            )
 
     model = FullModel(model, criterion)
     if distributed:
@@ -302,9 +411,7 @@ def main():
     else:
         raise ValueError("Only Support SGD optimizer")
 
-    epoch_iters = int(
-        train_dataset.__len__() / config.TRAIN.BATCH_SIZE_PER_GPU / len(gpus)
-    )
+    epoch_iters = int(train_dataset.__len__() / config.TRAIN.BATCH_SIZE_PER_GPU / len(gpus))
 
     best_mIoU = 0
     last_epoch = 0
@@ -316,15 +423,9 @@ def main():
             previous_time = checkpoint["time"]
             best_mIoU = checkpoint["best_mIoU"]
             last_epoch = checkpoint["epoch"]
-            dct = checkpoint["state_dict"]
+            checkpoint["state_dict"]
 
-            model.module.model.load_state_dict(
-                {
-                    k.replace("model.", ""): v
-                    for k, v in checkpoint["state_dict"].items()
-                    if k.startswith("model.")
-                }
-            )
+            model.module.model.load_state_dict({k.replace("model.", ""): v for k, v in checkpoint["state_dict"].items() if k.startswith("model.")})
             optimizer.load_state_dict(checkpoint["optimizer"])
             logger.info("=> loaded checkpoint (epoch {})".format(checkpoint["epoch"]))
         if distributed:
@@ -360,6 +461,7 @@ def main():
                 partition_mode=config.MILO.PARTITION_MODE,
                 feature_embdedder=config.MILO.FEATURE_EMBEDDER,
                 metric=config.MILO.METRIC,
+                epsilon=config.MILO.EPSILON,
             )
         )
         # subset_selection_name = (
@@ -372,13 +474,15 @@ def main():
         #     + str(dss_args.kw)
         # )
 
-        gc_stochastic_subsets_file_path = os.path.join(
+        stochastic_subsets_file_path = os.path.join(
             os.path.abspath("./data/preprocessing"),
             config["DATASET"]["DATASET"]
             + "_"
             + str(dss_args.feature_embdedder)
             + "_"
             + str(dss_args.metric)
+            + "_"
+            + str(dss_args.epsilon)
             + "_"
             + str(dss_args.sge_submod_function)
             + "_"
@@ -406,9 +510,9 @@ def main():
         # dss_args["subset_selection_name"] = subset_selection_name
 
         dss_args["global_order_file"] = global_order_file_path
-        dss_args["gc_stochastic_subsets_file"] = gc_stochastic_subsets_file_path
+        dss_args["stochastic_subsets_file"] = stochastic_subsets_file_path
 
-        if not os.path.exists(gc_stochastic_subsets_file_path):
+        if not os.path.exists(stochastic_subsets_file_path):
             initialise_stochastic_subsets(dss_args, config)
 
         #########################################################################
@@ -441,9 +545,7 @@ def main():
             else:
                 Seg_Class_Counts = pd.read_csv(df_path)
 
-            clustering_model = KMeans(
-                n_clusters=20  # Number of clusters arbitrarily chosen
-            )
+            clustering_model = KMeans(n_clusters=20)  # Number of clusters arbitrarily chosen
             # Fitting Model
             clustering_model.fit(Seg_Class_Counts.T)
 
@@ -467,7 +569,7 @@ def main():
             plt.savefig(plot_dir)
 
             # Assess clustering tendency
-            from pyclustertend import ivat, hopkins
+            from pyclustertend import hopkins, ivat
             from sklearn.preprocessing import scale
 
             X = scale(Seg_Class_Counts.T)
@@ -504,7 +606,7 @@ def main():
             dict(
                 type="AdaptiveRandom",
                 fraction=config.TRAIN.RANDOM_SUBSET,
-                select_every=1,
+                select_every=config.AR_SAMPLING.FREQUENCY,
                 kappa=0,
                 collate_fn=None,
                 device="cuda",
@@ -525,18 +627,180 @@ def main():
 
         epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
 
+    elif config.TRAIN.CORESET_ALGORITHM.lower() == "leastconfidenceuncertainty":
+        """
+        ############################## LeastConfidenceUncertainty Dataloader Additional Arguments ##############################
+        """
+        num_epochs = end_epoch - last_epoch
+
+        # ala https://github.com/decile-team/cords/blob/main/configs/SL/config_adaptiverandom_mnist.py
+        dss_args = DotMap(
+            dict(
+                type="LeastConfidenceUncertainty",
+                fraction=config.TRAIN.RANDOM_SUBSET,
+                select_every=1,
+                kappa=0,
+                collate_fn=None,
+                device="cuda",
+                num_epochs=num_epochs,
+                num_gpus=len(gpus),
+                # method="least_confidence",  # FIXME: place in configs
+                method="entropy",  # FIXME: place in configs
+                # model="segformer",
+                model="deeplabv3",
+            )
+        )
+
+        trainloader = LeastConfidenceUncertainty(
+            train_loader=trainloader,
+            train_dataset=train_dataset,
+            dss_args=dss_args,
+            logger=logger,
+            batch_size=train_batch_size,
+            shuffle=config.TRAIN.SHUFFLE and train_sampler is None,
+            pin_memory=True,
+            collate_fn=dss_args.collate_fn,
+        )
+
+        epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
+
+    elif config.TRAIN.CORESET_ALGORITHM.lower() == "craig":
+        """
+        ############################## CRAIG Dataloader Additional Arguments ##############################
+        """
+        num_epochs = end_epoch - last_epoch
+
+        dss_args = DotMap(
+            dict(
+                type="CRAIG",
+                fraction=config.TRAIN.RANDOM_SUBSET,
+                select_every=config.CRAIG.SELECT_EVERY,
+                kappa=0,
+                linear_layer=False,
+                device=device,
+                if_convex=False,
+                optimizer="lazy",
+                selection_type=config.CRAIG.SELECTION_TYPE,  # May not work
+                collate_fn=None,
+                num_classes=config.DATASET.NUM_CLASSES,
+                loss=CrossEntropy(ignore_label=config.TRAIN.IGNORE_LABEL, weight=train_dataset.class_weights, reduction="none"),
+                model=model,
+            ),
+        )
+
+        trainloader = CRAIGDataLoader(
+            train_loader=trainloader,
+            val_loader=testloader,
+            dss_args=dss_args,
+            logger=logger,
+            batch_size=train_batch_size,
+            shuffle=config.TRAIN.SHUFFLE and train_sampler is None,
+            pin_memory=True,
+            collate_fn=dss_args.collate_fn,
+        )
+
+        epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
+
+    elif config.TRAIN.CORESET_ALGORITHM.lower() == "classweightedrandom":
+        """
+        ############################## ClassWeightedRandom Dataloader Additional Arguments ##############################
+        """
+        num_epochs = end_epoch - last_epoch
+
+        # ala https://github.com/decile-team/cords/blob/main/configs/SL/config_adaptiverandom_mnist.py
+        dss_args = DotMap(
+            dict(
+                type="ClassWeightedRandom",
+                fraction=config.TRAIN.RANDOM_SUBSET,
+                select_every=1,
+                kappa=0,
+                collate_fn=None,
+                device="cuda",
+                num_epochs=num_epochs,
+                num_gpus=len(gpus),
+            )
+        )
+
+        trainloader = ClassWeightedRandomDataLoader(
+            train_loader=trainloader,
+            dss_args=dss_args,
+            logger=logger,
+            batch_size=train_batch_size,
+            shuffle=False,  # FIXME: Shuffle must be False
+            pin_memory=True,
+            collate_fn=dss_args.collate_fn,
+            oracle_experiment=config.CW_RANDOM.ORACLE,
+        )
+
+        epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
+
+    elif config.TRAIN.CORESET_ALGORITHM.lower() == "pixelmapweightedadaptiverandom":
+        """
+        ############################## PixelMapWeightedAdaptiveRandom Dataloader Additional Arguments ##############################
+        """
+        num_epochs = end_epoch - last_epoch
+
+        # ala https://github.com/decile-team/cords/blob/main/configs/SL/config_adaptiverandom_mnist.py
+        dss_args = DotMap(
+            dict(
+                type="AdaptiveRandom",
+                fraction=config.TRAIN.RANDOM_SUBSET,
+                select_every=config.PMW_RANDOM.FREQUENCY,
+                kappa=0,
+                collate_fn=None,
+                device="cuda",
+                num_epochs=num_epochs,
+                num_gpus=len(gpus),
+            )
+        )
+
+        trainloader = PMWAdaptiveRandomDataLoader(
+            train_loader=trainloader,
+            dss_args=dss_args,
+            logger=logger,
+            batch_size=train_batch_size,
+            oracle=False,
+            base_set_threshold=config.PMW_RANDOM.BASE_SET_THRESHOLD,
+            shuffle=config.TRAIN.SHUFFLE and train_sampler is None,
+            pin_memory=True,
+            collate_fn=dss_args.collate_fn,
+        )
+
+        epoch_iters = int(np.floor(epoch_iters * config.TRAIN.RANDOM_SUBSET))
+
     elif config.TRAIN.CORESET_ALGORITHM.lower() == "none":
         pass
     else:
         raise NotImplementedError
 
     for epoch in range(last_epoch, end_epoch):
-        # exploitation_experiment = True
-        # # Now using WRE, stop training
-        # if config.TRAIN.CORESET_ALGORITHM.lower() == "milo" and exploitation_experiment and not trainloader.cur_epoch < math.ceil(trainloader.gc_ratio * trainloader.num_epochs):
-        #     break
-        # elif config.TRAIN.CORESET_ALGORITHM.lower() == "adaptiverandom" and exploitation_experiment and not epoch < math.ceil(config.MILO.GC_RATIO * end_epoch):
-        #     break
+        if config.EXPERIMENT_NAME == "adaptive_random_exploration" and epoch == config.AR_EXPLORATION.TRANSITION_EPOCH:
+            raise NotImplementedError
+            num_epochs = end_epoch - last_epoch
+
+            # ala https://github.com/decile-team/cords/blob/main/configs/SL/config_adaptiverandom_mnist.py
+            dss_args = DotMap(
+                dict(
+                    type="AdaptiveRandom",
+                    fraction=config.TRAIN.RANDOM_SUBSET,
+                    select_every=1,
+                    kappa=0,
+                    collate_fn=None,
+                    device="cuda",
+                    num_epochs=num_epochs,
+                    num_gpus=len(gpus),
+                )
+            )
+
+            trainloader = AdaptiveRandomDataLoader(
+                train_loader=full_trainloader,
+                dss_args=dss_args,
+                logger=logger,
+                batch_size=train_batch_size,
+                shuffle=config.TRAIN.SHUFFLE and train_sampler is None,
+                pin_memory=True,
+                collate_fn=dss_args.collate_fn,
+            )
 
         if epoch >= config.TRAIN.END_EPOCH:
             train(
@@ -565,39 +829,31 @@ def main():
                 writer_dict,
             )
 
-        # FIXME:
-        # Remove dev code
-        # torch.cuda.empty_cache()
+        if config.TRAIN.VAL_SAVE_ON != []:
+            log = (epoch + 1) in config.TRAIN.VAL_SAVE_ON
+        else:
+            log = (epoch + 1) % config.TRAIN.VAL_SAVE_EVERY == 0
 
-        if (epoch + 1) % config.TRAIN.VAL_SAVE_EVERY == 0:
+        if log:
             valid_loss, mean_IoU, IoU_array = validate(
-                config, testloader, model, writer_dict
+                config, testloader, model, writer_dict, log_per_class_metrics=config.TEST.LOG_PER_CLASS_METRICS
             )
 
-            if config.TRAIN.CORESET_ALGORITHM is not None:
+            if config.TRAIN.CORESET_ALGORITHM is not None and config.TRAIN.FULL_TRAIN_METRIC is True:
                 if args.local_rank <= 0:
-                    logging.info(
-                        "Warning: generting metrics on entire training set can significantly inflate training time"
-                    )
+                    logging.info("Warning: generting metrics on entire training set can significantly inflate training time")
 
-                ft_valid_loss, ft_mean_IoU, ft_IoU_array = full_train_metric(
-                    config, full_trainloader, model, writer_dict
-                )
+                ft_valid_loss, ft_mean_IoU, ft_IoU_array = full_train_metric(config, full_trainloader, model, writer_dict)
 
             if args.local_rank <= 0:
-                logger.info(
-                    "=> saving checkpoint to {}".format(
-                        final_output_dir + "checkpoint.pth.tar"
-                    )
-                )
+                logger.info("=> saving checkpoint to {}".format(final_output_dir + "checkpoint.pth.tar"))
                 torch.save(
                     {
                         "epoch": epoch + 1,
                         "best_mIoU": best_mIoU,
                         "state_dict": model.module.state_dict(),
                         "optimizer": optimizer.state_dict(),
-                        "time": (timeit.default_timer() - start) * len(gpus)
-                        + previous_time,
+                        "time": (timeit.default_timer() - start) * len(gpus) + previous_time,
                     },
                     os.path.join(final_output_dir, "checkpoint.pth.tar"),
                 )
@@ -607,22 +863,18 @@ def main():
                         model.module.state_dict(),
                         os.path.join(final_output_dir, "best.pth"),
                     )
-                msg = "Loss: {:.3f}, MeanIU: {: 4.4f}, Best_mIoU: {: 4.4f}".format(
-                    valid_loss, mean_IoU, best_mIoU
-                )
+                msg = "Loss: {:.3f}, MeanIU: {: 4.4f}, Best_mIoU: {: 4.4f}".format(valid_loss, mean_IoU, best_mIoU)
                 logging.info(msg)
                 logging.info(IoU_array)
 
     if args.local_rank <= 0:
-        torch.save(
-            model.module.state_dict(), os.path.join(final_output_dir, "final_state.pth")
-        )
+        torch.save(model.module.state_dict(), os.path.join(final_output_dir, "final_state.pth"))
 
         writer_dict["writer"].close()
 
     # Log wall-times of each gpu
     end = timeit.default_timer()
-    total_time = (end - start) + previous_time
+    (end - start) + previous_time
     logger.info(
         "GPU: {} - Hours: {}, Minutes: {}, Total seconds: {}".format(
             args.local_rank,
