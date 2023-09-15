@@ -2,6 +2,7 @@ from packaging import version
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+import matplotlib.ticker as ticker
 import seaborn as sns
 from scipy import stats
 import os
@@ -59,7 +60,8 @@ def process_event_acc_path(path: str):
 
 
 # Define Scope
-SCALARS = ["valid_mIoU", "valid_loss", "train_loss", "valid_mIoU_class_0", "valid_mIoU_class_1", "valid_mIoU_class_3", "valid_mIoU_class_4"]
+# SCALARS = ["valid_mIoU", "valid_loss", "train_loss"] + [f"valid_mIoU_class_{i}" for i in range(60)]
+SCALARS = [f"valid_mIoU_class_{i}" for i in range(60)]
 
 # Find paths
 top_dir = "/home/nickbarry/Documents/MsC-DS/Data_Science_Research_Project/Coresets/Repositories/HRNet-Semantic-Segmentation-Coreset/log/"
@@ -90,6 +92,8 @@ for scalar in SCALARS:
         run_date_dict[run_name] = date
         experiment_name = None
         epsilon = None
+        base_set_threshold = None
+        run_name = Path(tb_path).parts[-2].rsplit("_", 1)[0].rsplit("_", 1)[0]
         if len(event_acc.Tags()["tensors"]) > 0:
             # Parse hyperparameters from tb
             try:
@@ -99,6 +103,7 @@ for scalar in SCALARS:
                 embedding = make_ndarray(event_acc.Tensors("FEATURE_EMBEDDER/text_summary")[0].tensor_proto)[0].decode()
                 experiment_name = make_ndarray(event_acc.Tensors("EXPERIMENT_NAME/text_summary")[0].tensor_proto)[0].decode()
                 epsilon = make_ndarray(event_acc.Tensors("EPSILON/text_summary")[0].tensor_proto)[0].decode()
+                base_set_threshold = make_ndarray(event_acc.Tensors("BASE_SET_THRESHOLD/text_summary")[0].tensor_proto)[0].decode()
             except Exception as e:
                 pass
         try:
@@ -125,36 +130,25 @@ for scalar in SCALARS:
     df = pd.DataFrame(data)
     # Stochastic run plot
     # plot_df = df[(df["coreset_algorithm"] == "adaptiverandom") | (df["coreset_algorithm"] == "craig")]
-    plot_df = df[df["experiment_name"] == "stochastic_sampling_epsilon_experiment"]
+    plot_df = df[df["experiment_name"].isin(["pixel_map_weighted_random_sampling_experiment", "adaptive_random_profiling"])]
     # plot_df = df[df["repitition"].notnull()]
-    # plot_df = plot_df[plot_df["coreset_frac"].str.endswith("5")]
+    plot_df = plot_df[plot_df["coreset_frac"].str.endswith("5")]
     plot_df["step_num"].replace(0, 1, inplace=True)
     plot_df.loc[:, "step_num"] = plot_df["step_num"] * 3
-    # plot_df[plot_df["step_num"] == 0] = 3
 
-    hue = (
-        plot_df["coreset_algorithm"].astype(str)
-        + ", "
-        + plot_df["coreset_frac"].astype(str)
-        + ", "
-        + plot_df["sim_metric"].astype(str)
-        + ", "
-        + plot_df["embedding"].astype(str)
-        + ", "
-        + plot_df["embedding"].astype(str)
-        + ", "
-        + plot_df["epsilon"].astype(str)
-    )
+    hue = plot_df["experiment_name"].astype(str) + ", " + plot_df["run_name"].astype(str)
     sns.set_style("darkgrid")
     smoothing = False
     if smoothing:
         pass
-        # plot_df["val"] = Holt(plot_df["val"]).fit(smoothing_level=0.9, smoothing_slope=0.5, optimized=True)._fittedvalues
-        # plot_df["val"] = ExponentialSmoothing(plot_df["val"]).fit(smoothing_level=0.9, smoothing_slope=0.9)._fittedvalues
+        plot_df["val"] = Holt(plot_df["val"]).fit(smoothing_level=0.9, smoothing_slope=0.5, optimized=True)._fittedvalues
+        plot_df["val"] = ExponentialSmoothing(plot_df["val"]).fit(smoothing_level=0.9, smoothing_slope=0.9)._fittedvalues
 
     line_plt = sns.lineplot(data=plot_df, x="step_num", y="val", hue=hue)  # .set_title("valid_mIoU")
     line_plt.set_ylim(np.min(line_plt.get_yticks()) * 0.7, np.max(line_plt.get_yticks()) * 1.15)
-
+    line_plt.get_yaxis().set_minor_locator(ticker.AutoMinorLocator(n=10))
+    line_plt.grid(which="major", color="w", linewidth=1.0)
+    line_plt.grid(which="minor", color="w", linewidth=0.5)
     # line_plt.axhline(full_model_performance_dict[scalar], alpha=0.5, color="red")
     # line_plt.axhline(full_model_performance_dict[scalar] * (0.95 if scalar == "valid_mIoU" else 1.05), alpha=0.5, color="red", linestyle="--")
     # line_plt.axhline(full_model_performance_dict[scalar] * (0.90 if scalar == "valid_mIoU" else 1.10), alpha=0.5, color="red", linestyle=":")
