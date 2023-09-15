@@ -127,6 +127,8 @@ def main():
         **dict(config.AR_EXPLORATION),
         **dict(config.AR_SAMPLING),
         **dict(config.CRAIG),
+        **dict(config.CW_RANDOM),
+        **dict(config.PMW_RANDOM),
         "EXPERIMENT_NAME": config.EXPERIMENT_NAME,
         "LOG_DIR": config.LOG_DIR,
         "OUTPUT_DIR": config.OUTPUT_DIR,
