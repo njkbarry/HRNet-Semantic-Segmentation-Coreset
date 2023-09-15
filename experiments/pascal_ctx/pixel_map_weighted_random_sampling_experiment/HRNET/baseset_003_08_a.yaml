@@ -3,11 +3,11 @@ CUDNN:
   DETERMINISTIC: false
   ENABLED: true
 GPUS: (0,)
-OUTPUT_DIR: 'output/adaptive_random_profiling'
-LOG_DIR: 'log/adaptive_random_profiling'
+OUTPUT_DIR: 'output/pixel_map_weighted_random_sampling_experiment'
+LOG_DIR: 'log/pixel_map_weighted_random_sampling_experiment'
 WORKERS: 4
 PRINT_FREQ: 10
-EXPERIMENT_NAME: 'adaptive_random_profiling'
+EXPERIMENT_NAME: 'pixel_map_weighted_random_sampling_experiment'
 
 DATASET:
   DATASET: pascal_ctx
@@ -34,7 +34,7 @@ MODEL:
     STAGE2:
       NUM_MODULES: 1
       NUM_BRANCHES: 2
-      BLOCK: BASIC  LOG_PER_CLASS_METRICS: true
+      BLOCK: BASIC
       NUM_BLOCKS:
       - 4
       - 4
@@ -42,7 +42,7 @@ MODEL:
       - 48
       - 96
       FUSE_METHOD: SUM
-    STAGE3:  LOG_PER_CLASS_METRICS: true
+    STAGE3:
       NUM_MODULES: 4
       NUM_BRANCHES: 3
       BLOCK: BASIC
@@ -82,7 +82,7 @@ TRAIN:
   BATCH_SIZE_PER_GPU: 5
   NONBACKBONE_KEYWORDS: ['last_layer']
   NONBACKBONE_MULT: 10  
-  SHUFFLE: true
+  SHUFFLE: false
   BEGIN_EPOCH: 0
   END_EPOCH: 60
   RESUME: false
@@ -96,16 +96,28 @@ TRAIN:
   DOWNSAMPLERATE: 1
   IGNORE_LABEL: -1
   SCALE_FACTOR: 16
-  CORESET_ALGORITHM: adaptiverandom
-  RANDOM_SUBSET: 0.5
+  CORESET_ALGORITHM: pixelmapweightedadaptiverandom
+  RANDOM_SUBSET: 0.8
   VAL_SAVE_EVERY: 3
   FULL_TRAIN_METRIC: false
 MILO:
   PARTITION_MODE: ''
   SGE_SUBMOD_FUNCTION: ''
-  WRE_SUBMOD_FUNCTION: ''  LOG_PER_CLASS_METRICS: true
-  GC_RATIO: 0.3
+  WRE_SUBMOD_FUNCTION: ''
+  GC_RATIO: -1.0
   FEATURE_EMBEDDER: ''
+  EPSILON: -1.0
+AR_EXPLORATION:
+  TRANSITION_EPOCH: -1
+CRAIG:
+  SELECT_EVERY: -1
+  SELECTION_TYPE: ''
+CW_RANDOM:
+  ORACLE: false
+PMW_RANDOM:
+  FREQUENCY: 1
+  ORACLE: true
+  BASE_SET_THRESHOLD: 0.003
 TEST:
   IMAGE_SIZE:
   - 520

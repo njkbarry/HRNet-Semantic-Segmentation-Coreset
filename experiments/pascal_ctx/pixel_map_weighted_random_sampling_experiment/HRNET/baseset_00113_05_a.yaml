@@ -3,11 +3,11 @@ CUDNN:
   DETERMINISTIC: false
   ENABLED: true
 GPUS: (0,)
-OUTPUT_DIR: 'output/dev'
-LOG_DIR: 'log/dev'
+OUTPUT_DIR: 'output/pixel_map_weighted_random_sampling_experiment'
+LOG_DIR: 'log/pixel_map_weighted_random_sampling_experiment'
 WORKERS: 4
 PRINT_FREQ: 10
-EXPERIMENT_NAME: 'dev'
+EXPERIMENT_NAME: 'pixel_map_weighted_random_sampling_experiment'
 
 DATASET:
   DATASET: pascal_ctx
@@ -116,8 +116,8 @@ CW_RANDOM:
   ORACLE: false
 PMW_RANDOM:
   FREQUENCY: 1
-  ORACLE: false
-  BASE_SET_THRESHOLD: 0.0
+  ORACLE: true
+  BASE_SET_THRESHOLD: 0.00113
 TEST:
   IMAGE_SIZE:
   - 520
