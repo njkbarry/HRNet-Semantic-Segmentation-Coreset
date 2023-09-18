@@ -7,13 +7,21 @@
 # ------------------------------------------------------------------------------
 
 import os
+import sys
 
 from pathlib import Path
 import cv2
 import numpy as np
+import pandas as pd
 from PIL import Image
-
+from tqdm import tqdm
 import torch
+from collections import defaultdict
+
+# sys.path.insert(0, os.getcwd())
+# sys.path.insert(0, os.getcwd() + "/lib")
+
+# from lib.datasets.base_dataset import BaseDataset
 
 from .base_dataset import BaseDataset
 
@@ -242,6 +250,20 @@ class PASCALContext(BaseDataset):
 
         self._init_name_to_index()  # Initialise dict
 
+        # Initialise proportion dicts
+        self._pixel_class_proportions = None
+        self._occurence_class_proportions = None
+
+    def get_occurence_class_proportion(self, index: int):
+        if self._occurence_class_proportions is None:
+            self._init_occurence_class_proportions()
+        return self._occurence_class_proportions[index]
+
+    def get_pixel_class_proportion(self, index: int):
+        if self._pixel_class_proportions is None:
+            self._init_pixel_class_proportions()
+        return self._pixel_class_proportions[index]
+
     def _class_to_index(self, mask):
         # assert the values
         values = np.unique(mask)
@@ -350,3 +372,107 @@ class PASCALContext(BaseDataset):
             return list(self._seg_index_to_name.keys())[list(self._seg_index_to_name.values()).index(class_index)]
         else:
             return list(self._class_index_to_name.keys())[list(self._class_index_to_name.values()).index(class_index)]
+
+    def _init_pixel_class_proportions(
+        self,
+    ):
+        uniques = []
+        counts = []
+        for index, file in tqdm(enumerate(self), total=len(self), desc="Determining pixel-wise class proprotions"):
+            image, label, size, name = file
+            unique, count = np.unique(label, return_counts=True)
+            uniques.append(unique)
+            counts.append(count)
+            index = self.get_img_index(name)
+            assert name == self.__getitem__(index)[3], "Wrong index"
+        pixel_df = pd.DataFrame({"class": np.concatenate(uniques), "count": np.concatenate(counts)})
+        # pixel_df = pixel_df.groupby("class").sum()
+        pixel_df = pixel_df.groupby("class").mean()
+        pixel_df = pixel_df.drop(index=-1)
+        # pixel_df = pixel_df / pixel_df.sum()
+        self._pixel_df = pixel_df
+        pixel_class_proportions = (pixel_df / pixel_df.sum())["count"].to_dict()
+        pixel_class_proportions[-1] = "Nan"
+        self._pixel_class_proportions = pixel_class_proportions
+
+    def _init_occurence_class_proportions(
+        self,
+    ):
+        uniques = []
+        counts = []
+        for index, file in tqdm(enumerate(self), total=len(self), desc="Determining occurence class proprotions"):
+            image, label, size, name = file
+            unique, _ = np.unique(label, return_counts=True)
+            uniques.append(unique)
+            counts.append(np.ones_like(unique))
+            index = self.get_img_index(name)
+            assert name == self.__getitem__(index)[3], "Wrong index"
+        pixel_df = pd.DataFrame({"class": np.concatenate(uniques), "count": np.concatenate(counts)})
+        pixel_df = pixel_df.groupby("class").sum()
+        pixel_df = pixel_df.drop(index=-1)
+        pixel_df = pixel_df / pixel_df.sum()
+        self._occurence_df = pixel_df
+        occurence_class_proportions = (pixel_df / pixel_df.sum())["count"].to_dict()
+        occurence_class_proportions[-1] = "Nan"
+        self._occurence_class_proportions = occurence_class_proportions
+
+    def _init_co_ocurrence_df(
+        self,
+    ):
+        uniques = []
+        counts = []
+        for index, file in tqdm(enumerate(self), total=len(self), desc="Determining co-occurence class proprotions"):
+            image, label, size, name = file
+            unique, _ = np.unique(label, return_counts=True)
+            uniques.append(unique)
+            counts.append(np.ones_like(unique))
+            index = self.get_img_index(name)
+            assert name == self.__getitem__(index)[3], "Wrong index"
+        od = defaultdict(list)
+        for i in range(len(uniques)):
+            for s in set(uniques[i]):
+                od[s].append(i)
+        x = [(k1, k2, len(set(d1) & set(d2))) for k1, d1 in od.items() for k2, d2 in od.items()]
+        self._co_occurences_df = pd.DataFrame(x).pivot(index=0, columns=1, values=2)
+
+
+if __name__ == "__main__":
+    # DEV TESTING
+    trainset = PASCALContext(
+        root="/home/nickbarry/Documents/MsC-DS/Data_Science_Research_Project/Coresets/Repositories/HRNet-Semantic-Segmentation-Coreset/data/",
+        list_path="val",
+        num_samples=None,
+        num_classes=59,
+        multi_scale=True,
+        flip=True,
+        ignore_label=-1,
+        base_size=520,
+        crop_size=(520, 520),
+        downsample_rate=1,
+        scale_factor=16,
+    )
+
+    # trainset.get_pixel_class_proportion(-1)
+    # trainset._init_co_ocurrence_df()
+
+    # Figure 4.2.7
+    # trainset._co_occurences_df.to_csv(
+    #     "/home/nickbarry/Documents/MsC-DS/Data_Science_Research_Project/Coresets/Repositories/HRNet-Semantic-Segmentation-Coreset/analysis/plot_csv/test/section_4/figure_4_2_7_val.csv"
+    # )
+
+    # Figfure 4.2.4append
+    # df.to_csv(
+    #     "/home/nickbarry/Documents/MsC-DS/Data_Science_Research_Project/Coresets/Repositories/HRNet-Semantic-Segmentation-Coreset/analysis/plot_csv/test/section_4/figure_4_2_4_val.csv"
+    # )
+
+    # Figure 4.2.1
+    # df = pd.concat([trainset._pixel_df, trainset._occurence_df], axis=1)
+    # df = df.set_axis(["pixel-wise", "occurence"], axis=1)
+    # df.to_csv(
+    #     "/home/nickbarry/Documents/MsC-DS/Data_Science_Research_Project/Coresets/Repositories/HRNet-Semantic-Segmentation-Coreset/analysis/plot_csv/test/section_4/figure_4_2_1_val.csv"
+    # )
+
+    image, label, size, name = trainset.__getitem__(10)
+    values, counts = np.unique(label, return_counts=True)
+    index = np.nanargmin([trainset.get_pixel_class_proportion(c) for c in values])
+    print("break point")

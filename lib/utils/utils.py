@@ -9,6 +9,7 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+import sys
 import logging
 import time
 from pathlib import Path
@@ -17,6 +18,9 @@ import numpy as np
 
 import torch
 import torch.nn as nn
+
+sys.path.insert(0, os.getcwd())
+sys.path.insert(0, os.getcwd() + "/cords")
 
 from cords.utils.data.data_utils.generate_global_order import (
     generate_image_global_order,
