@@ -1,0 +1,43 @@
+proportion_ft,method,coreset,performance
+0,Adaptive Random,0.3,0.95
+0.83,Adaptive Random,0.5,0.95
+0.5,Adaptive Random,0.8,0.95
+0,Static Random,0.3,0.95
+0,Static Random,0.5,0.95
+0.65,Static Random,0.8,0.95
+0,MILO,0.3,0.95
+0.92,MILO,0.5,0.95
+0.56,MILO,0.8,0.95
+0,CRAIG,0.3,0.95
+0,CRAIG,0.5,0.95
+0.65,CRAIG,0.8,0.95
+0.666,adaptive random,0.3,0.9
+0.333,adaptive random,0.5,0.9
+0.167,adaptive random,0.8,0.9
+0,static random,0.3,0.9
+0.617,static random,0.5,0.9
+0.4,static random,0.8,0.9
+0.723,MILO,0.3,0.9
+0.412,MILO,0.5,0.9
+0.214,MILO,0.8,0.9
+0.976,CRAIG,0.3,0.9
+0.576,CRAIG,0.5,0.9
+0.379,CRAIG,0.8,0.9
+0,Uncertainty,0.3,0.9
+0.842,Uncertainty,0.5,0.9
+0.431,Uncertainty,0.8,0.9
+0.1167,adaptive random,0.3,0.8
+0.05,adaptive random,0.5,0.8
+0.0167,adaptive random,0.8,0.8
+0.25,static random,0.3,0.8
+0.05,static random,0.5,0.8
+0.0167,static random,0.8,0.8
+0.2,MILO,0.3,0.8
+0.05,MILO,0.5,0.8
+0.0167,MILO,0.8,0.8
+0.2,CRAIG,0.3,0.8
+0.05,CRAIG,0.5,0.8
+0.0167,CRAIG,0.8,0.8
+0.46,Uncertainty,0.3,0.8
+0.25,Uncertainty,0.5,0.8
+0.05,Uncertainty,0.8,0.8

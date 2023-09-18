@@ -60,8 +60,8 @@ def process_event_acc_path(path: str):
 
 
 # Define Scope
-# SCALARS = ["valid_mIoU", "valid_loss", "train_loss"] + [f"valid_mIoU_class_{i}" for i in range(60)]
-SCALARS = [f"valid_mIoU_class_{i}" for i in range(60)]
+SCALARS = ["valid_mIoU", "valid_loss", "train_loss"]  # + [f"valid_mIoU_class_{i}" for i in range(60)]
+# SCALARS = [f"valid_mIoU_class_{i}" for i in range(60)]
 
 # Find paths
 top_dir = "/home/nickbarry/Documents/MsC-DS/Data_Science_Research_Project/Coresets/Repositories/HRNet-Semantic-Segmentation-Coreset/log/"
@@ -104,6 +104,7 @@ for scalar in SCALARS:
                 experiment_name = make_ndarray(event_acc.Tensors("EXPERIMENT_NAME/text_summary")[0].tensor_proto)[0].decode()
                 epsilon = make_ndarray(event_acc.Tensors("EPSILON/text_summary")[0].tensor_proto)[0].decode()
                 base_set_threshold = make_ndarray(event_acc.Tensors("BASE_SET_THRESHOLD/text_summary")[0].tensor_proto)[0].decode()
+
             except Exception as e:
                 pass
         try:
@@ -130,13 +131,17 @@ for scalar in SCALARS:
     df = pd.DataFrame(data)
     # Stochastic run plot
     # plot_df = df[(df["coreset_algorithm"] == "adaptiverandom") | (df["coreset_algorithm"] == "craig")]
-    plot_df = df[df["experiment_name"].isin(["pixel_map_weighted_random_sampling_experiment", "adaptive_random_profiling"])]
+    # plot_df = df[df["experiment_name"].isin(["pixel_map_weighted_random_sampling_experiment", "adaptive_random_profiling"])]
     # plot_df = df[df["repitition"].notnull()]
-    plot_df = plot_df[plot_df["coreset_frac"].str.endswith("5")]
-    plot_df["step_num"].replace(0, 1, inplace=True)
+    plot_df = df[df["experiment_name"].isin(["stochastic_sampling_epsilon_experiment"])]
+
+    # plot_df = df[df["coreset_algorithm"] == "adaptiverandom"]
+    # plot_df = plot_df[plot_df["coreset_frac"].str.endswith("5")]
+    # plot_df["step_num"].replace(0, 1, inplace=True)
+    plot_df.loc[:, "step_num"] = plot_df["step_num"] + 1
     plot_df.loc[:, "step_num"] = plot_df["step_num"] * 3
 
-    hue = plot_df["experiment_name"].astype(str) + ", " + plot_df["run_name"].astype(str)
+    hue = plot_df["experiment_name"].astype(str) + ", " + plot_df["epsilon"].astype(str)
     sns.set_style("darkgrid")
     smoothing = False
     if smoothing:
@@ -149,9 +154,9 @@ for scalar in SCALARS:
     line_plt.get_yaxis().set_minor_locator(ticker.AutoMinorLocator(n=10))
     line_plt.grid(which="major", color="w", linewidth=1.0)
     line_plt.grid(which="minor", color="w", linewidth=0.5)
-    # line_plt.axhline(full_model_performance_dict[scalar], alpha=0.5, color="red")
-    # line_plt.axhline(full_model_performance_dict[scalar] * (0.95 if scalar == "valid_mIoU" else 1.05), alpha=0.5, color="red", linestyle="--")
-    # line_plt.axhline(full_model_performance_dict[scalar] * (0.90 if scalar == "valid_mIoU" else 1.10), alpha=0.5, color="red", linestyle=":")
+    line_plt.axhline(full_model_performance_dict[scalar], alpha=0.5, color="red")
+    line_plt.axhline(full_model_performance_dict[scalar] * (0.95 if scalar == "valid_mIoU" else 1.05), alpha=0.5, color="red", linestyle="--")
+    line_plt.axhline(full_model_performance_dict[scalar] * (0.90 if scalar == "valid_mIoU" else 1.10), alpha=0.5, color="red", linestyle=":")
 
     line_plt.set_xlabel("Epoch")
     line_plt.set_ylabel(scalar)
