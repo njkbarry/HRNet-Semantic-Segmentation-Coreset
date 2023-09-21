@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib.ticker as ticker
+import pickle
 
 SCALARS = ["valid_mIoU", "valid_loss", "train_loss"]
 PASCAL_PERFORMANCE_DICT = dict(zip(SCALARS, [0.49, 0.8753, 0.1515]))
@@ -30,3 +31,20 @@ def make_performance_line_plot(figure_df, x_column, scalar, hue, title):
     line_plt.set_xlabel("Epoch")
     line_plt.set_ylabel(scalar)
     line_plt.set_title(title)
+
+
+def jaccard_set(list1, list2):
+    """Define Jaccard Similarity function for two sets"""
+    intersection = len(list(set(list1).intersection(list2)))
+    union = (len(list1) + len(list2)) - intersection
+    return float(intersection) / union
+
+
+def pickle2dict(file_name, key):
+    """
+    Load dictionary from pickle file
+    """
+    with open(file_name, "rb") as fIn:
+        stored_data = pickle.load(fIn)
+        value = stored_data[key]
+    return value
