@@ -60,7 +60,9 @@ class BaseDataset(data.Dataset):
         pad_h = max(size[0] - h, 0)
         pad_w = max(size[1] - w, 0)
         if pad_h > 0 or pad_w > 0:
-            pad_image = cv2.copyMakeBorder(image, 0, pad_h, 0, pad_w, cv2.BORDER_CONSTANT, value=padvalue)
+            pad_image = cv2.copyMakeBorder(
+                image, 0, pad_h, 0, pad_w, cv2.BORDER_CONSTANT, value=padvalue
+            )
 
         return pad_image
 
@@ -98,7 +100,14 @@ class BaseDataset(data.Dataset):
 
         return image, label
 
-    def resize_short_length(self, image, label=None, short_length=None, fit_stride=None, return_padding=False):
+    def resize_short_length(
+        self,
+        image,
+        label=None,
+        short_length=None,
+        fit_stride=None,
+        return_padding=False,
+    ):
         h, w = image.shape[:2]
         if h < w:
             new_h = short_length
@@ -109,14 +118,34 @@ class BaseDataset(data.Dataset):
         image = cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_LINEAR)
         pad_w, pad_h = 0, 0
         if fit_stride is not None:
-            pad_w = 0 if (new_w % fit_stride == 0) else fit_stride - (new_w % fit_stride)
-            pad_h = 0 if (new_h % fit_stride == 0) else fit_stride - (new_h % fit_stride)
-            image = cv2.copyMakeBorder(image, 0, pad_h, 0, pad_w, cv2.BORDER_CONSTANT, value=tuple(x * 255 for x in self.mean[::-1]))
+            pad_w = (
+                0 if (new_w % fit_stride == 0) else fit_stride - (new_w % fit_stride)
+            )
+            pad_h = (
+                0 if (new_h % fit_stride == 0) else fit_stride - (new_h % fit_stride)
+            )
+            image = cv2.copyMakeBorder(
+                image,
+                0,
+                pad_h,
+                0,
+                pad_w,
+                cv2.BORDER_CONSTANT,
+                value=tuple(x * 255 for x in self.mean[::-1]),
+            )
 
         if label is not None:
             label = cv2.resize(label, (new_w, new_h), interpolation=cv2.INTER_NEAREST)
             if pad_h > 0 or pad_w > 0:
-                label = cv2.copyMakeBorder(label, 0, pad_h, 0, pad_w, cv2.BORDER_CONSTANT, value=self.ignore_label)
+                label = cv2.copyMakeBorder(
+                    label,
+                    0,
+                    pad_h,
+                    0,
+                    pad_w,
+                    cv2.BORDER_CONSTANT,
+                    value=self.ignore_label,
+                )
             if return_padding:
                 return image, label, (pad_h, pad_w)
             else:
@@ -157,7 +186,13 @@ class BaseDataset(data.Dataset):
             label = label[:, ::flip]
 
         if self.downsample_rate != 1:
-            label = cv2.resize(label, None, fx=self.downsample_rate, fy=self.downsample_rate, interpolation=cv2.INTER_NEAREST)
+            label = cv2.resize(
+                label,
+                None,
+                fx=self.downsample_rate,
+                fy=self.downsample_rate,
+                interpolation=cv2.INTER_NEAREST,
+            )
 
         return image, label
 
@@ -174,7 +209,12 @@ class BaseDataset(data.Dataset):
         if config.MODEL.NUM_OUTPUTS > 1:
             pred = pred[config.TEST.OUTPUT_INDEX]
 
-        pred = F.interpolate(input=pred, size=size[-2:], mode="bilinear", align_corners=config.MODEL.ALIGN_CORNERS)
+        pred = F.interpolate(
+            input=pred,
+            size=size[-2:],
+            mode="bilinear",
+            align_corners=config.MODEL.ALIGN_CORNERS,
+        )
 
         if flip:
             flip_img = image.numpy()[:, :, :, ::-1]
@@ -183,7 +223,12 @@ class BaseDataset(data.Dataset):
             if config.MODEL.NUM_OUTPUTS > 1:
                 flip_output = flip_output[config.TEST.OUTPUT_INDEX]
 
-            flip_output = F.interpolate(input=flip_output, size=size[-2:], mode="bilinear", align_corners=config.MODEL.ALIGN_CORNERS)
+            flip_output = F.interpolate(
+                input=flip_output,
+                size=size[-2:],
+                mode="bilinear",
+                align_corners=config.MODEL.ALIGN_CORNERS,
+            )
 
             flip_pred = flip_output.cpu().numpy().copy()
             flip_pred = torch.from_numpy(flip_pred[:, :, :, ::-1].copy()).cuda()
@@ -200,11 +245,15 @@ class BaseDataset(data.Dataset):
         final_pred = torch.zeros([1, self.num_classes, ori_height, ori_width]).cuda()
         padvalue = -1.0 * np.array(self.mean) / np.array(self.std)
         for scale in scales:
-            new_img = self.multi_scale_aug(image=image, rand_scale=scale, rand_crop=False)
+            new_img = self.multi_scale_aug(
+                image=image, rand_scale=scale, rand_crop=False
+            )
             height, width = new_img.shape[:-1]
 
             if max(height, width) <= np.min(self.crop_size):
-                new_img = self.pad_image(new_img, height, width, self.crop_size, padvalue)
+                new_img = self.pad_image(
+                    new_img, height, width, self.crop_size, padvalue
+                )
                 new_img = new_img.transpose((2, 0, 1))
                 new_img = np.expand_dims(new_img, axis=0)
                 new_img = torch.from_numpy(new_img)
@@ -212,7 +261,9 @@ class BaseDataset(data.Dataset):
                 preds = preds[:, :, 0:height, 0:width]
             else:
                 if height < self.crop_size[0] or width < self.crop_size[1]:
-                    new_img = self.pad_image(new_img, height, width, self.crop_size, padvalue)
+                    new_img = self.pad_image(
+                        new_img, height, width, self.crop_size, padvalue
+                    )
                 new_h, new_w = new_img.shape[:-1]
                 rows = np.int(np.ceil(1.0 * (new_h - self.crop_size[0]) / stride_h)) + 1
                 cols = np.int(np.ceil(1.0 * (new_w - self.crop_size[1]) / stride_w)) + 1
@@ -227,17 +278,26 @@ class BaseDataset(data.Dataset):
                         w1 = min(w0 + self.crop_size[1], new_w)
                         crop_img = new_img[h0:h1, w0:w1, :]
                         if h1 == new_h or w1 == new_w:
-                            crop_img = self.pad_image(crop_img, h1 - h0, w1 - w0, self.crop_size, padvalue)
+                            crop_img = self.pad_image(
+                                crop_img, h1 - h0, w1 - w0, self.crop_size, padvalue
+                            )
                         crop_img = crop_img.transpose((2, 0, 1))
                         crop_img = np.expand_dims(crop_img, axis=0)
                         crop_img = torch.from_numpy(crop_img)
                         pred = self.inference(config, model, crop_img, flip)
-                        preds[:, :, h0:h1, w0:w1] += pred[:, :, 0 : h1 - h0, 0 : w1 - w0]
+                        preds[:, :, h0:h1, w0:w1] += pred[
+                            :, :, 0 : h1 - h0, 0 : w1 - w0
+                        ]
                         count[:, :, h0:h1, w0:w1] += 1
                 preds = preds / count
                 preds = preds[:, :, :height, :width]
 
-            preds = F.interpolate(preds, (ori_height, ori_width), mode="bilinear", align_corners=config.MODEL.ALIGN_CORNERS)
+            preds = F.interpolate(
+                preds,
+                (ori_height, ori_width),
+                mode="bilinear",
+                align_corners=config.MODEL.ALIGN_CORNERS,
+            )
             final_pred += preds
         return final_pred
 
@@ -246,12 +306,18 @@ class BaseDataset(data.Dataset):
     ):
         uniques = []
         counts = []
-        for index, file in tqdm(enumerate(self), total=len(self), desc="Determining pixel-wise class proprotions"):
+        for index, file in tqdm(
+            enumerate(self),
+            total=len(self),
+            desc="Determining pixel-wise class proprotions",
+        ):
             image, label, size, name = file
             unique, count = np.unique(label, return_counts=True)
             uniques.append(unique)
             counts.append(count)
-        pixel_df = pd.DataFrame({"class": np.concatenate(uniques), "count": np.concatenate(counts)})
+        pixel_df = pd.DataFrame(
+            {"class": np.concatenate(uniques), "count": np.concatenate(counts)}
+        )
         # pixel_df = pixel_df.groupby("class").sum()
         pixel_df = pixel_df.groupby("class").mean()
         if self.ignore_label in pixel_df.index:
@@ -267,12 +333,18 @@ class BaseDataset(data.Dataset):
     ):
         uniques = []
         counts = []
-        for index, file in tqdm(enumerate(self), total=len(self), desc="Determining occurence class proprotions"):
+        for index, file in tqdm(
+            enumerate(self),
+            total=len(self),
+            desc="Determining occurence class proprotions",
+        ):
             image, label, size, name = file
             unique, _ = np.unique(label, return_counts=True)
             uniques.append(unique)
             counts.append(np.ones_like(unique))
-        pixel_df = pd.DataFrame({"class": np.concatenate(uniques), "count": np.concatenate(counts)})
+        pixel_df = pd.DataFrame(
+            {"class": np.concatenate(uniques), "count": np.concatenate(counts)}
+        )
         pixel_df = pixel_df.groupby("class").sum()
         if self.ignore_label in pixel_df.index:
             pixel_df = pixel_df.drop(index=self.ignore_label)
@@ -287,7 +359,11 @@ class BaseDataset(data.Dataset):
     ):
         uniques = []
         counts = []
-        for index, file in tqdm(enumerate(self), total=len(self), desc="Determining co-occurence class proprotions"):
+        for index, file in tqdm(
+            enumerate(self),
+            total=len(self),
+            desc="Determining co-occurence class proprotions",
+        ):
             image, label, size, name = file
             unique, _ = np.unique(label, return_counts=True)
             uniques.append(unique)
@@ -296,15 +372,19 @@ class BaseDataset(data.Dataset):
         for i in range(len(uniques)):
             for s in set(uniques[i]):
                 od[s].append(i)
-        x = [(k1, k2, len(set(d1) & set(d2))) for k1, d1 in od.items() for k2, d2 in od.items()]
+        x = [
+            (k1, k2, len(set(d1) & set(d2)))
+            for k1, d1 in od.items()
+            for k2, d2 in od.items()
+        ]
         self._co_occurences_df = pd.DataFrame(x).pivot(index=0, columns=1, values=2)
 
     def get_occurence_class_proportion(self, index: int):
-        if self._occurence_class_proportions is None:
+        if not hasattr(self, "_occurence_class_proportions"):
             self._init_occurence_class_proportions()
         return self._occurence_class_proportions[index]
 
     def get_pixel_class_proportion(self, index: int):
-        if self._pixel_class_proportions is None:
+        if not hasattr(self, "_pixel_class_proportions"):
             self._init_pixel_class_proportions()
         return self._pixel_class_proportions[index]
