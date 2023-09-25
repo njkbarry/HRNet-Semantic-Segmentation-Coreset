@@ -382,9 +382,17 @@ class BaseDataset(data.Dataset):
     def get_occurence_class_proportion(self, index: int):
         if not hasattr(self, "_occurence_class_proportions"):
             self._init_occurence_class_proportions()
-        return self._occurence_class_proportions[index]
+        if index != self.ignore_label:
+            proportion = self._occurence_class_proportions[index]
+        else:
+            proportion = np.nan
+        return proportion
 
     def get_pixel_class_proportion(self, index: int):
         if not hasattr(self, "_pixel_class_proportions"):
             self._init_pixel_class_proportions()
-        return self._pixel_class_proportions[index]
+        if index != self.ignore_label:
+            proportion = self._pixel_class_proportions[index]
+        else:
+            proportion = np.nan
+        return proportion
