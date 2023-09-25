@@ -11,6 +11,40 @@ import logging
 from config import config
 
 
+class FocalLoss(nn.Module):
+    def __init__(self, ignore_label=-1, gamma=2, weight=None, reduction="mean"):
+        super(FocalLoss, self).__init__()
+        self.ignore_label = ignore_label
+        self.reduction = reduction
+        self.gamma = gamma
+        self.reduction = reduction
+        self.ignore_label = ignore_label
+        self.weight = weight
+        self.criterion = F.cross_entropy
+
+    def _forward(self, score, target):
+        ph, pw = score.size(2), score.size(3)
+        h, w = target.size(1), target.size(2)
+        if ph != h or pw != w:
+            score = F.interpolate(input=score, size=(h, w), mode="bilinear", align_corners=config.MODEL.ALIGN_CORNERS)
+        ce_loss = self.criterion(input=score, target=target, weight=self.weight, ignore_index=self.ignore_label, reduction=self.reduction)
+
+        # Multi Label Focal Loss
+        pt = torch.exp(-ce_loss)
+        focal_loss = ((1 - pt) ** self.gamma * ce_loss).mean()  # mean over the batch
+
+        return focal_loss
+
+    def forward(self, score, target):
+        if config.MODEL.NUM_OUTPUTS == 1:
+            score = [score]
+
+        weights = config.LOSS.BALANCE_WEIGHTS
+        assert len(weights) == len(score)
+
+        return sum([w * self._forward(x, target) for (w, x) in zip(weights, score)])
+
+
 class CrossEntropy(nn.Module):
     def __init__(self, ignore_label=-1, weight=None, reduction="mean"):
         super(CrossEntropy, self).__init__()
