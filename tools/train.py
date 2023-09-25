@@ -356,6 +356,7 @@ def main():
             )
         elif config.LOSS.USE_FOCAL:
             criterion = FocalLoss(gamma=config.LOSS.FOCAL_GAMMA, reduction="mean")
+        else:
             criterion = CrossEntropy(
                 ignore_label=config.TRAIN.IGNORE_LABEL,
                 weight=train_dataset.class_weights,
@@ -647,10 +648,8 @@ def main():
                 device="cuda",
                 num_epochs=num_epochs,
                 num_gpus=len(gpus),
-                # method="least_confidence",  # FIXME: place in configs
-                method="entropy",  # FIXME: place in configs
-                # model="segformer",
-                model="deeplabv3",
+                method=config.UNCERTAINTY.METHOD,
+                model=config.UNCERTAINTY.MODEL,
             )
         )
 
