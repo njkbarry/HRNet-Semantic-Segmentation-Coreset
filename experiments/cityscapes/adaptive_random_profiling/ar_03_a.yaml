@@ -107,3 +107,4 @@ TEST:
   FLIP_TEST: false
   MULTI_SCALE: false
   LOG_PER_CLASS_METRICS: true
+  FULL_TRAIN_METRIC: false
