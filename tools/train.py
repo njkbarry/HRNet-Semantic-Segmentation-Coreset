@@ -133,8 +133,9 @@ def main():
         "LOG_DIR": config.LOG_DIR,
         "OUTPUT_DIR": config.OUTPUT_DIR,
     }
-    for k in log_dict.keys():
-        writer_dict["writer"].add_text(tag=k, text_string=str(log_dict[k]))
+    if args.local_rank <= 0:
+        for k in log_dict.keys():
+            writer_dict["writer"].add_text(tag=k, text_string=str(log_dict[k]))
 
     # cudnn related setting
     cudnn.benchmark = config.CUDNN.BENCHMARK
