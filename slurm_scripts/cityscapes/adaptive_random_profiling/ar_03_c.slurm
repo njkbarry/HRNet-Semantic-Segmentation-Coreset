@@ -9,7 +9,7 @@
 #SBATCH --nodes=1
 
 # The name of the job:
-#SBATCH --job-name="cityscapes_ar_05_a"
+#SBATCH --job-name="cityscapes_ar_03_c"
 
 # The project ID which this job should run under:
 #SBATCH --account="punim1896"
@@ -55,7 +55,7 @@ module load Tkinter/3.10.4
 # The job command(s):
 eval "$(conda shell.bash hook)"
 conda activate py38
-python -m torch.distributed.launch --nproc_per_node=2 tools/train.py --cfg experiments/cityscapes/adaptive_random_profiling/ar_03_a.yaml
+python -m torch.distributed.launch --nproc_per_node=2 tools/train.py --cfg experiments/cityscapes/adaptive_random_profiling/ar_03_c.yaml
 
 ##DO NOT ADD/EDIT BEYOND THIS LINE##
 ##Job monitor command to list the resource usage

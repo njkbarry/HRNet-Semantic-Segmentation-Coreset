@@ -144,6 +144,11 @@ _C.CRAIG = CN()
 _C.CRAIG.SELECT_EVERY = 3
 _C.CRAIG.SELECTION_TYPE = "Supervised"
 
+# UNCERTAINTY
+_C.UNCERTAINTY = CN()
+_C.UNCERTAINTY.METHOD = "least_confidence"
+_C.UNCERTAINTY.MODEL = "deeplabv3"
+
 # Class Weighted Random Sampling
 _C.CW_RANDOM = CN()
 _C.CW_RANDOM.ORACLE = False
