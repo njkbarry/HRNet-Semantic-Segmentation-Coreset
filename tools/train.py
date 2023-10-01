@@ -53,8 +53,9 @@ from cords.utils.data.dataloader.SL.adaptive import (
     MILODataLoader,
     ClassWeightedRandomDataLoader,
     PMWAdaptiveRandomDataLoader,
+    CRAIGDataLoader,
 )
-from cords.utils.data.dataloader.SL.nonadaptive import LeastConfidenceUncertainty, CRAIGDataLoader
+from cords.utils.data.dataloader.SL.nonadaptive import LeastConfidenceUncertainty
 from dotmap import DotMap
 import numpy as np
 import pandas as pd
@@ -129,6 +130,7 @@ def main():
         **dict(config.CRAIG),
         **dict(config.CW_RANDOM),
         **dict(config.PMW_RANDOM),
+        **dict(config.UNCERTAINTY),
         "EXPERIMENT_NAME": config.EXPERIMENT_NAME,
         "LOG_DIR": config.LOG_DIR,
         "OUTPUT_DIR": config.OUTPUT_DIR,
@@ -651,6 +653,7 @@ def main():
                 num_gpus=len(gpus),
                 method=config.UNCERTAINTY.METHOD,
                 model=config.UNCERTAINTY.MODEL,
+                reverse=config.UNCERTAINTY.REVERSE,
             )
         )
 

@@ -131,17 +131,17 @@ for scalar in SCALARS:
     df = pd.DataFrame(data)
     # Stochastic run plot
     # plot_df = df[(df["coreset_algorithm"] == "adaptiverandom") | (df["coreset_algorithm"] == "craig")]
-    # plot_df = df[df["experiment_name"].isin(["pixel_map_weighted_random_sampling_experiment", "adaptive_random_profiling"])]
+    plot_df = df[df["experiment_name"].isin(["pixel_map_weighted_random_sampling_experiment", "adaptive_random_profiling"])]
     # plot_df = df[df["repitition"].notnull()]
-    plot_df = df[df["experiment_name"].isin(["submod_exploitation_experiment"])]
-
-    # plot_df = df[df["coreset_algorithm"] == "adaptiverandom"]
-    # plot_df = plot_df[plot_df["coreset_frac"].str.endswith("5")]
+    # plot_df = df[df["experiment_name"].isin(["gradient_approximation"])]
+    # plot_df = df[df["run_name"].isin(["craig_ViT_05", "static_random_05"])]
+    # plot_df = plot_df[plot_df["coreset_algorithm"].isin(["craig", "adaptiverandom"])]
+    plot_df = plot_df[plot_df["coreset_frac"].str.endswith("5")]
     # plot_df["step_num"].replace(0, 1, inplace=True)
     plot_df.loc[:, "step_num"] = plot_df["step_num"] + 1
     plot_df.loc[:, "step_num"] = plot_df["step_num"] * 3
 
-    hue = plot_df["experiment_name"].astype(str) + ", " + plot_df["run_name"].astype(str)
+    hue = plot_df["experiment_name"].astype(str) + ", " + plot_df["run_name"].astype(str) + ", " + plot_df["coreset_algorithm"].astype(str)
     sns.set_style("darkgrid")
     smoothing = False
     if smoothing:

@@ -148,6 +148,7 @@ _C.CRAIG.SELECTION_TYPE = "Supervised"
 _C.UNCERTAINTY = CN()
 _C.UNCERTAINTY.METHOD = "least_confidence"
 _C.UNCERTAINTY.MODEL = "deeplabv3"
+_C.UNCERTAINTY.REVERSE = False
 
 # Class Weighted Random Sampling
 _C.CW_RANDOM = CN()
