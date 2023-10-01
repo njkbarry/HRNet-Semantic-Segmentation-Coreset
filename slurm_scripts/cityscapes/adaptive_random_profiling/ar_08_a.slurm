@@ -9,7 +9,7 @@
 #SBATCH --nodes=1
 
 # The name of the job:
-#SBATCH --job-name="cityscapes_ar_03_b"
+#SBATCH --job-name="cityscapes_ar_08_a"
 
 # The project ID which this job should run under:
 #SBATCH --account="punim1896"
@@ -35,7 +35,7 @@
 #SBATCH --mail-type=END
 
 # The maximum running time of the job in days-hours:mins:sec
-#SBATCH --time=0-10:00:00
+#SBATCH --time=1-4:00:00
 
 # check that the script is launched with sbatch
 if [ "x$SLURM_JOB_ID" == "x" ]; then
@@ -55,7 +55,7 @@ module load Tkinter/3.10.4
 # The job command(s):
 eval "$(conda shell.bash hook)"
 conda activate py38
-python -m torch.distributed.launch --nproc_per_node=2 tools/train.py --cfg experiments/cityscapes/adaptive_random_profiling/ar_03_b.yaml
+python -m torch.distributed.launch --nproc_per_node=2 tools/train.py --cfg experiments/cityscapes/adaptive_random_profiling/ar_08_a.yaml
 
 ##DO NOT ADD/EDIT BEYOND THIS LINE##
 ##Job monitor command to list the resource usage
