@@ -129,6 +129,7 @@ def main():
         **dict(config.CRAIG),
         **dict(config.CW_RANDOM),
         **dict(config.PMW_RANDOM),
+        **dict(config.UNCERTAINTY),
         "EXPERIMENT_NAME": config.EXPERIMENT_NAME,
         "LOG_DIR": config.LOG_DIR,
         "OUTPUT_DIR": config.OUTPUT_DIR,
@@ -650,6 +651,7 @@ def main():
                 num_gpus=len(gpus),
                 method=config.UNCERTAINTY.METHOD,
                 model=config.UNCERTAINTY.MODEL,
+                reverse=config.UNCERTAINTY.REVERSE,
             )
         )
 
