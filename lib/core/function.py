@@ -119,10 +119,11 @@ def train(
                 ave_loss.average(),
             )
             logging.info(msg)
-
-    writer.add_text(tag="subset_epoch_indexes", text_string=str(epoch_indexes), global_step=epoch)  # FIXME: May not log list as text natively
-    writer.add_scalar("train_loss", ave_loss.average(), global_steps)
-    writer_dict["train_global_steps"] = global_steps + 1
+        
+    if dist.get_rank() == 0:
+        writer.add_text(tag="subset_epoch_indexes", text_string=str(epoch_indexes), global_step=epoch)  # FIXME: May not log list as text natively
+        writer.add_scalar("train_loss", ave_loss.average(), global_steps)
+        writer_dict["train_global_steps"] = global_steps + 1
 
 
 def validate(config, testloader, model, writer_dict, log_per_class_metrics=False):
@@ -181,14 +182,15 @@ def validate(config, testloader, model, writer_dict, log_per_class_metrics=False
         if dist.get_rank() <= 0:
             logging.info("{} {} {}".format(i, IoU_array, mean_IoU))
 
-    writer = writer_dict["writer"]
-    global_steps = writer_dict["valid_global_steps"]
-    writer.add_scalar("valid_loss", ave_loss.average(), global_steps)
-    writer.add_scalar("valid_mIoU", mean_IoU, global_steps)
-    writer_dict["valid_global_steps"] = global_steps + 1
-    if log_per_class_metrics:
-        for i in range(IoU_array.shape[0]):
-            writer.add_scalar(f"valid_mIoU_class_{i}", IoU_array[i], global_steps)
+    if dist.get_rank() == 0:
+        writer = writer_dict["writer"]
+        global_steps = writer_dict["valid_global_steps"]
+        writer.add_scalar("valid_loss", ave_loss.average(), global_steps)
+        writer.add_scalar("valid_mIoU", mean_IoU, global_steps)
+        writer_dict["valid_global_steps"] = global_steps + 1
+        if log_per_class_metrics:
+            for i in range(IoU_array.shape[0]):
+                writer.add_scalar(f"valid_mIoU_class_{i}", IoU_array[i], global_steps)
 
     return ave_loss.average(), mean_IoU, IoU_array
 
@@ -256,9 +258,10 @@ def full_train_metric(config, fulltrainloader, model, writer_dict):
 
     writer = writer_dict["writer"]
     global_steps = writer_dict["fulltrain_global_steps"]
-    writer.add_scalar("fulltrain_loss", ave_loss.average(), global_steps)
-    writer.add_scalar("fulltrain_mIoU", mean_IoU, global_steps)
-    writer_dict["fulltrain_global_steps"] = global_steps + 1
+    if dist.get_rank() == 0:
+        writer.add_scalar("fulltrain_loss", ave_loss.average(), global_steps)
+        writer.add_scalar("fulltrain_mIoU", mean_IoU, global_steps)
+        writer_dict["fulltrain_global_steps"] = global_steps + 1
     return ave_loss.average(), mean_IoU, IoU_array
 
 
